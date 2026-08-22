@@ -320,7 +320,7 @@
         "message": "Переключение фильтрации по поисковым системам"
     },
     "guideReorderResultsHelp2": {
-        "message": "В настоящее время эта функция доступна только для Google, поскольку ее надежная поддержка может быть сложной."
+        "message": "Если одна и та же статья есть и в инди-вики, и в обычной вики, дубликат из обычной вики будет скрыт."
     },
     "guideWikiHelp": {
         "message": "Помощь с собственными настройками вики",
@@ -393,7 +393,7 @@
         }
     },
     "guideBreezeWikiHostHelp": {
-        "message": "Если вы включили опцию BreezeWiki, появится выпадающий список, в котором вы сможете выбрать предпочтительный хост/зеркало BreezeWiki. Если выбранный вами хост BreezeWiki не работает, вы можете вернуться к этим настройкам и поменять хост."
+        "message": "Если вы включили опцию BreezeWiki, появится выпадающий список, в котором вы сможете выбрать предпочтительный хост/зеркало BreezeWiki. Ваш браузер попросит предоставить расширению доступ к выбранному вами хосту. Вы также можете указать собственный домен BreezeWiki. Если выбранный вами хост BreezeWiki не работает, вы можете вернуться к этим настройкам и поменять хост."
     },
     "settingsHideFor": {
         "message": "Скрывать $origin$ в результатах поисковых систем",
@@ -440,14 +440,14 @@
         }
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "По умолчанию фильтрация включена для всех поисковых систем. Фильтрация осуществляется на основе настроек, выбранных пользователем для каждой вики. По умолчанию для всех вики-проектов результаты поиска, не относящиеся к инди, заменяются кнопками со ссылками на инди-аналоги."
+        "message": "По умолчанию фильтрация работает на Google.com. Все остальные поисковые системы отключены, пока вы не включите их и не дадите разрешение. Фильтрация осуществляется на основе настроек, выбранных пользователем для каждой вики. По умолчанию для всех вики-проектов результаты поиска, не относящиеся к инди, заменяются кнопками со ссылками на инди-аналоги."
     },
     "bannerDescriptorIndependentOfficial": {
         "message": "официальная независимая",
         "description": "Descriptor used for an official independent wiki. See the bannerText message for more information."
     },
     "guideReorderResultsHelp1": {
-        "message": "По умолчанию Indie Wiki Buddy перестраивает страницу результатов в Google, чтобы переместить результаты инди-вики выше первого результата не инди (Fandom / Fextralife / Neoseeker), если они находятся ниже на первой странице результатов. Это позволит вам быстрее найти нужные страницы в инди-вики."
+        "message": "По умолчанию Indie Wiki Buddy меняет порядок результатов поиска, перемещая результаты из инди-вики выше результатов из других источников (Fandom / Fextralife / Neoseeker), если они находятся ниже на первой странице результатов. Это позволит вам быстрее найти нужные страницы в инди-вики."
     },
     "searchResultVisitEnglish": {
         "message": "Перейти вместо этого на $destination$ (англ.)",
@@ -651,7 +651,7 @@
         }
     },
     "settingsWikiLegendSearchExp": {
-        "message": "Когда в результатах поиска есть Fandom, Fextralife, или Neoseeker вики с независимыми альтернативами, IWB должен:",
+        "message": "Когда в результатах поиска есть вики Fandom, Fextralife, или Neoseeker у которых есть независимые альтернативы, IWB должен:",
         "description": "Explanation for the icons in search experience"
     },
     "guideHide": {
@@ -702,7 +702,7 @@
         "description": "Do not translate the language code in brackets. If this language is your language, leave only one name. Otherwise, add the name of the language in your language before the slash. For example, ES should be \"[ES] Spanish / Español\" in English, but just \"[ES] Español\" in Spanish."
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "В настоящее время поддерживаются следующие поисковые системы: Google, Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo! и Яндекс."
+        "message": "В настоящее время поддерживаются следующие поисковые системы: Google (с отдельным переключателем для международных доменов, таких как google.co.uk), Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo! и Яндекс."
     },
     "settingsFunStatsSearchFilters": {
         "message": "Отфильтровано результатов поисковых систем: $hide$",
@@ -885,5 +885,92 @@
     },
     "settingsBreezeWikiHostNote": {
         "message": "Если вы часто сталкиваетесь с ошибками при посещении BreezeWiki, попробуйте переключиться на другой хост. Indie Wiki Buddy не несет ответственности за BreezeWiki или его хосты."
+    },
+    "settingsBannerCorePermissions": {
+        "message": "Indie Wiki Buddy не может читать страницы Fandom, Fextralife и/или Neoseeker, поэтому оповещения и перенаправления не будут работать."
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "Предоставить доступ"
+    },
+    "firstInstallInfoWelcome": {
+        "message": "Спасибо, что установили Indie Wiki Buddy! Давайте настроим самые важные параметры."
+    },
+    "firstInstallInfoSearchFiltering": {
+        "message": "По умолчанию Indie Wiki Buddy фильтрует результаты поиска Google. Вы можете отключить Google или выбрать другую поисковую систему ниже."
+    },
+    "firstInstallInfoDefaults": {
+        "message": "Вы можете настроить поведение по умолчанию при посещении не независимых вики:"
+    },
+    "firstInstallInfoBreezeWiki": {
+        "message": "Включите $BreezeWiki$, если хотите просматривать вики Fandom в альтернативном интерфейсе, который позволяет просматривать их без рекламы и лишнего контента:",
+        "placeholders": {
+            "BreezeWiki": {
+                "content": "$1",
+                "example": "BreezeWiki"
+            }
+        }
+    },
+    "firstInstallInfoSettingsLink": {
+        "message": "Чтобы увидеть полный перечень настроек, в том числе настройки для каждой вики отдельно, перейдите на полную $linkStart$страницу настроек$linkEnd$.",
+        "placeholders": {
+            "linkStart": {
+                "content": "$1"
+            },
+            "linkEnd": {
+                "content": "$2"
+            }
+        }
+    },
+    "firstInstallInfoSettingsAccess": {
+        "message": "В будущем вы сможете получить доступ к настройкам через значок расширения $logo$ в правом верхнем углу браузера. Если вы не видите значок, возможно, он находится в раскрывающемся списке расширений вашего браузера, который можно открыть с помощью значка пазла $jigsaw$ (также в правом верхнем углу браузера).",
+        "placeholders": {
+            "logo": {
+                "content": "$1",
+                "example": "(image for the extension icon)"
+            },
+            "jigsaw": {
+                "content": "$2",
+                "example": "(image for the jigsaw icon)"
+            }
+        }
+    },
+    "settingsApiData": {
+        "message": "Получить последние данные о вики с getindie.wiki"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "Загрузка вариантов хоста..."
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "Применить"
+    },
+    "guideApiDataHelp": {
+        "message": "Если эта опция включена, расширение периодически загружает последний список поддерживаемых вики с getindie.wiki. Отключите её, чтобы использовать только список вики, поставляемый вместе с расширением."
+    },
+    "guideCustomSearchEnginesHelp": {
+        "message": "Если вы используете собственную поисковую систему SearXNG или Whoogle, вы можете добавить её домен в нижней части настроек поисковой системы. Ваш браузер запросит разрешение на доступ расширения к этому домену."
+    },
+    "customSearchEngines": {
+        "message": "Пользовательские поисковые системы"
+    },
+    "customSearchEnginesAdd": {
+        "message": "Добавить"
+    },
+    "customSearchEnginesDelete": {
+        "message": "Удалить"
+    },
+    "customSearchEnginesDomain": {
+        "message": "Домен поисковой системы (например, search.example.org)"
+    },
+    "customSearchEnginesPreset": {
+        "message": "Платформа поисковой системы"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "Введите корректный домен, например search.example.org"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "Введите корректный домен"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "Введите корректный домен, например bw.example.org"
     }
 }

@@ -409,14 +409,13 @@ searchEngineToggles.forEach((engine) => {
           return;
         }
         searchEngineRequestPending = true;
-        // Store the toggle before requesting
-        setSearchEngineToggle(engineName, 'on');
         extensionAPI.permissions.request({
           origins: SEARCHENGINEDOMAINS[engineName]
         }, (granted) => {
           searchEngineRequestPending = false;
           // The callback argument will be true if the user granted the permissions.
           if (granted) {
+            setSearchEngineToggle(engineName, 'on');
             searchEnginePermissions[engineName] = true;
             engineInput.checked = true;
           } else {

@@ -232,9 +232,11 @@ extensionAPI.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     getSearchEngine(currentUrl.href, (searchEngine) => {
       if (searchEngine) {
         // The script asks the background for its engine via 'getSearchEngine'
+        // injectImmediately: run before document_idle
         extensionAPI.scripting.executeScript({
           target: { tabId: tab.id },
-          files: ['scripts/content-search-filtering-importer.js']
+          files: ['scripts/content-search-filtering-importer.js'],
+          injectImmediately: true
         }).catch(ignoreInjectionError);
         extensionAPI.scripting.insertCSS({
           target: { tabId: tab.id },
@@ -246,7 +248,8 @@ extensionAPI.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
           if (breezewikiHost) {
             extensionAPI.scripting.executeScript({
               target: { tabId: tab.id },
-              files: ['scripts/content-banners-importer.js']
+              files: ['scripts/content-banners-importer.js'],
+              injectImmediately: true
             }).catch(ignoreInjectionError);
             extensionAPI.scripting.insertCSS({
               target: { tabId: tab.id },

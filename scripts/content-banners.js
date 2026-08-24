@@ -294,22 +294,29 @@ function main() {
             // Notify if enabled for the wiki:
             if (siteSetting === 'alert') {
               let newURL = getNewURL(origin, matchingSite);
+              const showBanner = () => {
+                displayRedirectBanner(newURL, matchingSite['id'], matchingSite['destination'], matchingSite['language'], matchingSite['destination_host'], matchingSite['tags'], storage);
+              };
 
-              // When head elem is loaded, notify that another wiki is available
-              const docObserver = new MutationObserver((mutations, mutationInstance) => {
-                const headElement = document.querySelector('head');
-                if (headElement) {
-                  try {
-                    displayRedirectBanner(newURL, matchingSite['id'], matchingSite['destination'], matchingSite['language'], matchingSite['destination_host'], matchingSite['tags'], storage);
-                  } finally {
-                    mutationInstance.disconnect();
+              if (document.querySelector('head')) {
+                // Head already parsed
+                showBanner();
+              } else {
+                // Wait for head element to load
+                const docObserver = new MutationObserver((mutations, mutationInstance) => {
+                  if (document.querySelector('head')) {
+                    try {
+                      showBanner();
+                    } finally {
+                      mutationInstance.disconnect();
+                    }
                   }
-                }
-              });
-              docObserver.observe(document, {
-                childList: true,
-                subtree: true
-              });
+                });
+                docObserver.observe(document, {
+                  childList: true,
+                  subtree: true
+                });
+              }
             }
           }
         });

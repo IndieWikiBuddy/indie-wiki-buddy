@@ -974,7 +974,7 @@ function checkRevalidate() {
     if (!containerMounted) return;
     // just in case, re-process search results
     console.debug('IWB: Reprocessing search results...');
-    filterAnchors(Array.from(document.body?.querySelectorAll('a')));
+    filterAnchors(Array.from(document.body?.querySelectorAll('a') ?? []));
   }
 }
 

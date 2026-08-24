@@ -1,4 +1,4 @@
-import { extensionAPI, SEARCHENGINEDOMAINS, COREHOSTORIGINS, applyI18nMessages, camelCaseJoin, getUserSettings, setUserSetting, setUserSettings, getSiteDataByDestination, getApiFaviconURL, isSearchEngineOn, sanitizeBreezewikiHosts, fetchBreezewikiHosts, pickBreezewikiHost } from "../scripts/common-functions.js";
+import { extensionAPI, SEARCHENGINEDOMAINS, COREHOSTORIGINS, applyI18nMessages, camelCaseJoin, getUserSettings, setUserSetting, setUserSettings, getSiteDataByDestination, getApiFaviconURL, isSearchEngineOn, isValidHostname, sanitizeBreezewikiHosts, fetchBreezewikiHosts, pickBreezewikiHost } from "../scripts/common-functions.js";
 
 // Coalesce rapid repeats (e.g. arrow-key radio navigation) into one call
 export function debounce(fn, delay) {
@@ -814,6 +814,12 @@ function setCustomBreezewikiDomain() {
     return;
   }
   if (breezewikiCustomDomain.protocol !== 'https:' && breezewikiCustomDomain.protocol !== 'http:') {
+    customHostInput.setCustomValidity(extensionAPI.i18n.getMessage('settingsBreezeWikiCustomHostInvalid'));
+    customHostInput.reportValidity();
+    return;
+  }
+  // Reject wildcard hostnames
+  if (!isValidHostname(breezewikiCustomDomain.hostname)) {
     customHostInput.setCustomValidity(extensionAPI.i18n.getMessage('settingsBreezeWikiCustomHostInvalid'));
     customHostInput.reportValidity();
     return;

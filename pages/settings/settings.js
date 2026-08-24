@@ -1,4 +1,4 @@
-import { extensionAPI, refreshSiteData, setDefaultUserActionForNewWikis } from "../../scripts/common-functions.js";
+import { extensionAPI, refreshSiteData, setDefaultUserActionForNewWikis, isValidHostname } from "../../scripts/common-functions.js";
 import { debounce, loadOptions } from "../common-page-functions.js";
 
 function displayCustomSearchEngine(customSearchEngineDomain, customSearchEnginePreset) {
@@ -157,6 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // http covers self-hosted / localhost
     if (engineUrl.protocol !== 'https:' && engineUrl.protocol !== 'http:') {
       domainInput.setCustomValidity(extensionAPI.i18n.getMessage('customSearchEnginesInvalidScheme'));
+      domainInput.reportValidity();
+      return;
+    }
+
+    // Reject wildcard hostnames (e.g. "*")
+    if (!isValidHostname(engineUrl.hostname)) {
+      domainInput.setCustomValidity(extensionAPI.i18n.getMessage('customSearchEnginesInvalidDomain'));
       domainInput.reportValidity();
       return;
     }

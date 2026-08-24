@@ -241,10 +241,14 @@ export function isSearchEngineOn(engine, toggles = {}) {
   return engine === 'google' || !SEARCHENGINEDOMAINS.hasOwnProperty(engine);
 }
 
-// Validate BreezeWiki mirror targets
-// Reduce each to https origin
-const BREEZEWIKI_HOSTNAME = /^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+// Plain domain or IPv4
+// Rejects "*" and other wildcards
+const VALID_HOSTNAME = /^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+export function isValidHostname(hostname) {
+  return typeof hostname === 'string' && VALID_HOSTNAME.test(hostname);
+}
 
+// Validate a BreezeWiki mirror
 export function normalizeBreezewikiHost(instance) {
   if (typeof instance !== 'string') return null;
   let url;
@@ -257,7 +261,7 @@ export function normalizeBreezewikiHost(instance) {
   if (url.username || url.password) return null;
   if (url.search || url.hash) return null;
   if (url.pathname !== '/' && url.pathname !== '') return null;
-  if (!BREEZEWIKI_HOSTNAME.test(url.hostname)) return null;
+  if (!isValidHostname(url.hostname)) return null;
   return url.origin;
 }
 

@@ -241,6 +241,61 @@ export function isSearchEngineOn(engine, toggles = {}) {
   return engine === 'google' || !SEARCHENGINEDOMAINS.hasOwnProperty(engine);
 }
 
+// Validate BreezeWiki mirror targets
+// Reduce each to https origin
+const BREEZEWIKI_HOSTNAME = /^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+
+export function normalizeBreezewikiHost(instance) {
+  if (typeof instance !== 'string') return null;
+  let url;
+  try {
+    url = new URL(instance);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== 'https:') return null;
+  if (url.username || url.password) return null;
+  if (url.search || url.hash) return null;
+  if (url.pathname !== '/' && url.pathname !== '') return null;
+  if (!BREEZEWIKI_HOSTNAME.test(url.hostname)) return null;
+  return url.origin;
+}
+
+// Validate instances.json list
+export function sanitizeBreezewikiHosts(hosts) {
+  if (!Array.isArray(hosts)) return [];
+  const version = extensionAPI.runtime.getManifest().version;
+  const seen = new Set();
+  const clean = [];
+  for (const host of hosts) {
+    const instance = normalizeBreezewikiHost(host?.instance);
+    if (!instance || seen.has(instance)) continue;
+    const iwb_version = typeof host?.iwb_version === 'string' ? host.iwb_version : '0.0.0';
+    // Skip mirrors that need a newer extension version
+    if (version.localeCompare(iwb_version, undefined, { numeric: true, sensitivity: 'base' }) < 0) continue;
+    seen.add(instance);
+    clean.push({ instance, iwb_version });
+  }
+  return clean;
+}
+
+// Fetch and validate mirror list
+export function fetchBreezewikiHosts() {
+  return fetch('https://bw.getindie.wiki/instances.json')
+    .then((response) => {
+      if (!response.ok) throw new Error('Indie Wiki Buddy failed to get BreezeWiki data.');
+      return response.json();
+    })
+    .then(sanitizeBreezewikiHosts);
+}
+
+// Pick a mirror (breezewiki.com if available, otherwise a random one)
+export function pickBreezewikiHost(hosts) {
+  if (hosts.some((host) => host.instance === 'https://breezewiki.com')) return 'https://breezewiki.com';
+  if (hosts.length) return hosts[Math.floor(Math.random() * hosts.length)].instance;
+  return 'https://breezewiki.com';
+}
+
 /** @param {string} str */
 function b64decode(str) {
   const binary_string = atob(str);

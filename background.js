@@ -1,10 +1,13 @@
 import {
   extensionAPI,
+  fetchBreezewikiHosts,
   findMatchingSite,
   getNewURL,
   getUserSettings,
   loadSiteData,
   migrateUserSettings,
+  normalizeBreezewikiHost,
+  pickBreezewikiHost,
   refreshSiteData,
   SEARCHENGINEDOMAINS,
  } from "./scripts/common-functions.js";
@@ -177,8 +180,10 @@ function loadBreezewikiRegexes(callback) {
     const patterns = ['https://breezewiki.com/*'];
     if (Array.isArray(item.breezewikiHostOptions)) {
       for (const host of item.breezewikiHostOptions) {
-        if (typeof host?.instance === 'string') {
-          patterns.push(host.instance.replace(/\/$/, '') + '/*');
+        // Re-validate: a value stored by an older build could be unsafe
+        const origin = normalizeBreezewikiHost(host?.instance);
+        if (origin) {
+          patterns.push(origin + '/*');
         }
       }
     }
@@ -527,48 +532,24 @@ function redirectToBreezeWiki(storage, tabId, url) {
     !urlObj.search.includes('fandom=allow')
   ) {
     if (!(storage.breezewikiHost ?? null)) {
-      fetch('https://bw.getindie.wiki/instances.json')
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error('Indie Wiki Buddy failed to get BreezeWiki data.');
-        }).then((breezewikiHosts) => {
-          breezewikiHosts = breezewikiHosts.filter(host =>
-            extensionAPI.runtime.getManifest().version.localeCompare(host.iwb_version,
-              undefined,
-              { numeric: true, sensitivity: 'base' }
-            ) >= 0
-          );
-          // Check if BreezeWiki's main site is available
-          let selectedHost;
-          let breezewikiMain = breezewikiHosts.filter(h => h.instance === 'https://breezewiki.com');
-          if (breezewikiMain.length > 0) {
-            selectedHost = breezewikiMain[0].instance;
-            extensionAPI.storage.sync.set({ 'breezewikiHost': selectedHost });
-          } else {
-            // If BreezeWiki.com is not available, set to a random mirror
-            try {
-              selectedHost = breezewikiHosts[Math.floor(Math.random() * breezewikiHosts.length)].instance;
-              extensionAPI.storage.sync.set({ 'breezewikiHost': selectedHost });
-            } catch (e) {
-              console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-              selectedHost = 'https://breezewiki.com';
-            }
-          }
-          extensionAPI.storage.sync.set({ 'breezewikiHostOptions': breezewikiHosts });
-          extensionAPI.storage.sync.set({ 'breezewikiHostFetchTimestamp': Date.now() });
-          processRedirect(selectedHost);
-        }).catch((e) => {
-          console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-          extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+      fetchBreezewikiHosts().then((breezewikiHosts) => {
+        const selectedHost = pickBreezewikiHost(breezewikiHosts);
+        extensionAPI.storage.sync.set({
+          'breezewikiHost': selectedHost,
+          'breezewikiHostOptions': breezewikiHosts,
+          'breezewikiHostFetchTimestamp': Date.now()
         });
+        processRedirect(selectedHost);
+      }).catch((e) => {
+        console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
+        extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+      });
+    } else if (storage.breezewikiHost === 'CUSTOM') {
+      // User-set custom host, validated when saved
+      processRedirect(storage.breezewikiCustomHost || 'https://breezewiki.com');
     } else {
-      if (storage.breezewikiHost === 'CUSTOM') {
-        processRedirect(storage.breezewikiCustomHost || 'https://breezewiki.com');
-      } else {
-        processRedirect(storage.breezewikiHost);
-      }
+      // Re-validate in case an older build stored a bad value
+      processRedirect(normalizeBreezewikiHost(storage.breezewikiHost) || 'https://breezewiki.com');
     }
   }
 }

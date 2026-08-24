@@ -757,14 +757,13 @@ async function processSearchResults(searchResults) {
                   ({ isNonIndie, siteData }) => isNonIndie && siteData.id === matchingIndieWiki.id
                 );
 
-                if ((storage.reorderResults ?? 'on') === 'on' && matchingNonIndieIndex !== -1) {
-                  console.debug('Indie Wiki Buddy: Reordering search result:', searchResultLink);
+                if ((storage.reorderResults ?? 'on') === 'on' && matchingNonIndieIndex !== -1
+                  && moveResultAbove(cacheInfo.container, processedCache[matchingNonIndieIndex].container)) {
+                  console.debug('Indie Wiki Buddy: Reordered search result:', searchResultLink);
 
                   const index = matchingNonIndieIndex;
-                  const targetContainer = processedCache[index].container;
                   // record cacheInfo right before the first non-indie entry of the same wiki
                   processedCache.splice(index, 0, cacheInfo);
-                  moveResultAbove(cacheInfo.container, targetContainer);
                   // Re-filter later non-indie entries,
                   // which may now duplicate the moved result
                   for (let i = index + 1; i < processedCache.length; i++) {

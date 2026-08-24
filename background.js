@@ -403,12 +403,15 @@ function commitPendingBreezewikiHosts(addedOrigins = null) {
 
 // Pages write the pending key before calling permissions.request
 extensionAPI.storage.onChanged.addListener((changes, area) => {
-  if (
-    area === 'local' &&
-    (changes.pendingBreezeWikiHost?.newValue || changes.pendingCustomBreezeWikiHost?.newValue)
-  ) {
-    commitPendingBreezewikiHosts();
+  if (area !== 'local') return;
+  const origins = [];
+  if (changes.pendingBreezeWikiHost?.newValue) {
+    origins.push(changes.pendingBreezeWikiHost.newValue + '/*');
   }
+  if (changes.pendingCustomBreezeWikiHost?.newValue) {
+    origins.push(changes.pendingCustomBreezeWikiHost.newValue + '/*');
+  }
+  if (origins.length) commitPendingBreezewikiHosts(origins);
 });
 
 // Listen for extension installed/updating

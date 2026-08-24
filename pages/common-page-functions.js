@@ -621,7 +621,7 @@ breezewikiHostApply.addEventListener('click', () => {
   // Disable to prevent multiple requests from rapid/double clicks
   breezewikiHostApply.disabled = true;
 
-  // Store pending intent so background script can save it if popup closes
+  // Store pending intent so the background script can save it if the popup closes
   extensionAPI.storage.local.set({ 'pendingBreezeWikiHost': selectedHost });
 
   extensionAPI.permissions.request({
@@ -631,6 +631,7 @@ breezewikiHostApply.addEventListener('click', () => {
     // The callback argument will be true if the user granted the permissions.
     if (granted) {
       extensionAPI.storage.sync.set({ 'breezewikiHost': selectedHost });
+      extensionAPI.storage.local.remove(['pendingBreezeWikiHost']);
       breezewikiHostApply.style.display = 'none';
     } else {
       extensionAPI.storage.local.remove(['pendingBreezeWikiHost']);
@@ -837,6 +838,7 @@ function setCustomBreezewikiDomain() {
     if (granted) {
       extensionAPI.storage.sync.set({ 'breezewikiCustomHost': breezewikiCustomDomain });
       extensionAPI.storage.sync.set({ 'breezewikiHost': 'CUSTOM' });
+      extensionAPI.storage.local.remove(['pendingCustomBreezeWikiHost']);
       if (document.getElementById('breezewikiCustomHostStatus')) {
         document.getElementById('breezewikiCustomHostStatus').innerText = extensionAPI.i18n.getMessage('settingsBreezeWikiCustomHostSetSuccessful');
       }

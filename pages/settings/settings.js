@@ -66,7 +66,7 @@ function setApiData(setting, storeSetting = true) {
         refreshSiteData(true);
       } else {
         // Drop the cached data so the bundled data takes over
-        extensionAPI.storage.local.remove(['remoteSiteData', 'remoteSiteDataTimestamp']);
+        extensionAPI.storage.local.remove(['remoteSiteData', 'remoteSiteDataTimestamp', 'remoteSiteDataGenerated']);
       }
     });
   }

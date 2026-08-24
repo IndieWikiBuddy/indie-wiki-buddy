@@ -668,6 +668,7 @@ async function migrateUserSettingsType(settingsType) {
 const REMOTE_DATA_URL = 'https://api.getindie.wiki/v1/all-data.json';
 const REMOTE_FAVICON_BASE_URL = 'https://api.getindie.wiki/favicons/';
 const REMOTE_DATA_MAX_AGE_MS = 3 * 60 * 60 * 1000;
+const REMOTE_DATA_FETCH_TIMEOUT_MS = 30 * 1000;
 
 /**
  * Load the wiki data file bundled with the extension
@@ -680,15 +681,40 @@ async function loadBundledSiteData() {
 }
 
 /**
+ * Bundled dataset's generated time in ms
+ * @returns {Promise<number>}
+ */
+async function getBundledDataGenerated() {
+  const version = extensionAPI.runtime.getManifest().version;
+  const { bundledDataGenerated } = await extensionAPI.storage.local.get(['bundledDataGenerated']);
+  if (bundledDataGenerated?.version === version) {
+    return bundledDataGenerated.time;
+  }
+  let time = 0;
+  try {
+    const response = await fetch(extensionAPI.runtime.getURL('data/data.json'));
+    const data = await response.json();
+    time = Date.parse(data.generated) || 0;
+  } catch (e) {
+    console.log('Indie Wiki Buddy failed to read bundled site data: ' + e);
+  }
+  extensionAPI.storage.local.set({ 'bundledDataGenerated': { version, time } });
+  return time;
+}
+
+/**
  * Check whether the user has enabled pulling wiki data from the API
  * @returns {Promise<boolean>}
  */
-function isApiDataEnabled() {
-  return new Promise((resolve) => {
-    extensionAPI.storage.sync.get({ 'apiData': 'on' }, (items) => {
-      resolve(items.apiData === 'on');
-    });
-  });
+async function isApiDataEnabled() {
+  const items = await extensionAPI.storage.sync.get({ 'apiData': 'on' });
+  return items.apiData === 'on';
+}
+
+// Becomes a redirect target as 'https://' + value
+function isValidDestinationBaseUrl(value) {
+  return typeof value === 'string' && value.length > 0 &&
+    !/[@:?#\\\s*]/.test(value) && !/^[\/.]/.test(value);
 }
 
 /**
@@ -702,45 +728,53 @@ function isValidSiteData(sites) {
     typeof site.language === 'string' &&
     typeof site.origins_label === 'string' &&
     typeof site.destination === 'string' &&
-    typeof site.destination_base_url === 'string' &&
-    Array.isArray(site.origins)
+    isValidDestinationBaseUrl(site.destination_base_url) &&
+    Array.isArray(site.origins) &&
+    site.origins.every((origin) =>
+      origin &&
+      typeof origin.origin === 'string' &&
+      typeof origin.origin_base_url === 'string' &&
+      typeof origin.origin_content_path === 'string' &&
+      typeof origin.origin_main_page === 'string'
+    )
   );
 }
 
 /**
  * Load remote wiki data cached in local storage, if any.
- * Returns null when the cache is empty or the user has disabled API data.
+ * Returns null when there is no usable cache or API data is disabled.
  * @returns {Promise<SiteInfo[] | null>}
  */
-function loadCachedRemoteSiteData() {
-  return new Promise(async (resolve) => {
-    if (!await isApiDataEnabled()) {
-      resolve(null);
-      return;
+async function loadCachedRemoteSiteData() {
+  if (!await isApiDataEnabled()) {
+    return null;
+  }
+  const items = await extensionAPI.storage.local.get(['remoteSiteData', 'remoteSiteDataGenerated']);
+  if (!items.remoteSiteData) {
+    return null;
+  }
+  // The newer dataset wins; a new release can ship fresher bundled data
+  if ((items.remoteSiteDataGenerated || 0) < await getBundledDataGenerated()) {
+    return null;
+  }
+  try {
+    const sites = await decompressJSON(items.remoteSiteData);
+    if (isValidSiteData(sites)) {
+      return sites;
     }
-    extensionAPI.storage.local.get(['remoteSiteData'], async (items) => {
-      if (items && items.remoteSiteData) {
-        try {
-          const sites = await decompressJSON(items.remoteSiteData);
-          if (isValidSiteData(sites)) {
-            resolve(sites);
-            return;
-          }
-        } catch (e) {
-          console.log('Indie Wiki Buddy failed to read cached site data: ' + e);
-        }
-      }
-      resolve(null);
-    });
-  });
+  } catch (e) {
+    console.log('Indie Wiki Buddy failed to read cached site data: ' + e);
+  }
+  return null;
 }
 
 /** @type {Promise<SiteInfo[]> | undefined} */
 let _siteData;
 
 /**
- * Load wiki data, preferring cached remote data over the bundled files.
- * Result kept in memory.
+ * Load wiki data: 
+ * Cached remote data if it is at least as new as the
+ * bundled data, bundled data otherwise.
  * @returns {Promise<SiteInfo[]>}
  */
 export async function loadSiteData() {
@@ -782,17 +816,13 @@ async function fetchAndCacheSiteData(force) {
       return;
     }
     if (!force) {
-      const timestamp = await new Promise((resolve) => {
-        extensionAPI.storage.local.get(['remoteSiteDataTimestamp'], (items) => {
-          resolve((items && items.remoteSiteDataTimestamp) || 0);
-        });
-      });
-      if (Date.now() - timestamp < REMOTE_DATA_MAX_AGE_MS) {
+      const items = await extensionAPI.storage.local.get(['remoteSiteDataTimestamp']);
+      if (Date.now() - (items.remoteSiteDataTimestamp || 0) < REMOTE_DATA_MAX_AGE_MS) {
         return;
       }
     }
 
-    const response = await fetch(REMOTE_DATA_URL);
+    const response = await fetch(REMOTE_DATA_URL, { signal: AbortSignal.timeout(REMOTE_DATA_FETCH_TIMEOUT_MS) });
     if (!response.ok) {
       throw new Error('received HTTP ' + response.status);
     }
@@ -802,11 +832,11 @@ async function fetchAndCacheSiteData(force) {
     }
 
     const compressedSites = await compressJSON(data.sites);
-    await new Promise((resolve) => {
-      extensionAPI.storage.local.set({
-        'remoteSiteData': compressedSites,
-        'remoteSiteDataTimestamp': Date.now()
-      }, resolve);
+    await extensionAPI.storage.local.set({
+      'remoteSiteData': compressedSites,
+      'remoteSiteDataTimestamp': Date.now(),
+      // Fetch time stands in if the API omits 'generated'
+      'remoteSiteDataGenerated': Date.parse(data.generated) || Date.now()
     });
     _siteData = undefined;
     _siteDataByOrigin = undefined;

@@ -50,7 +50,7 @@
         "description": "Button to show filtered search results"
     },
     "searchResultReenable": {
-        "message": "Włącz poniższy wynik wyszukiwania",
+        "message": "Włącz oryginalny wynik wyszukiwania",
         "description": "Prompt to re-enable a non-indie search result"
     },
     "settingsWebsite": {
@@ -136,7 +136,7 @@
         "description": "Prompt that the custom BreezeWiki host has been successfully added"
     },
     "settingsWikiLegendSearchExp": {
-        "message": "Gdy wyniki wyszukiwarki internetowej zawierają linki do Fandomu, Fextralife czy Neoseeker, które mają niezależną alternatywę, IWB może:",
+        "message": "Gdy wyniki wyszukiwania zawierają artykuły na Fandomie albo Fextralife lub Neoseeker, dla których istnieją odpowiedniki na alternatywnej i niezależnej wiki, to IWB powinno:",
         "description": "Explanation for the icons in search experience"
     },
     "settingsWikiLegend": {
@@ -314,7 +314,7 @@
         "message": "Indie Wiki Buddy posiada zestaw funkcji pomagających Ci odkrywać niezależne wiki i poprawić jakość czytania wiki."
     },
     "guideOverviewPara5": {
-        "message": "Zawsze masz pełną kontrolę nad tym jak rozszerzenie się zachowuje, które funkcje są włączone a które nie. Możesz również stosować funkcje zależnie od własnych preferencji - z podziałem na poszczególne wiki."
+        "message": "Możesz zdecydować, które funkcje mają być włączone, a które nie, dopasowując je do własnych preferencji, a nawet indywidualnie dostosowując zachowanie rozszerzenia indywidualnie dla poszczególnych wiki. Masz nad tym pełną kontrolę!"
     },
     "guideNotificationsHelp1": {
         "message": "Kiedy ta opcja jest włączona, otrzymasz powiadomienie po automatycznym przeniesieniu do indie wiki lub $BreezeWiki$. Ta funkcja jest domyślnie włączona.",
@@ -725,10 +725,10 @@
         "message": "[HR] Chorwacki / Hrvatski"
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "Domyślnie, filtrowanie jest włączone dla wszystkich wyszukiwarek. Filtrowanie działa na podstawie ustawień wybranych przez użytkownika dla każdej wiki. Domyślnym ustawieniem filtrowania dla wszystkich wiki jest zastępowanie wyników wyszukiwania innych niż niezależne przyciskami odsyłającymi do niezależnych odpowiedników."
+        "message": "Domyślnie, filtrowanie działa tylko dla Google.com. Inne wyszukiwarki internetowe są wyłączone, do chwili ręcznego ich włączenia oraz udzielenia wymaganych uprawnień. Filtrowanie działa na podstawie ustawień wybranych przez użytkownika dla każdej z wiki. Domyślnym ustawieniem filtrowania dla wszystkich wiki jest zastępowanie wyników wyszukiwania, innych niż niezależne, przyciskami odsyłającymi do ich niezależnych odpowiedników."
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "Obecnie obsługiwane wyszukiwarki to Google, Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo!, oraz Yandex."
+        "message": "Obecnie obsługiwane wyszukiwarki to Google (wraz z opcją dla domen międzynarodowych, takich jak np. google.pl), Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo! i Yandex."
     },
     "guideHiddenResultsBannerHelp1": {
         "message": "Kiedy ta opcja jest włączona, zostanie wstawiony baner nad wynikami wyszukiwania kiedy Indie Wiki Buddy ukryje wyniki z wiki Fandom, Fextralife lub Neoseeker. Baner również pozwala Ci ponownie wyświetlić ukryte wyniki."
@@ -737,10 +737,10 @@
         "message": "Jeśli nie chcesz widzieć żadnej informacji o ukryciu wyników, wyłącz tę opcję."
     },
     "guideReorderResultsHelp1": {
-        "message": "Domyślnie, Indie Wiki Buddy zmienia kolejność wyników na stronie Google, tak aby wyniki z niezależnych wiki znajdujące się w dalszej części pierwszej strony zostały przeniesione przed pierwszy wynik spoza nurtu niezależnego (Fandom / Fextralife / Neoseeker). Dzięki temu szybciej znajdziesz interesujące Cię strony na niezależnych wiki."
+        "message": "Domyślnie, Indie Wiki Buddy zmienia kolejność wyników na stronie, tak aby wyniki z niezależnych wiki znajdujące się w dalszej części pierwszej strony zostały przeniesione przed pierwszy wynik spoza nurtu niezależnego (Fandom / Fextralife / Neoseeker). Dzięki temu szybciej znajdziesz interesujące Cię strony na niezależnych wiki."
     },
     "guideReorderResultsHelp2": {
-        "message": "Ta funkcja jest obecnie dostępna tylko dla Google, ponieważ jej niezawodne utrzymywanie bywa skomplikowane."
+        "message": ""
     },
     "guideBreezeWikiDisabledHelp": {
         "message": "Nie przekierowuj Fandom na Breezewiki."
@@ -753,5 +753,81 @@
     },
     "notificationTitleBreezeWiki": {
         "message": "Zostałeś przekierowany na BreezeWiki!"
+    },
+    "settingsHiddenResultsBanner": {
+        "message": "Wyświetlaj baner na stronach wyszukiwarek internetowych, gdy wyniki prowadzące do niezależnych wiki są ukryte"
+    },
+    "settingsReorderResults": {
+        "message": "Wyświetlaj na samej górze wyniki wyszukiwania prowadzące do artykułów z niezależnych wiki oraz ukrywaj duplikaty"
+    },
+    "settingsBreezeWikiHostNote": {
+        "message": "BreezeWiki to niezależna usługa, obsługiwana przez wiele alternatywnych hostów. Indie Wiki Buddy nie ponosi odpowiedzialności za którykolwiek z nich oraz nie ma wpływu na ich działanie. Jeżeli chcesz używać tego interfejsu, ale często występują jakiekolwiek błędy, to potencjalnie pomocne może być wybranie jakiegoś innego hosta, korzystając w tym celu z listy dostępnej poniżej."
+    },
+    "bannerDescriptorWiki": {
+        "message": " "
+    },
+    "customSearchEnginesAdd": {
+        "message": "Dodaj"
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "Zastosuj"
+    },
+    "customSearchEngines": {
+        "message": "Niestandardowa wyszukiwarka internetowa"
+    },
+    "customSearchEnginesDelete": {
+        "message": "Usuń"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "Podaj poprawną domenę"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "Podaj poprawną domenę, taką jak np. bw.example.com"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "Podaj poprawną domenę, taką jak np. search.example.org"
+    },
+    "guideGlobalSettingsHelp": {
+        "message": "Pomoc dotycząca ustawień ogólnych"
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "Przyznaj uprawnienia dostępu"
+    },
+    "guideFeedback": {
+        "message": "Masz jakieś pytania lub uwagi?"
+    },
+    "notificationMessage": {
+        "message": "Indie Wiki Buddy przeniosło Cię z $origin$ na $destination$!",
+        "placeholders": {
+            "origin": {
+                "content": "$1",
+                "example": "Minecraft Fandom Wiki"
+            },
+            "destination": {
+                "content": "$2",
+                "example": "Minecraft Wiki"
+            }
+        }
+    },
+    "guideWikiHelp": {
+        "message": "Pomoc dotycząca ustawień dla poszczególnych wiki"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "Ładowanie listy z hostami..."
+    },
+    "customSearchEnginesDomain": {
+        "message": "Domena wyszukiwarki internetowej (np. search.example.org)"
+    },
+    "customSearchEnginesPreset": {
+        "message": "Silnik wyszukiwarki internetowej"
+    },
+    "settingsSearchExp": {
+        "message": "Wyniki wyszukiwania"
+    },
+    "guideGlobalSettingsHelpIntro": {
+        "message": "Z poziomu ustawień ogólnych, można zmienić następujące funkcje rozszerzenia:"
+    },
+    "settingsWikiExp": {
+        "message": "Artykuły na wiki"
     }
 }

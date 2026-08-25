@@ -6,6 +6,7 @@ import {
   getNewURL,
   findMatchingSite,
   fetchBreezewikiHosts,
+  makeKeyboardButton,
   normalizeBreezewikiHost,
   pickBreezewikiHost,
 } from "./common-functions.js";
@@ -18,13 +19,15 @@ function isBreezewikiHost(storage) {
   if (hostname === 'breezewiki.com') {
     return true;
   }
-  if (storage.breezewikiHost === 'CUSTOM' && storage.breezewikiCustomHost?.includes(hostname)) {
-    return true;
+  const hosts = Array.isArray(storage.breezewikiHostOptions)
+    ? storage.breezewikiHostOptions.map((host) => host?.instance)
+    : [];
+  if (storage.breezewikiHost === 'CUSTOM' && storage.breezewikiCustomHost) {
+    hosts.push(storage.breezewikiCustomHost);
   }
-  const hostOptions = storage.breezewikiHostOptions;
-  return Array.isArray(hostOptions) && hostOptions.some((host) => {
+  return hosts.some((host) => {
     try {
-      return new URL(host.instance).hostname === hostname;
+      return new URL(host).hostname === hostname;
     } catch {
       return false;
     }
@@ -39,6 +42,7 @@ function outputBannerContainer() {
     containerExit.classList.add('indie-wiki-banner-exit');
     container.appendChild(containerExit);
     containerExit.textContent = '✕';
+    makeKeyboardButton(containerExit, extensionAPI.i18n.getMessage('bannerClose'));
     containerExit.onclick = function () { this.parentElement.remove(); };
     document.body.insertAdjacentElement('beforeBegin', container);
   }
@@ -131,6 +135,7 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
   bannerRestoreLink.classList.add('indie-wiki-banner-link-small');
   bannerRestoreLink.classList.add('indie-wiki-banner-hidden');
   bannerRestoreLink.textContent = '⎌ ' + extensionAPI.i18n.getMessage('bannerRestore');
+  makeKeyboardButton(bannerRestoreLink);
   bannerControls.appendChild(bannerRestoreLink);
   bannerRestoreLink.onclick = function (e) {
     setUserSetting('wikiSettings', id, 'alert').then(() => {
@@ -150,6 +155,7 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
   bannerDisableLink.classList.add('indie-wiki-banner-link');
   bannerDisableLink.classList.add('indie-wiki-banner-link-small');
   bannerDisableLink.textContent = '✕ ' + extensionAPI.i18n.getMessage('bannerDisable');
+  makeKeyboardButton(bannerDisableLink);
   bannerControls.appendChild(bannerDisableLink);
   bannerDisableLink.onclick = function (e) {
     setUserSetting('wikiSettings', id, 'disabled').then(() => {
@@ -167,6 +173,7 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
   bannerRedirectLink.classList.add('indie-wiki-banner-link');
   bannerRedirectLink.classList.add('indie-wiki-banner-link-small');
   bannerRedirectLink.textContent = '↪ ' + extensionAPI.i18n.getMessage('bannerRedirect');
+  makeKeyboardButton(bannerRedirectLink);
   bannerControls.appendChild(bannerRedirectLink);
   bannerRedirectLink.onclick = function (e) {
     setUserSetting('wikiSettings', id, 'redirect').then(() => {
@@ -227,11 +234,8 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
       if (!document.getElementById('indie-wiki-banner-redirect')) {
         document.getElementById('indie-wiki-banner-container').appendChild(banner);
         // Increment banner count
-        if (storage.breezewiki === 'on') {
-          if (isBreezewikiHost(storage)) {
-            extensionAPI.storage.sync.set({ 'countAlerts': (storage.countAlerts ?? 0) + 1 });
-          }
-        } else {
+        const breezewikiRedirect = storage.breezewiki === 'redirect' || storage.breezewiki === 'on';
+        if (!breezewikiRedirect || isBreezewikiHost(storage)) {
           extensionAPI.storage.sync.set({ 'countAlerts': (storage.countAlerts ?? 0) + 1 });
         }
 
@@ -294,29 +298,8 @@ function main() {
             // Notify if enabled for the wiki:
             if (siteSetting === 'alert') {
               let newURL = getNewURL(origin, matchingSite);
-              const showBanner = () => {
-                displayRedirectBanner(newURL, matchingSite['id'], matchingSite['destination'], matchingSite['language'], matchingSite['destination_host'], matchingSite['tags'], storage);
-              };
-
-              if (document.querySelector('head')) {
-                // Head already parsed
-                showBanner();
-              } else {
-                // Wait for head element to load
-                const docObserver = new MutationObserver((mutations, mutationInstance) => {
-                  if (document.querySelector('head')) {
-                    try {
-                      showBanner();
-                    } finally {
-                      mutationInstance.disconnect();
-                    }
-                  }
-                });
-                docObserver.observe(document, {
-                  childList: true,
-                  subtree: true
-                });
-              }
+              // Build the banner
+              displayRedirectBanner(newURL, matchingSite['id'], matchingSite['destination'], matchingSite['language'], matchingSite['destination_host'], matchingSite['tags'], storage);
             }
           }
         });

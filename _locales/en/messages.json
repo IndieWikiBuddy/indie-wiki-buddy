@@ -69,6 +69,10 @@
     "message": "View this Fandom wiki through BreezeWiki",
     "description": "Text to display in the banner for the BreezeWiki link"
   },
+  "bannerClose": {
+    "message": "Close banner",
+    "description": "Screen reader label for the X that closes the banner"
+  },
   "bannerRestore": {
     "message": "Restore banner",
     "description": "Text to display in the banner for the restore banner link"

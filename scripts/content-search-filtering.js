@@ -11,6 +11,7 @@ import {
   getSiteDataByOrigin,
   isAnchor,
   isSearchEngineOn,
+  makeKeyboardButton,
   safeDecodeURI,
   safeDecodeURIComponent,
  } from './common-functions.js';
@@ -181,6 +182,7 @@ function replaceSearchResult(searchResultContainer, wikiInfo, link) {
     // Output link to re-enable disabled result:
     let enableResultButton = document.createElement('div');
     enableResultButton.innerText = extensionAPI.i18n.getMessage('searchResultReenable');
+    makeKeyboardButton(enableResultButton);
     resultControls.prepend(enableResultButton);
 
     enableResultButton.addEventListener('click', e => {
@@ -323,6 +325,7 @@ function mountSearchBanner(wikiInfo) {
     showResultsButton.innerText = extensionAPI.i18n.getMessage(
       hiddenWikisRevealed[elementId] ? 'searchFilteredResultsHide' : 'searchFilteredResultsShow'
     );
+    makeKeyboardButton(showResultsButton);
     resultControls.appendChild(showResultsButton);
 
     showResultsButton.onclick = function (e) {
@@ -920,7 +923,7 @@ function filterAnchors(newAnchors) {
                 const embeddedUrlRegex = /RU=([^/]+)\/RK=/;
                 const match = searchResult.href.match(embeddedUrlRegex);
                 if (match) {
-                  const extractedURL = decodeURIComponent(match && match[1]);
+                  const extractedURL = decodeURIComponent(match[1]);
                   if (extractedURL) searchResult.setAttribute('data-iwb-href', extractedURL);
                 }
               } catch (e) {
@@ -943,12 +946,12 @@ function filterAnchors(newAnchors) {
       break;
     }
     case 'whoogle': {
-      const searchResults = newAnchors?.filter(e => e.matches('div>a'));
+      const searchResults = newAnchors.filter(e => e.matches('div>a'));
       filterSearchResults(searchResults);
       break;
     }
     case 'searxng': {
-      const searchResults = newAnchors?.filter(e => e.matches('h3>a'));
+      const searchResults = newAnchors.filter(e => e.matches('h3>a'));
       filterSearchResults(searchResults);
       break;
     }

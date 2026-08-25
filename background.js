@@ -15,20 +15,10 @@ import {
 // Local storage keys to cache
 const CACHED_LOCAL_KEYS = ['power', 'hideOperaPermissionsNote', 'countSettingsOpened', 'hideReviewReminder'];
 
-function getStorageData(area, keys) {
-  // Wrap the extensionAPI.storage.get method in a promise
-  // Needed for Firefox manifest v2
-  return new Promise((resolve) => {
-    extensionAPI.storage[area].get(keys, (items) => {
-      resolve(items);
-    });
-  });
-}
-
 async function loadCachedStorage() {
   const [localStorageData, syncStorageData] = await Promise.all([
-    getStorageData('local', CACHED_LOCAL_KEYS),
-    getStorageData('sync', null)
+    extensionAPI.storage.local.get(CACHED_LOCAL_KEYS),
+    extensionAPI.storage.sync.get(null)
   ]);
   return { ...localStorageData, ...syncStorageData };
 }
@@ -335,41 +325,51 @@ extensionAPI.permissions.onRemoved.addListener((permissions) => {
 // Listen for optional permissions being granted to sync settings
 // This is necessary because if a permission is requested from a popup, the popup might close
 // before the callback executes, preventing the setting from being saved.
+// Firefox stores granted origins without their path,
+// so "https://search.brave.com/search*" comes back as "https://search.brave.com/*"
+function patternHost(pattern) {
+  return pattern.replace(/^([^/]+:\/\/[^/]*)\/.*$/, '$1/*');
+}
+
 extensionAPI.permissions.onAdded.addListener((permissions) => {
   const addedOrigins = permissions.origins || [];
   if (addedOrigins.length === 0) return;
+  const addedHosts = addedOrigins.map(patternHost);
 
-  // For each engine the grant names,
+  // For each engine the grant names (or the popup asked for),
   // confirm its full origin set is now held before toggling it on.
   // All-access grants are not considered opt-in/out to every engine
-  const engineChecks = Object.entries(SEARCHENGINEDOMAINS)
-    .filter(([engine, origins]) =>
-      // google.com filtering is declared in content_scripts, so perms don't switch
-      engine !== 'google' &&
-      origins.some((o) => addedOrigins.includes(o))
-    )
-    .map(([engine, origins]) =>
-      new Promise((resolve) => {
-        extensionAPI.permissions.contains({ origins }, (hasAllOrigins) => {
-          resolve(hasAllOrigins ? engine : null);
-        });
-      })
-    );
+  extensionAPI.storage.local.get(['pendingSearchEngine'], (local) => {
+    const engineChecks = Object.entries(SEARCHENGINEDOMAINS)
+      .filter(([engine, origins]) =>
+        // google.com filtering is declared in content_scripts, so perms don't switch
+        engine !== 'google' &&
+        (engine === local.pendingSearchEngine || origins.some((o) => addedHosts.includes(patternHost(o))))
+      )
+      .map(([engine, origins]) =>
+        new Promise((resolve) => {
+          extensionAPI.permissions.contains({ origins }, (hasAllOrigins) => {
+            resolve(hasAllOrigins ? engine : null);
+          });
+        })
+      );
 
-  Promise.all(engineChecks).then((engines) => {
-    const enginesToEnable = engines.filter(Boolean);
-    if (enginesToEnable.length === 0) return;
-    extensionAPI.storage.sync.get({ 'searchEngineToggles': {} }, (settings) => {
-      let updated = false;
-      for (const engine of enginesToEnable) {
-        if (settings.searchEngineToggles[engine] !== 'on') {
-          settings.searchEngineToggles[engine] = 'on';
-          updated = true;
+    Promise.all(engineChecks).then((engines) => {
+      extensionAPI.storage.local.remove(['pendingSearchEngine']);
+      const enginesToEnable = engines.filter(Boolean);
+      if (enginesToEnable.length === 0) return;
+      extensionAPI.storage.sync.get({ 'searchEngineToggles': {} }, (settings) => {
+        let updated = false;
+        for (const engine of enginesToEnable) {
+          if (settings.searchEngineToggles[engine] !== 'on') {
+            settings.searchEngineToggles[engine] = 'on';
+            updated = true;
+          }
         }
-      }
-      if (updated) {
-        extensionAPI.storage.sync.set({ 'searchEngineToggles': settings.searchEngineToggles });
-      }
+        if (updated) {
+          extensionAPI.storage.sync.set({ 'searchEngineToggles': settings.searchEngineToggles });
+        }
+      });
     });
   });
 
@@ -378,8 +378,8 @@ extensionAPI.permissions.onAdded.addListener((permissions) => {
 });
 
 // Commit a pending BreezeWiki host choice once its permission is held
-function commitPendingBreezewikiHosts(addedOrigins = null) {
-  const grantCoversHost = (host) => addedOrigins === null || addedOrigins.includes(host + '/*');
+function commitPendingBreezewikiHosts(addedOrigins) {
+  const grantCoversHost = (host) => addedOrigins.includes(host + '/*');
 
   extensionAPI.storage.local.get(['pendingBreezeWikiHost', 'pendingCustomBreezeWikiHost'], (local) => {
     if (local.pendingBreezeWikiHost && grantCoversHost(local.pendingBreezeWikiHost)) {

@@ -634,7 +634,16 @@ breezewikiHostApply.addEventListener('click', () => {
       breezewikiHostApply.style.display = 'none';
     } else {
       extensionAPI.storage.local.remove(['pendingBreezeWikiHost']);
-      breezewikiHostSelect.value = 'https://breezewiki.com';
+      // Restore user's selected host
+      extensionAPI.storage.sync.get({ 'breezewikiHost': null }, (item) => {
+        breezewikiHostSelect.value = item.breezewikiHost || 'https://breezewiki.com';
+        // Fallback if stored host is no longer available
+        if (breezewikiHostSelect.value !== (item.breezewikiHost || 'https://breezewiki.com')) {
+          breezewikiHostSelect.value = 'https://breezewiki.com';
+        }
+        document.getElementById('breezewikiCustomHost').style.display =
+          breezewikiHostSelect.value === 'CUSTOM' ? 'block' : 'none';
+      });
       breezewikiHostApply.style.display = 'none';
     }
   });

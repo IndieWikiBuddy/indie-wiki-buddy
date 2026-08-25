@@ -621,7 +621,10 @@ breezewikiHostApply.addEventListener('click', () => {
   breezewikiHostApply.disabled = true;
 
   // Store pending intent so the background script can save it if the popup closes
-  extensionAPI.storage.local.set({ 'pendingBreezeWikiHost': selectedHost });
+  extensionAPI.storage.local.set({ 'pendingBreezeWikiHost': selectedHost }, () => {
+    // Close only after the pending intent is stored
+    if (isPopup) window.close();
+  });
 
   extensionAPI.permissions.request({
     origins: [selectedHost + '/*']
@@ -647,7 +650,6 @@ breezewikiHostApply.addEventListener('click', () => {
       breezewikiHostApply.style.display = 'none';
     }
   });
-  if (isPopup) window.close();
 });
 
 // Set BreezeWiki settings
@@ -837,7 +839,10 @@ function setCustomBreezewikiDomain() {
   // Reduce to just protocol + hostname
   breezewikiCustomDomain = breezewikiCustomDomain.protocol + "//" + breezewikiCustomDomain.hostname;
 
-  extensionAPI.storage.local.set({ 'pendingCustomBreezeWikiHost': breezewikiCustomDomain });
+  extensionAPI.storage.local.set({ 'pendingCustomBreezeWikiHost': breezewikiCustomDomain }, () => {
+    // Close only after the pending intent is stored
+    if (isPopup) window.close();
+  });
   extensionAPI.permissions.request({
     origins: [breezewikiCustomDomain + '/*']
   }, (granted) => {
@@ -857,10 +862,6 @@ function setCustomBreezewikiDomain() {
       }
     }
   });
-
-  if (isPopup) {
-    window.close();
-  }
 }
 
 const setCustomBreezewikiDomainButton = document.getElementById('setCustomBreezewikiDomain');

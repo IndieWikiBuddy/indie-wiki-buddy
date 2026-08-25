@@ -729,6 +729,8 @@ function isValidSiteData(sites) {
     typeof site.origins_label === 'string' &&
     typeof site.destination === 'string' &&
     isValidDestinationBaseUrl(site.destination_base_url) &&
+    typeof site.destination_search_path === 'string' &&
+    typeof site.destination_main_page === 'string' &&
     Array.isArray(site.origins) &&
     site.origins.every((origin) =>
       origin &&
@@ -904,10 +906,6 @@ async function populateSiteDataByOrigin() {
     })
   });
 
-  // if (typeof window !== 'undefined') {
-  //   window.iwb_siteDataByOrigin = sites;
-  // }
-
   return sites;
 }
 
@@ -941,15 +939,17 @@ export async function findMatchingSite(site, crossLanguageSetting, dest = false)
   let base_url_key = dest ? 'destination_base_url' : 'origin_base_url';
 
   let sites = await getSiteDataByOrigin();
+  const hostPath = site.replace(/.*https?:\/\//, '');
+  const hostPathTrimmed = hostPath.replace(/\/$/, '');
 
   let matchingSites = [];
   if (crossLanguageSetting === 'on') {
-    matchingSites = sites.filter(el => site.replace(/.*https?:\/\//, '').startsWith(el[base_url_key]));
+    matchingSites = sites.filter(el => hostPath.startsWith(el[base_url_key]));
   } else {
     matchingSites = sites.filter(
       el =>
-        site.replace(/.*https?:\/\//, '').startsWith(dest ? el[base_url_key] : el.origin_base_url + el.origin_content_path) ||
-        site.replace(/.*https?:\/\//, '').replace(/\/$/, '') === el[base_url_key]
+        hostPath.startsWith(dest ? el[base_url_key] : el.origin_base_url + el.origin_content_path) ||
+        hostPathTrimmed === el[base_url_key]
     );
   }
 
@@ -1082,6 +1082,25 @@ export function getNewURL(originURL, matchingSite) {
   }
 
   return newURL;
+}
+
+/**
+ * Let non-button element act as a button for keyboard users
+ * @param {HTMLElement} element
+ * @param {string} [label]
+ */
+export function makeKeyboardButton(element, label) {
+  element.setAttribute('role', 'button');
+  element.tabIndex = 0;
+  if (label) {
+    element.setAttribute('aria-label', label);
+  }
+  element.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      element.click();
+    }
+  });
 }
 
 /** @param {Node} element */

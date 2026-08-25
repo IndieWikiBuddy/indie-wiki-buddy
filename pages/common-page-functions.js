@@ -409,10 +409,14 @@ searchEngineToggles.forEach((engine) => {
           return;
         }
         searchEngineRequestPending = true;
+        extensionAPI.storage.local.set({ 'pendingSearchEngine': engineName }, () => {
+          if (isPopup) window.close();
+        });
         extensionAPI.permissions.request({
           origins: SEARCHENGINEDOMAINS[engineName]
         }, (granted) => {
           searchEngineRequestPending = false;
+          extensionAPI.storage.local.remove(['pendingSearchEngine']);
           // The callback argument will be true if the user granted the permissions.
           if (granted) {
             setSearchEngineToggle(engineName, 'on');
@@ -423,7 +427,6 @@ searchEngineToggles.forEach((engine) => {
             engineInput.checked = false;
           }
         });
-        if (isPopup) window.close();
       }
     } else {
       setSearchEngineToggle(engineName, 'off');
@@ -594,7 +597,6 @@ document.getElementById('openChangelogCheckbox')?.addEventListener('change', () 
 document.querySelectorAll('[name="breezewikiSetting"]').forEach((el) => {
   el.addEventListener('change', async () => {
     const settingValue = document.options.breezewikiSetting.value;
-    extensionAPI.storage.sync.set({ 'breezewiki': settingValue });
     setBreezeWiki(settingValue);
     if (settingValue !== 'off') {
       loadBreezewikiOptions();
@@ -669,36 +671,11 @@ function setBreezeWiki(setting, storeSetting = true) {
     document.options.breezewikiSetting.value = setting;
   }
 
-  // Toggle/update host display
+  // Toggle host display
+  // (loadBreezewikiOptions fills the dropdown and picks the host)
   const breezewikiHost = document.getElementById('breezewikiHost');
-  if (breezewikiHost && setting !== 'off') {
-    breezewikiHost.style.display = 'block';
-    extensionAPI.storage.sync.get({ 'breezewikiHost': null }, (host) => {
-      if (!host.breezewikiHost) {
-        fetchBreezewikiHosts().then((breezewikiHosts) => {
-          host.breezewikiHost = pickBreezewikiHost(breezewikiHosts);
-          extensionAPI.storage.sync.set({
-            'breezewikiHost': host.breezewikiHost,
-            'breezewikiHostOptions': breezewikiHosts,
-            'breezewikiHostFetchTimestamp': Date.now()
-          });
-          document.getElementById('breezewikiHostSelect').value = host.breezewikiHost;
-        }).catch((e) => {
-          console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-
-          // If fetch fails and no host is set, default to breezewiki.com:
-          if (!host) {
-            extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
-          }
-        });
-      } else {
-        document.getElementById('breezewikiHostSelect').value = host.breezewikiHost;
-      }
-    });
-  } else {
-    if (breezewikiHost) {
-      breezewikiHost.style.display = 'none';
-    }
+  if (breezewikiHost) {
+    breezewikiHost.style.display = setting === 'off' ? 'none' : 'block';
   }
 }
 
@@ -793,8 +770,11 @@ async function loadBreezewikiOptions() {
         }
 
         // Fall back to the cached host list so the dropdown still populates
-        const fallbackHosts = hostOptions ||
-          [{ instance: host === 'CUSTOM' ? 'https://breezewiki.com' : host }];
+        const fallbackHosts = Array.isArray(hostOptions) ? [...hostOptions] : [];
+        const currentHost = host === 'CUSTOM' ? 'https://breezewiki.com' : host;
+        if (!fallbackHosts.some((item) => item.instance === currentHost)) {
+          fallbackHosts.push({ instance: currentHost });
+        }
         populateBreezewikiHosts(fallbackHosts, host, customHost);
       });
     } else {
@@ -849,8 +829,10 @@ function setCustomBreezewikiDomain() {
     customDomainRequestPending = false;
     // The callback argument will be true if the user granted the permissions.
     if (granted) {
-      extensionAPI.storage.sync.set({ 'breezewikiCustomHost': breezewikiCustomDomain });
-      extensionAPI.storage.sync.set({ 'breezewikiHost': 'CUSTOM' });
+      extensionAPI.storage.sync.set({
+        'breezewikiHost': 'CUSTOM',
+        'breezewikiCustomHost': breezewikiCustomDomain
+      });
       extensionAPI.storage.local.remove(['pendingCustomBreezeWikiHost']);
       if (document.getElementById('breezewikiCustomHostStatus')) {
         document.getElementById('breezewikiCustomHostStatus').innerText = extensionAPI.i18n.getMessage('settingsBreezeWikiCustomHostSetSuccessful');

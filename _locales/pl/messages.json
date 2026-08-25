@@ -739,9 +739,6 @@
     "guideReorderResultsHelp1": {
         "message": "Domyślnie, Indie Wiki Buddy zmienia kolejność wyników na stronie, tak aby wyniki z niezależnych wiki znajdujące się w dalszej części pierwszej strony zostały przeniesione przed pierwszy wynik spoza nurtu niezależnego (Fandom / Fextralife / Neoseeker). Dzięki temu szybciej znajdziesz interesujące Cię strony na niezależnych wiki."
     },
-    "guideReorderResultsHelp2": {
-        "message": ""
-    },
     "guideBreezeWikiDisabledHelp": {
         "message": "Nie przekierowuj Fandom na Breezewiki."
     },

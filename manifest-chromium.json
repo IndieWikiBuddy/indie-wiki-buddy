@@ -36,10 +36,7 @@
         "favicons/*",
         "data/data.json"
       ],
-      "matches": [
-        "https://*/*",
-        "http://*/*"
-      ]
+      "matches": ["https://*/*", "http://*/*"]
     }
   ],
   "background": {
@@ -48,15 +45,9 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.google.com/search*"
-      ],
-      "js": [
-        "scripts/content-search-filtering-importer.js"
-      ],
-      "css": [
-        "css/content-search-filtering.css"
-      ],
+      "matches": ["https://www.google.com/search*"],
+      "js": ["scripts/content-search-filtering-importer.js"],
+      "css": ["css/content-search-filtering.css"],
       "run_at": "document_start"
     },
     {
@@ -66,21 +57,13 @@
         "https://*.neoseeker.com/*",
         "https://breezewiki.com/*"
       ],
-      "js": [
-        "scripts/content-banners-importer.js"
-      ],
-      "css": [
-        "css/content-banners.css"
-      ],
+      "js": ["scripts/content-banners-importer.js"],
+      "css": ["css/content-banners.css"],
       "run_at": "document_start"
     },
     {
-      "matches": [
-        "https://breezewiki.com/*"
-      ],
-      "js": [
-        "scripts/content-breezewiki.js"
-      ],
+      "matches": ["https://breezewiki.com/*"],
+      "js": ["scripts/content-breezewiki.js"],
       "run_at": "document_end"
     }
   ],
@@ -93,10 +76,7 @@
   "options_ui": {
     "page": "pages/settings/index.html"
   },
-  "optional_host_permissions": [
-    "https://*/*",
-    "http://*/*"
-  ],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
   "minimum_chrome_version": "131",
   "manifest_version": 3
 }

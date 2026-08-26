@@ -3,7 +3,13 @@
   "version": "4.0.0",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "permissions": ["alarms", "storage", "webRequest", "notifications", "scripting"],
+  "permissions": [
+    "alarms",
+    "storage",
+    "webRequest",
+    "notifications",
+    "scripting"
+  ],
   "icons": {
     "16": "images/logo-16.png",
     "32": "images/logo-32.png",
@@ -20,10 +26,7 @@
         "favicons/*",
         "data/data.json"
       ],
-      "matches": [
-        "https://*/*",
-        "http://*/*"
-      ]
+      "matches": ["https://*/*", "http://*/*"]
     }
   ],
   "background": {

@@ -13,14 +13,15 @@ import {
  } from "./scripts/common-functions.js";
 
 // Local storage keys to cache
-const CACHED_LOCAL_KEYS = ['power', 'hideOperaPermissionsNote', 'countSettingsOpened', 'hideReviewReminder'];
+// Older versions kept some of these in sync; those copies are ignored
+const CACHED_LOCAL_KEYS = ['power', 'searchEngineToggles', 'hideOperaPermissionsNote', 'countSettingsOpened', 'hideReviewReminder'];
 
 async function loadCachedStorage() {
   const [localStorageData, syncStorageData] = await Promise.all([
     extensionAPI.storage.local.get(CACHED_LOCAL_KEYS),
     extensionAPI.storage.sync.get(null)
   ]);
-  return { ...localStorageData, ...syncStorageData };
+  return { ...syncStorageData, ...localStorageData };
 }
 
 function applyStorageChanges(storage, changes, area) {
@@ -28,7 +29,7 @@ function applyStorageChanges(storage, changes, area) {
     return;
   }
   for (const [key, change] of Object.entries(changes)) {
-    if (area === 'local' && !CACHED_LOCAL_KEYS.includes(key)) {
+    if (CACHED_LOCAL_KEYS.includes(key) !== (area === 'local')) {
       continue;
     }
     if ('newValue' in change) {
@@ -138,23 +139,20 @@ let customSearchEngineRegexes = null;
 let breezewikiRegexes = null;
 
 extensionAPI.storage.onChanged.addListener((changes, area) => {
-  if (area !== 'sync') return;
-  if (changes.customSearchEngines) customSearchEngineRegexes = null;
-  if (changes.breezewikiCustomHost || changes.breezewikiHostOptions) breezewikiRegexes = null;
+  if (area === 'local' && changes.customSearchEngines) customSearchEngineRegexes = null;
+  if (area === 'sync' && (changes.breezewikiCustomHost || changes.breezewikiHostOptions)) breezewikiRegexes = null;
 });
 
+// Custom engines are per-device (since permissions are local)
 function loadCustomSearchEngineRegexes(callback) {
   if (customSearchEngineRegexes) {
     callback(customSearchEngineRegexes);
     return;
   }
-  extensionAPI.storage.sync.get({ 'customSearchEngines': {} }, (item) => {
+  extensionAPI.storage.local.get({ 'customSearchEngines': {} }, (item) => {
     customSearchEngineRegexes = {};
     for (const [engine, patterns] of Object.entries(item.customSearchEngines)) {
-      // Skip string entries from the pre-4.0 {hostname: preset} format
-      if (Array.isArray(patterns)) {
-        customSearchEngineRegexes[engine] = patterns.map(matchPatternToRegex);
-      }
+      customSearchEngineRegexes[engine] = patterns.map(matchPatternToRegex);
     }
     callback(customSearchEngineRegexes);
   });
@@ -297,19 +295,26 @@ extensionAPI.storage.onChanged.addListener((changes, area) => {
   });
 })
 
+// Firefox stores granted origins without their path,
+// so "https://search.brave.com/search*" comes back as "https://search.brave.com/*"
+function patternHost(pattern) {
+  return pattern.replace(/^([^/]+:\/\/[^/]*)\/.*$/, '$1/*');
+}
+
 // Listen for optional permissions being revoked externally (i.e. via the browser's
-// extensions management page) and sync searchEngineToggles storage accordingly.
+// extensions management page) and update searchEngineToggles accordingly.
 extensionAPI.permissions.onRemoved.addListener((permissions) => {
   const removedOrigins = permissions.origins || [];
   if (removedOrigins.length === 0) return;
-  extensionAPI.storage.sync.get({ 'searchEngineToggles': {} }, (settings) => {
+  const removedHosts = removedOrigins.map(patternHost);
+  extensionAPI.storage.local.get({ 'searchEngineToggles': {} }, (settings) => {
     let updated = false;
     for (const [engine, origins] of Object.entries(SEARCHENGINEDOMAINS)) {
       // google.com filtering is declared in content_scripts, so perms don't switch
       if (engine === 'google') {
         continue;
       }
-      if (origins.some((o) => removedOrigins.includes(o))) {
+      if (origins.some((o) => removedHosts.includes(patternHost(o)))) {
         if (settings.searchEngineToggles[engine] !== 'off') {
           settings.searchEngineToggles[engine] = 'off';
           updated = true;
@@ -317,7 +322,7 @@ extensionAPI.permissions.onRemoved.addListener((permissions) => {
       }
     }
     if (updated) {
-      extensionAPI.storage.sync.set({ 'searchEngineToggles': settings.searchEngineToggles });
+      extensionAPI.storage.local.set({ 'searchEngineToggles': settings.searchEngineToggles });
     }
   });
 });
@@ -325,12 +330,6 @@ extensionAPI.permissions.onRemoved.addListener((permissions) => {
 // Listen for optional permissions being granted to sync settings
 // This is necessary because if a permission is requested from a popup, the popup might close
 // before the callback executes, preventing the setting from being saved.
-// Firefox stores granted origins without their path,
-// so "https://search.brave.com/search*" comes back as "https://search.brave.com/*"
-function patternHost(pattern) {
-  return pattern.replace(/^([^/]+:\/\/[^/]*)\/.*$/, '$1/*');
-}
-
 extensionAPI.permissions.onAdded.addListener((permissions) => {
   const addedOrigins = permissions.origins || [];
   if (addedOrigins.length === 0) return;
@@ -358,7 +357,7 @@ extensionAPI.permissions.onAdded.addListener((permissions) => {
       extensionAPI.storage.local.remove(['pendingSearchEngine']);
       const enginesToEnable = engines.filter(Boolean);
       if (enginesToEnable.length === 0) return;
-      extensionAPI.storage.sync.get({ 'searchEngineToggles': {} }, (settings) => {
+      extensionAPI.storage.local.get({ 'searchEngineToggles': {} }, (settings) => {
         let updated = false;
         for (const engine of enginesToEnable) {
           if (settings.searchEngineToggles[engine] !== 'on') {
@@ -367,7 +366,7 @@ extensionAPI.permissions.onAdded.addListener((permissions) => {
           }
         }
         if (updated) {
-          extensionAPI.storage.sync.set({ 'searchEngineToggles': settings.searchEngineToggles });
+          extensionAPI.storage.local.set({ 'searchEngineToggles': settings.searchEngineToggles });
         }
       });
     });
@@ -441,34 +440,35 @@ extensionAPI.runtime.onInstalled.addListener(async (detail) => {
 
   // If updating from pre-4.0, show permissions update page
   if (isPre4Update) {
-    extensionAPI.tabs.create({ url: 'pages/permissions-update/index.html', active: false });
-
     // Reset Breezewiki settings
     extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
     extensionAPI.storage.sync.set({ 'breezewikiCustomHost': '' });
 
-    // Convert custom search engines from the pre-4.0 {hostname: preset}
-    // format to {preset: [origin patterns]}
-    extensionAPI.storage.sync.get({ 'customSearchEngines': {} }, (item) => {
-      const engines = item.customSearchEngines;
-      if (!Object.values(engines).some((value) => typeof value === 'string')) {
-        return;
-      }
-      const migrated = {};
-      for (const [key, value] of Object.entries(engines)) {
-        if (Array.isArray(value)) {
-          // Already-migrated {preset: [patterns]} entry synced from another device
-          migrated[key] = [...new Set([...(migrated[key] || []), ...value])];
-        } else if (typeof value === 'string') {
-          // Pre-4.0 {hostname: preset} entry
-          const pattern = 'https://' + key + '/*';
-          migrated[value] = migrated[value] || [];
-          if (!migrated[value].includes(pattern)) {
-            migrated[value].push(pattern);
-          }
+    // Search engine settings are per-device from 4.0
+    // The sync keys stay for devices still on 3.x
+    extensionAPI.storage.sync.get({ 'searchEngineToggles': {}, 'customSearchEngines': {} }, (item) => {
+      extensionAPI.storage.local.set({ 'searchEngineToggles': item.searchEngineToggles }, () => {
+        // Open the update page once its toggles can read the migrated values
+        extensionAPI.tabs.create({ url: 'pages/permissions-update/index.html', active: false });
+      });
+
+      // Convert custom search engines from the pre-4.0 {hostname: preset}
+      // format to {preset: [origin patterns]}, keeping those this device can access
+      const checks = Object.entries(item.customSearchEngines).map(([hostname, preset]) => {
+        const pattern = 'https://' + hostname + '/*';
+        return new Promise((resolve) => {
+          extensionAPI.permissions.contains({ origins: [pattern] }, (held) => {
+            resolve(held ? [preset, pattern] : null);
+          });
+        });
+      });
+      Promise.all(checks).then((entries) => {
+        const migrated = {};
+        for (const [preset, pattern] of entries.filter(Boolean)) {
+          (migrated[preset] ??= []).push(pattern);
         }
-      }
-      extensionAPI.storage.sync.set({ 'customSearchEngines': migrated });
+        extensionAPI.storage.local.set({ 'customSearchEngines': migrated });
+      });
     });
   }
 });

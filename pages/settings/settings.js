@@ -24,12 +24,12 @@ function displayCustomSearchEngine(customSearchEngineDomain, customSearchEngineP
   customSearchEngineDeleteButton.addEventListener('click', () => {
     listItem.remove();
 
-    extensionAPI.storage.sync.get({ 'customSearchEngines': {} }, (item) => {
+    extensionAPI.storage.local.get({ 'customSearchEngines': {} }, (item) => {
       let customSearchEngines = item.customSearchEngines;
       const index = customSearchEngines[customSearchEnginePreset].indexOf(customSearchEngineDomain);
       if (index > -1) {
         customSearchEngines[customSearchEnginePreset].splice(index, 1);
-        extensionAPI.storage.sync.set({ 'customSearchEngines': customSearchEngines });
+        extensionAPI.storage.local.set({ 'customSearchEngines': customSearchEngines });
       }
     });
 
@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const langSelect = document.getElementById("langSelect");
   // Get user's last set language
   extensionAPI.storage.sync.get({ 'lang': 'EN' }, (item) => {
     langSelect.value = item.lang;
@@ -125,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadOptions(item.lang, filterInput);
   });
   // Add event listener for language select
-  const langSelect = document.getElementById("langSelect");
   langSelect.addEventListener('change', () => {
     extensionAPI.storage.sync.set({ 'lang': langSelect.value });
     const filterInput = document.getElementById('filterInput').value;
@@ -189,14 +189,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let customSearchEnginePreset = document.getElementById('newCustomSearchEnginePreset').value;
 
-      extensionAPI.storage.sync.get({ 'customSearchEngines': {} }, (item) => {
+      extensionAPI.storage.local.get({ 'customSearchEngines': {} }, (item) => {
         let customSearchEngines = item.customSearchEngines;
         if (!customSearchEngines[customSearchEnginePreset]) {
           customSearchEngines[customSearchEnginePreset] = [];
         }
         if (!customSearchEngines[customSearchEnginePreset].includes(customSearchEngine)) {
           customSearchEngines[customSearchEnginePreset].push(customSearchEngine);
-          extensionAPI.storage.sync.set({ 'customSearchEngines': customSearchEngines });
+          extensionAPI.storage.local.set({ 'customSearchEngines': customSearchEngines });
 
           displayCustomSearchEngine(customSearchEngine, customSearchEnginePreset);
         }
@@ -214,12 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  extensionAPI.storage.sync.get({ 'customSearchEngines': {} }, (item) => {
+  // Custom engines are per-device (since permissions are local)
+  extensionAPI.storage.local.get({ 'customSearchEngines': {} }, (item) => {
     Object.keys(item.customSearchEngines).forEach((engine) => {
-      // A device on 3.x can sync the old {hostname: preset} format back in
-      if (!Array.isArray(item.customSearchEngines[engine])) {
-        return;
-      }
       item.customSearchEngines[engine].forEach((hostname) => {
         displayCustomSearchEngine(hostname, engine);
       })

@@ -364,9 +364,9 @@ if (corePermissionsBanner) {
 
 // Event listeners for toggling search engines
 function setSearchEngineToggle(engineName, state) {
-  extensionAPI.storage.sync.get({ 'searchEngineToggles': {} }, (settings) => {
+  extensionAPI.storage.local.get({ 'searchEngineToggles': {} }, (settings) => {
     settings.searchEngineToggles[engineName] = state;
-    extensionAPI.storage.sync.set({
+    extensionAPI.storage.local.set({
       'searchEngineToggles': settings.searchEngineToggles
     });
   });
@@ -442,7 +442,7 @@ searchEngineToggles.forEach((engine) => {
 });
 document.querySelectorAll('.searchEngineToggles input').forEach((el) => {
   const searchEngineName = el.getAttribute('data-search-engine');
-  extensionAPI.storage.sync.get({
+  extensionAPI.storage.local.get({
       'searchEngineToggles': {}
   }, (settings) => {
     const applyPermission = (hasPermission) => {

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-08-26T01:53:16+00:00",
-  "commit": "03a8d97d4bcfa0b52232656e9ce2a3540b754f72",
-  "count": 833,
+  "generated": "2026-08-26T01:55:54+00:00",
+  "commit": "0ba26fbdf6ac53b9f95403084d777f51001429b3",
+  "count": 834,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -2134,6 +2134,27 @@
       "destination_main_page": "Main_Page",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
+      "language": "EN"
+    },
+    {
+      "id": "en-bleakfaithforsaken",
+      "origins_label": "Bleak Faith: Forsaken Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Bleak Faith Forsaken Wiki",
+          "origin_base_url": "bleakfaithforsaken.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Bleak_Faith_Forsaken_Wiki"
+        }
+      ],
+      "destination": "Bleak Faith: Forsaken Wiki",
+      "destination_base_url": "bleakfaith.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "bleakfaithforsakenwiki.png",
+      "destination_main_page": "Bleak_Faith:_Forsaken_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

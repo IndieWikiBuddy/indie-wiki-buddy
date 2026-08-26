@@ -972,5 +972,8 @@
     },
     "settingsBreezeWikiCustomHostInvalid": {
         "message": "Введите корректный домен, например bw.example.org"
+    },
+    "bannerClose": {
+        "message": "Закрыть баннер"
     }
 }

@@ -226,8 +226,12 @@ select {
 .options {
   box-sizing: border-box;
   padding-bottom: .5rem;
-  user-select: none;
   width: 100%;
+}
+
+/* Keep clicks on toggles from highlighting text */
+.options label {
+  user-select: none;
 }
 
 .options label {

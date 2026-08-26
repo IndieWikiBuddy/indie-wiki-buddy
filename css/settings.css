@@ -157,6 +157,7 @@ legend {
 
 #togglesKeys button {
   all: unset;
+  user-select: none;
   width: var(--default-icon-size);
   height: var(--default-icon-size);
   background-repeat: no-repeat;

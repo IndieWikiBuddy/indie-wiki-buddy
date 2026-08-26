@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-08-18T02:23:45+00:00",
-  "commit": "2f6733c2e8ed973437707efeac17790bc3943c78",
-  "count": 832,
+  "generated": "2026-08-26T01:53:16+00:00",
+  "commit": "03a8d97d4bcfa0b52232656e9ce2a3540b754f72",
+  "count": 833,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -9886,6 +9886,26 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "Miraheze",
+      "language": "EN"
+    },
+    {
+      "id": "en-obby",
+      "origins_label": "Roblox Obby Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Roblox Obby Fandom Wiki",
+          "origin_base_url": "obby.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Roblox_Obby_Wiki"
+        }
+      ],
+      "destination": "Obby Wiki",
+      "destination_base_url": "obby.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "obbywiki.png",
+      "destination_main_page": "Home",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/",
       "language": "EN"
     },
     {

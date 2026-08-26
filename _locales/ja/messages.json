@@ -207,13 +207,13 @@
         "message": "検索エンジン別のフィルタリング切り替え"
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "現在対応している検索エンジンは、Google、Bing、DuckDuckGo、Brave、Ecosia、Kagi、Qwant、Startpage、Yahoo!、Yandexです。"
+        "message": "現在対応している検索エンジンは、Google（google.co.jpなどの国別ドメインは別設定）、Bing、DuckDuckGo、Brave、Ecosia、Kagi、Qwant、Startpage、Yahoo!、Yandexです。"
     },
     "guideGlobalSettingsHelpSearch": {
         "message": "以下の項目では、検索結果のフィルタリングに関する設定を行うことができます："
     },
     "guideReorderResultsHelp2": {
-        "message": "信頼性の維持が複雑になりうるため、この機能は現在Googleでのみ利用できます。"
+        "message": "独立Wikiと非独立Wikiの両方から同じ記事が表示されている場合、非独立Wikiの方が非表示になります。"
     },
     "guideBreezeWiki": {
         "message": "以下の項目では、FandomのWikiを広告およびその他の邪魔な機能なしで閲覧できる別サービスである$BreezeWiki$に関する設定を行うことができます。注：BreezeWikiは現在英語版Wikiにのみ対応しています。",
@@ -478,7 +478,7 @@
         "description": "Extension on/off toggle"
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "デフォルトではすべての検索エンジンに対してフィルタリングが有効になっています。フィルタリングの設定はWikiごとに自由に設定できますが、デフォルトでは検索結果上の非独立Wikiを独立Wikiへのリンクで置き換えるようになっています。"
+        "message": "フィルターはデフォルトではGoogleに対して作動するようになっています。他の検索エンジンについては、権限を付与して設定をオンにする必要があります。またフィルターの設定はWikiごとに自由に設定できますが、デフォルトでは検索結果上の非独立Wikiを独立Wikiへのリンクで置き換えるようになっています。"
     },
     "settingsWikiLegend": {
         "message": "凡例",
@@ -601,7 +601,7 @@
         }
     },
     "guideReorderResultsHelp1": {
-        "message": "デフォルトではGoogleの検索結果で独立Wikiが1ページ目よりも下にある場合、一番上の非独立（Fandom / Fextralife / Neoseeker）のWikiの上に移動するようになっています。これにより、目的の独立Wikiにより素早くたどり着くことができます。"
+        "message": "デフォルトでは検索結果で独立Wikiが1ページ目よりも下にある場合、一番上の非独立（Fandom / Fextralife / Neoseeker）のWikiの上に移動するようになっています。これにより、目的の独立Wikiにより素早くたどり着くことができます。"
     },
     "settingsBannerReviewContact": {
         "message": "アイデアや改善提案があれば、$linkStart$こちら$linkEnd$からお寄せください！",
@@ -652,7 +652,7 @@
         "description": "Link to the source code"
     },
     "guideBreezeWikiHostHelp": {
-        "message": "BreezeWikiの設定を有効化すると、お好みのBreezeWikiのホスト・ミラーを選択するドロップダウンが表示されます。選択したBreezeWikiが利用できなくなった場合は、この設定に戻ってホストを切り替えることができます。"
+        "message": "BreezeWikiの設定を有効化すると、お好みのBreezeWikiのホスト・ミラーを選択するドロップダウンが表示されます。ホストを選択すると、ブラウザから拡張機能にそのホストへのアクセスを付与するかの確認があります。カスタムドメインのBreezeWikiに移動することもできます。選択したBreezeWikiが利用できなくなった場合は、この設定に戻ってホストを切り替えることができます。"
     },
     "settingsFilterByLanguage": {
         "message": "言語で絞り込み：",
@@ -885,5 +885,95 @@
     },
     "settingsBreezeWikiHostNote": {
         "message": "BreezeWikiへの移動時に繰り返しエラーが生じる場合は、ホストを切り替えてみてください。Indie Wiki BuddyはBreezeWikiおよびそのホストに関して一切の責任を負いません。"
+    },
+    "bannerClose": {
+        "message": "バナーを閉じる"
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "アクセスを付与"
+    },
+    "firstInstallInfoWelcome": {
+        "message": "Indie Wiki Buddyのインストールありがとうございます！初めに、いくつかの重要な設定をさせてください。"
+    },
+    "firstInstallInfoSearchFiltering": {
+        "message": "デフォルトでは、Indie Wiki BuddyはGoogleの検索結果にフィルターを適用します。以下でGoogleでの無効化および他の検索エンジンの設定を切り替えできます。"
+    },
+    "firstInstallInfoDefaults": {
+        "message": "非独立Wikiを開いた際のデフォルトの挙動を設定できます。"
+    },
+    "firstInstallInfoBreezeWiki": {
+        "message": "FandomのWikiを広告およびその他の邪魔なコンテンツ抜きで閲覧できる代替フロントエンドを使って閲覧したい場合は、$BreezeWiki$を有効化してください。",
+        "placeholders": {
+            "BreezeWiki": {
+                "content": "$1",
+                "example": "BreezeWiki"
+            }
+        }
+    },
+    "firstInstallInfoSettingsLink": {
+        "message": "個別のWikiに対する設定の調整など、すべての設定項目については本$linkStart$設定ページ$linkEnd$をご利用ください。",
+        "placeholders": {
+            "linkStart": {
+                "content": "$1"
+            },
+            "linkEnd": {
+                "content": "$2"
+            }
+        }
+    },
+    "firstInstallInfoSettingsAccess": {
+        "message": "後から設定にアクセスする場合は、ブラウザの右上にある拡張機能のアイコン（$logo$）から開くことができます。アイコンが表示されていない場合は、同じくブラウザの右上にあるパズルのピースのアイコン（$jigsaw$）から開く拡張機能ドロップダウンの中を確認してみてください。",
+        "placeholders": {
+            "logo": {
+                "content": "$1",
+                "example": "(image for the extension icon)"
+            },
+            "jigsaw": {
+                "content": "$2",
+                "example": "(image for the jigsaw icon)"
+            }
+        }
+    },
+    "settingsApiData": {
+        "message": "最新のWikiデータをgetindie.wikiから取得する"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "ホスト設定をロード中…"
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "適用"
+    },
+    "guideApiDataHelp": {
+        "message": "この設定を有効にすると、本拡張機能は定期的に対応Wikiの最新リストをgetindie.wikiから取得します。オフの場合は、拡張機能に同梱されているWikiのリストのみを使用します。"
+    },
+    "guideCustomSearchEnginesHelp": {
+        "message": "SearchXNGかWhoogleを用いて検索エンジンを動作させている場合は、そのドメインを検索エンジン設定の末尾に追加できます。この際、ブラウザから拡張機能にそのドメインへのアクセスを付与するかどうかの確認があります。"
+    },
+    "customSearchEngines": {
+        "message": "カスタム検索エンジン"
+    },
+    "customSearchEnginesAdd": {
+        "message": "追加"
+    },
+    "customSearchEnginesDelete": {
+        "message": "削除"
+    },
+    "customSearchEnginesDomain": {
+        "message": "検索エンジンのドメイン（例：search.example.org）"
+    },
+    "customSearchEnginesPreset": {
+        "message": "検索エンジンのプラットフォーム"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "有効なドメイン名を入力してください（例：search.example.org）"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "有効なドメイン名を入力してください"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "有効なドメイン名を入力してください（例：bw.example.com）"
+    },
+    "settingsBannerCorePermissions": {
+        "message": "Indie Wiki BuddyがFandom、Fextralife、Neoseekerのページを読み取れないため、警告とリダイレクトが機能しません。"
     }
 }

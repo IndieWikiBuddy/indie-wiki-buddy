@@ -13,5 +13,86 @@
     },
     "settingsLangCA": {
         "message": "[CA] קטלאנית / Català"
+    },
+    "bannerLanguageEnglish": {
+        "message": "באנגלית"
+    },
+    "bannerDescriptorIndependentOfficial": {
+        "message": "עצמאי רשמי"
+    },
+    "bannerDescriptorOfficial": {
+        "message": "רשמי"
+    },
+    "bannerClose": {
+        "message": "סגור באנר"
+    },
+    "bannerRestore": {
+        "message": "שחזור באנר"
+    },
+    "bannerRestoreDone": {
+        "message": "באנר שוחזר"
+    },
+    "settingsWebsite": {
+        "message": "אתר"
+    },
+    "settingsChangelog": {
+        "message": "יומן שינויים"
+    },
+    "settingsSubmitWiki": {
+        "message": "שלח ויקי"
+    },
+    "settingsSourceCode": {
+        "message": "קוד המקור"
+    },
+    "guideAlert": {
+        "message": "התראה"
+    },
+    "customSearchEnginesAdd": {
+        "message": "הוסף"
+    },
+    "customSearchEnginesDelete": {
+        "message": "מחיקה"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "הזן דומיין חוקי"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "הזן דומיין חוקי, כמו bw.example.com"
+    },
+    "settingsCustomWikiDelete": {
+        "message": "מחיקה"
+    },
+    "settingsExtensionOff": {
+        "message": "ההרחבה כבויה"
+    },
+    "bannerRedirect": {
+        "message": "הפניה אוטומטית של הוויקי הזה"
+    },
+    "bannerRedirectDone": {
+        "message": "הפניה מחדש מופעלת"
+    },
+    "settingsBannerHide": {
+        "message": "הסתר הודעה זו"
+    },
+    "settingsCrossLanguage": {
+        "message": "להפנות אתרי ויקי של פאנדום שאינם באנגלית לאתרי ויקי עצמאיים באנגלית כאשר לא קיים ויקי באותה שפה"
+    },
+    "settingsBreezeWikiHost": {
+        "message": "מארח BreezeWiki:"
+    },
+    "settingsBreezeWikiDisabled": {
+        "message": "BreezeWiki כבוי"
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "החל"
+    },
+    "settingsBreezeWikiCustomHostSet": {
+        "message": "הגדר דומיין"
+    },
+    "settingsBreezeWikiCustomHostSetSuccessful": {
+        "message": "נוסף בהצלחה"
+    },
+    "settingsBreezeWikiCustomHostSetFailed": {
+        "message": "נכשל בהוספה"
     }
 }

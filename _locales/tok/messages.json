@@ -18,7 +18,7 @@
         "message": "o lukin e lipu Panto ni kepeken ilo pona WikiKon"
     },
     "bannerText": {
-        "message": "lon lipu $descriptor$ $host$ pi toki ni $language$",
+        "message": "lipu $host$ $descriptor$pi $language$ li lon",
         "placeholders": {
             "descriptor": {
                 "content": "$1",
@@ -44,7 +44,7 @@
         }
     },
     "extensionDescription": {
-        "message": "ilo Indie Wiki Buddy li pana e sina tawa lipu pona, tan mu kalama, anu linluwi ante, anu ala pi linluwi ike."
+        "message": "ilo Indie Wiki Buddy li pana e lipu pona tawa sina, li toki e lon ona, li pana linja tawa lipu, li weka e lipu ike."
     },
     "extensionName": {
         "message": "ilo Indie Wiki Buddy"

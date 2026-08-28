@@ -65,7 +65,7 @@
         "message": "搜索结果\n功能体验"
     },
     "settingsSetColumn": {
-        "message": "点击此行图标以更改列中所有站点的设置→"
+        "message": "通过右侧图标可以更改下表中所有站点的设置→"
     },
     "settingsDisabledFor": {
         "message": "对$origin$：不进行操作",
@@ -316,10 +316,10 @@
         "message": "图例"
     },
     "settingsWikiLegendWikiExp": {
-        "message": "当【访问】存在独立替代的Fandom、Fextralife或Neoseeker百科站点时，Indie Wiki Buddy能够："
+        "message": "访问存在独立站点的 Fandom、Fextralife 或 Neoseeker 百科站点时："
     },
     "settingsWikiLegendSearchExp": {
-        "message": "当【搜索结果】包含存在独立替代的Fandom、Fextralife或Neoseeker百科站点时，Indie Wiki Buddy能够："
+        "message": "当搜索结果中包含存在独立站点的 Fandom、Fextralife 或 Neoseeker 百科站点时："
     },
     "settingsAlert": {
         "message": "显示横幅，链接到独立百科站点"
@@ -517,10 +517,10 @@
         "message": "默认行为（对所有当前维基站点和未来的新站点都生效）"
     },
     "popupWikiLegendWikiExp": {
-        "message": "当访问Fandom、Fextralife和Neoseeker百科站点时："
+        "message": "访问 Fandom、Fextralife 和 Neoseeker 百科站点时："
     },
     "popupWikiLegendSearchExp": {
-        "message": "当搜索结果包含存在独立替代的Fandom、Fextralife或Neoseeker百科站点时，Indie Wiki Buddy能够："
+        "message": "搜索结果包含存在独立站点的 Fandom、Fextralife 或 Neoseeker 百科站点时："
     },
     "popupSettingsPerWiki": {
         "message": "访问$linkStart$全部设置$linkEnd$以修改每个独立百科站点的插件行为。",
@@ -607,16 +607,16 @@
         "message": "按搜索引擎调整过滤设置"
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "目前支持以下搜索引擎：谷歌、必应、DuckDuckGo、Brave、Ecosia、Kagi、Qwant、Startpage、雅虎、Yandex。"
+        "message": "目前支持以下搜索引擎：谷歌、必应、DuckDuckGo、Brave、Ecosia、Kagi、Qwant、Startpage、雅虎、Yandex；其中对 Google 还有一个单独的切换开关，可以让本拓展支持像是 google.co.uk 这样的国际域名。"
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "默认情况下，Indie Wiki Buddy会过滤所有搜索引擎的搜索结果。过滤设置可根据每个站点自由配置，但默认情况下是用独立百科站点的链接替换搜索结果中的非独立站点。"
+        "message": "默认情况下，Indie Wiki Buddy 的过滤器只在 Google.com 上生效。如需在其他搜索引擎中使用，需将它们手动开启并授予权限。过滤设置可根据每个站点自由配置，但默认情况下是用独立百科站点的链接替换搜索结果中的非独立站点。"
     },
     "guideHiddenResultsBannerHelp2": {
         "message": "若不希望在搜索结果中看见这些横幅，可禁用该选项。"
     },
     "guideHiddenResultsBannerHelp1": {
-        "message": "启用该选项后，Indie Wiki Buddy将会在隐藏来自Fandom、Fextralife和Neoseeker的搜索结果时在该搜索结果上方插入重定向横幅。您也可以该横幅处选择显示隐藏内容。"
+        "message": "启用该选项后，Indie Wiki Buddy 将会在隐藏来自 Fandom、Fextralife 和 Neoseeker 的搜索结果的同时、在该搜索结果上方插入重定向横幅。您也可以该横幅处选择重新显示隐藏的内容。"
     },
     "guideReorderResultsHelp1": {
         "message": "默认情况下，若独立百科站点的搜索结果在第一页靠后的位置，Indie Wiki Buddy将会把这些结果重排到首个非独立站点（Fandom、Fextralife、Neoseeker）之前。这样一来，用户将更容易找到所需的独立站点页。"
@@ -643,7 +643,7 @@
         }
     },
     "guideCrossLanguageHelp2": {
-        "message": "很不幸，Fextralife 百科并不支持该功能。"
+        "message": "很不幸，这些功能在 Fextralife 百科无法生效。"
     },
     "guideBreezeWikiRedirectHelp": {
         "message": "访问任何英文 Fandom 百科页面都会立刻重定向至 BreezeWiki。如果重定向至独立百科站点已启用，则优先重定向至独立站点。"
@@ -764,5 +764,17 @@
     },
     "settingsBreezeWikiHostNote": {
         "message": "如果您在访问BreezeWiki时遇到错误，请尝试更换其他主机进行访问。Indie Wiki Buddy不对BreezeWiki或其他主机负责。"
+    },
+    "bannerClose": {
+        "message": "关闭横幅"
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "应用"
+    },
+    "guideApiDataHelp": {
+        "message": "启用该选项后，本扩展会定期从 getindie.wiki 获取最新的维基支持列表。若关闭，则只能使用拓展自带的列表。"
+    },
+    "guideCustomSearchEnginesHelp": {
+        "message": "若您使用 SearXNG 或 Whoogle 运行自己的搜索引擎，可以在搜索引擎设置的底部添加该域名。而后，浏览器会要求您授予本拓展访问该域名的权限。"
     }
 }

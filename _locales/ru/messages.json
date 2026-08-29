@@ -158,11 +158,11 @@
         "description": "Prompt that the custom BreezeWiki host has been successfully added"
     },
     "settingsAlert": {
-        "message": "Показать баннер с ссылкой на независимую вики",
+        "message": "Показать баннер с ссылкой на инди-вики",
         "description": "Option to alert the user with banner when visiting non-indie wikis"
     },
     "settingsReplace": {
-        "message": "Заменить результаты ссылкой на независимую вики",
+        "message": "Заменить результат ссылкой на инди-вики",
         "description": "Option to replace search results with links to non-indie wikis"
     },
     "settingsDisabled": {
@@ -204,7 +204,7 @@
         }
     },
     "settingsNewWiki": {
-        "message": "Стандарт для новых вики в будущих обновлениях:",
+        "message": "Значение по умолчанию для новых вики в будущих обновлениях:",
         "description": "Instruction to set default for new wikis in future updates"
     },
     "settingsRedirectFor": {
@@ -605,7 +605,7 @@
         }
     },
     "settingsRedirect": {
-        "message": "Перенаправить на независимую вики",
+        "message": "Перенаправить на инди-вики",
         "description": "Option to redirect to indie wikis when visiting non-indie wikis"
     },
     "guideHideHelp": {

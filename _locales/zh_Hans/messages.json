@@ -776,5 +776,59 @@
     },
     "guideCustomSearchEnginesHelp": {
         "message": "若您使用 SearXNG 或 Whoogle 运行自己的搜索引擎，可以在搜索引擎设置的底部添加该域名。而后，浏览器会要求您授予本拓展访问该域名的权限。"
+    },
+    "settingsBannerCorePermissions": {
+        "message": "未授予 Indie Wiki Buddy 读取 Fandom、Fextralife 和 Neoseeker 页面的权限，无法在上述站点中展示警示横幅、重定向。"
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "准许访问"
+    },
+    "firstInstallInfoWelcome": {
+        "message": "感谢选择 Indie Wiki Buddy~！接下来我们需要完成一些设置……"
+    },
+    "firstInstallInfoSearchFiltering": {
+        "message": "默认情况下，Indie Wiki Buddy 仅会对谷歌的搜索结果开启过滤。您也可以在下方指定开关，或选择是否对其他搜索引擎启用之。"
+    },
+    "firstInstallInfoDefaults": {
+        "message": "在此设定访问非独立维基站点时的默认行为："
+    },
+    "firstInstallInfoBreezeWiki": {
+        "message": "如果想在用一个无广告的前端重新渲染 Fandom 维基的页面，可以启用 $BreezeWiki$：",
+        "placeholders": {
+            "BreezeWiki": {
+                "content": "$1",
+                "example": "BreezeWiki"
+            }
+        }
+    },
+    "firstInstallInfoSettingsLink": {
+        "message": "若需对每个维基分别修改行为、或查阅其他设置项，可以$linkStart$查阅完整设置内容$linkEnd$。",
+        "placeholders": {
+            "linkStart": {
+                "content": "$1"
+            },
+            "linkEnd": {
+                "content": "$2"
+            }
+        }
+    },
+    "firstInstallInfoSettingsAccess": {
+        "message": "若往后需要再次修改设置，可在您浏览器的插件栏点击本插件的徽标 $logo$。若无法看到该图标，也可能是被置入了插件折叠菜单中，您可以点击折叠菜单图标$jigsaw$展开并查看。这些徽标大都居于浏览器地址栏的右侧。",
+        "placeholders": {
+            "logo": {
+                "content": "$1",
+                "example": "(image for the extension icon)"
+            },
+            "jigsaw": {
+                "content": "$2",
+                "example": "(image for the jigsaw icon)"
+            }
+        }
+    },
+    "settingsApiData": {
+        "message": "从 getindie.wiki 获取最新的维基站列表信息"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "正在加载服务站设置……"
     }
 }

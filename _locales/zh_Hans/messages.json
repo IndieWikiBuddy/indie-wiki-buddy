@@ -38,7 +38,7 @@
         "message": "一个独立"
     },
     "bannerDescriptorIndependentOfficial": {
-        "message": "一个官方独立"
+        "message": "一个官方的独立"
     },
     "bannerDescriptorOfficial": {
         "message": "一个官方"
@@ -622,7 +622,7 @@
         "message": "默认情况下，若独立百科站点的搜索结果在第一页靠后的位置，Indie Wiki Buddy将会把这些结果重排到首个非独立站点（Fandom、Fextralife、Neoseeker）之前。这样一来，用户将更容易找到所需的独立站点页。"
     },
     "guideReorderResultsHelp2": {
-        "message": "由于维护困难，该功能目前只适用于谷歌。"
+        "message": "当搜索结果中包含来自独立 Wiki 与商业 Wiki 的同一篇文章时，系统会自动隐藏重复的商业 Wiki 搜索结果。"
     },
     "guideGlobalSettingsHelpIntro": {
         "message": "全局设置有以下几项："
@@ -754,7 +754,7 @@
         "message": "Indie Wiki Buddy 已将您转至 BreezeWiki，为您带来清爽干净的 Fandom 阅读体验。"
     },
     "guideBreezeWikiHostHelp": {
-        "message": "当启用了 BreezeWiki 的选项后，你可以在下拉菜单中选择一个 BreezeWiki 站点或镜像。若你所选的 BreezeWiki 站点无法访问，你可以回到这里并重新选择一个站点。"
+        "message": "启用 BreezeWiki 选项后，将显示一个下拉菜单，供你选择偏好的 BreezeWiki 主机/镜像。你的浏览器会要求向扩展程序授予访问所选主机的权限。你也可以输入自定义 BreezeWiki 域名。若所选的 BreezeWiki 主机无法访问，你可以随时回到此处设置并切换主机。"
     },
     "settingsLangCA": {
         "message": "[CA] 加泰罗尼亚语 / Català"
@@ -829,6 +829,30 @@
         "message": "从 getindie.wiki 获取最新的维基站列表信息"
     },
     "settingsBreezeWikiHostLoading": {
-        "message": "正在加载服务站设置……"
+        "message": "正在加载主机选项……"
+    },
+    "customSearchEngines": {
+        "message": "自定义搜索引擎"
+    },
+    "customSearchEnginesAdd": {
+        "message": "添加"
+    },
+    "customSearchEnginesDelete": {
+        "message": "删除"
+    },
+    "customSearchEnginesDomain": {
+        "message": "搜索引擎域名（例如 search.example.org）"
+    },
+    "customSearchEnginesPreset": {
+        "message": "搜索引擎类型"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "请输入有效域名，例如 search.example.org"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "请输入有效域名"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "请输入有效域名，例如 bw.example.com"
     }
 }

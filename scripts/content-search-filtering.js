@@ -808,6 +808,92 @@ function isNonIndieSite(link) {
 }
 
 /**
+ * Get heading title/text from a Google search result
+ * @param {HTMLAnchorElement} searchResult
+ * @returns {string} The result's heading text (or empty)
+ */
+function getGoogleResultTitle(searchResult) {
+  const heading = searchResult.closest('div[data-hveid]')?.querySelector('h3') ?? searchResult.querySelector('h3');
+  return heading?.textContent?.trim() ?? '';
+}
+
+/**
+ * Builds URL from Google search result breadcrumb text
+ * Example: "https://example.fandom.com › wiki › Article_Name"
+ * @param {HTMLAnchorElement} searchResult
+ * @returns {string | null}
+ */
+function getGoogleBreadcrumbURL(searchResult) {
+  // Find breadcrumb (looks like "host › path › path")
+  const cite = searchResult.closest('div[data-hveid]')?.querySelector('cite') ?? searchResult.querySelector('cite');
+  const parts = (cite?.textContent ?? '').split('›').map(s => s.trim()).filter(Boolean);
+
+  // Check for ellipsis (when Google truncates long article name)
+  const ellipsis = /(\.\.\.|…)$/;
+  const cut = ellipsis.test(parts[parts.length - 1] ?? '');
+  // Strip ellipsis + drop empty parts
+  const segments = parts.map(s => s.replace(ellipsis, '')).filter(Boolean);
+  if (segments.length === 0) return null;
+
+  // Add https:// if missing
+  if (!/^https?:\/\//.test(segments[0])) segments[0] = 'https://' + segments[0];
+
+  // Compare breadcrumb to article name from heading
+  // (helps resolve when breadcrumb is truncated
+  // or only shows the last segment of a subpage
+  // e.g. "Article_Name/Gallery" can render as just "Gallery")
+  // Split by " - Site" or " | Site"
+  const article = getGoogleResultTitle(searchResult).split(/ [-|] /)[0].replaceAll(' ', '_');
+  const last = segments[segments.length - 1];
+  if (segments.length > 1 && article) {
+    // Cut name must be start of article name
+    const fillsCut = cut && article.startsWith(last);
+    // Subpage article must end with shown segment
+    const fillsSubpage = article.includes('/') && article.endsWith('/' + last);
+    if (fillsCut || fillsSubpage) segments[segments.length - 1] = article;
+  }
+
+  // Join segments back into a URL
+  try {
+    return new URL(segments.join('/')).href;
+  } catch {
+    return null;
+  }
+}
+
+/** @type {Map<string, string>} */
+const googleTokenURLs = new Map();
+/** @type {WeakSet<HTMLScriptElement>} */
+const scannedGoogleScripts = new WeakSet();
+
+// In script data, each link token sits next to its real URL
+// Example: ..."/goto?url\u003dTOKEN"],["https://real.url",...
+const gotoLink = String.raw`"/goto\?url(?:=|\\u003d)([^"]*)"`;
+const realURL = String.raw`"(https?://(?:[^"\\]|\\.)*)"`; // JSON string with escapes
+const googleResultPattern = new RegExp(`${gotoLink}\\],\\[${realURL}`, 'g');
+
+/**
+ * Finds a Google link's real URL in search page's script data
+ * @param {string} token The url= value of the Google link
+ * @returns {string | null}
+ */
+function getGoogleScriptURL(token) {
+  for (const script of document.scripts) {
+    if (scannedGoogleScripts.has(script)) continue;
+    scannedGoogleScripts.add(script);
+    const text = script.textContent ?? '';
+    if (!text.includes('/goto?url')) continue;
+    for (const [, linkToken, url] of text.matchAll(googleResultPattern)) {
+      try {
+        googleTokenURLs.set(linkToken, JSON.parse(`"${url}"`));
+      } catch {}
+    }
+  }
+
+  return googleTokenURLs.get(token) ?? null;
+}
+
+/**
  * @param {HTMLAnchorElement[] | undefined} newAnchors
  */
 function filterAnchors(newAnchors) {
@@ -827,24 +913,41 @@ function filterAnchors(newAnchors) {
             'g-section-with-header, div[aria-expanded], div[data-q], div[data-g], div[data-minw], div[data-num-cols], div[data-docid], div[data-lpage]'
           )
       );
-      searchResults.forEach(
+      // Drop unresolved token links
+      searchResults = searchResults.filter(
         /** @param {HTMLAnchorElement} searchResult */ searchResult => {
-          if (searchResult.href) {
-            try {
-              const link = new URL(searchResult.href);
-              if (link.hostname.startsWith('www.google.') && link.pathname === '/url') {
-                const destinationLink = link.searchParams.get('url') || link.searchParams.get('q');
-                if (destinationLink) {
-                  searchResult.setAttribute('data-iwb-href', destinationLink);
+          if (!searchResult.href) return true;
+          try {
+            const link = new URL(searchResult.href);
+            if (link.hostname.startsWith('www.google.') && (link.pathname === '/url' || link.pathname === '/goto')) {
+              let destinationLink = link.searchParams.get('url') || link.searchParams.get('q');
+              if (!/^https?:\/\//.test(destinationLink ?? '')) {
+                // Script data loads after the results
+                if (document.readyState === 'loading') return false;
+                // Resolve each href once
+                if (searchResult.getAttribute('data-iwb-resolved') === searchResult.href) {
+                  return searchResult.hasAttribute('data-iwb-href');
                 }
-              } else {
-                // No longer a middleman link
-                searchResult.removeAttribute('data-iwb-href');
+                searchResult.setAttribute('data-iwb-resolved', searchResult.href);
+                // Handle Google passthrough links with two checks: 
+                // script data and breadcrumbs
+                const scriptURL = getGoogleScriptURL(destinationLink ?? '');
+                const breadcrumbURL = getGoogleBreadcrumbURL(searchResult);
+                // Prioritize script data as it is consistent and complete
+                // (breadcrumbs can be truncated, wrong for subpages, etc.)
+                // We still check breadcrumbs as a fallback
+                destinationLink = scriptURL ?? breadcrumbURL;
+                if (!destinationLink) return false;
               }
-            } catch (e) {
-              console.error('Indie Wiki Buddy failed to parse Google link with error: ', e);
+              searchResult.setAttribute('data-iwb-href', destinationLink ?? '');
+            } else {
+              // No longer a passthrough link
+              searchResult.removeAttribute('data-iwb-href');
             }
+          } catch (e) {
+            console.error('Indie Wiki Buddy failed to parse Google link with error: ', e);
           }
+          return true;
         }
       );
 
@@ -1086,6 +1189,12 @@ function processSearchEngine(_searchEngine) {
 
         // start listening to DOM changes
         addDOMChangeObserver(filterMutations);
+
+        // Google's script data loads after the results
+        // Check again after page load
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => filterAnchors(Array.from(document.body?.querySelectorAll('a') ?? [])), { once: true });
+        }
       }
     }
   );

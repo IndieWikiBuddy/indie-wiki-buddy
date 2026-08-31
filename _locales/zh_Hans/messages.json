@@ -763,7 +763,7 @@
         "message": "[HR] 克罗地亚语 / Hrvatski"
     },
     "settingsBreezeWikiHostNote": {
-        "message": "如果您在访问BreezeWiki时遇到错误，请尝试更换其他主机进行访问。Indie Wiki Buddy不对BreezeWiki或其他主机负责。"
+        "message": "如果您在访问 BreezeWiki 时常遇到错误，请尝试切换一个前端渲染器服务提供方。Indie Wiki Buddy 不对 BreezeWiki 或它的服务提供者负责。"
     },
     "bannerClose": {
         "message": "关闭横幅"

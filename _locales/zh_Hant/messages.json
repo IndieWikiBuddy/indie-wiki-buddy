@@ -30,7 +30,7 @@
         "message": "在此 Wiki 中不要顯示此橫幅"
     },
     "bannerDisableDone": {
-        "message": "已關閉此橫幅"
+        "message": "已不再顯示此橫幅"
     },
     "bannerRedirectDone": {
         "message": "已開啟重新導向"
@@ -507,7 +507,7 @@
         "message": "一個官方獨立"
     },
     "settingsReorderResults": {
-        "message": "使用 Google 時，將獨立 Wiki 搜尋結果移動到非獨立 Wiki 之上，並隱藏重複的結果（不適用於 Brave）"
+        "message": "使用 Google 時，將獨立 Wiki 搜尋結果移動到非獨立 Wiki 之上，並隱藏重複的結果。"
     },
     "settingsBannerReviewContact": {
         "message": "有任何問題或是建議？請$linkStart$聯繫我$linkEnd$！",
@@ -755,5 +755,62 @@
                 "example": "Minecraft Wiki"
             }
         }
+    },
+    "bannerClose": {
+        "message": "關閉橫幅"
+    },
+    "settingsBannerCorePermissions": {
+        "message": "Indie Wiki Buddy 沒有閲讀 Fandom、Fextralife 和 Neoseeker 頁面的權限，提醒、重新導向功能無法使用。"
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "授予權限"
+    },
+    "firstInstallInfoWelcome": {
+        "message": "感謝您安裝 Indie Wiki Buddy！讓我們先來完成一些比較重要的設置……"
+    },
+    "firstInstallInfoSearchFiltering": {
+        "message": "Google 的搜尋結果過濾器已預設開啟。您也可在下方關閉之、或者開關其他搜尋引擎的過濾功能。"
+    },
+    "firstInstallInfoDefaults": {
+        "message": "您可以在此指定查看非獨立 Wiki 時的預設行爲："
+    },
+    "firstInstallInfoBreezeWiki": {
+        "message": "若您希望透過一個無廣告的前端重新渲染 Fandom Wiki 的頁面，可以在此啓用 $BreezeWiki$：",
+        "placeholders": {
+            "BreezeWiki": {
+                "content": "$1",
+                "example": "BreezeWiki"
+            }
+        }
+    },
+    "firstInstallInfoSettingsLink": {
+        "message": "如需查看其他設定内容，例如對每個 Wiki 單獨配置等，請見$linkStart$完整設定頁$linkEnd$。",
+        "placeholders": {
+            "linkStart": {
+                "content": "$1"
+            },
+            "linkEnd": {
+                "content": "$2"
+            }
+        }
+    },
+    "firstInstallInfoSettingsAccess": {
+        "message": "您之後也可以點按本插件的圖示$logo$以存取設置。若該圖標不可見，也許是被隱藏於瀏覽器的插件選單中，您可以透過拼圖圖示$jigsaw$打開。這些圖示大都位於瀏覽器右上方。",
+        "placeholders": {
+            "logo": {
+                "content": "$1",
+                "example": "(image for the extension icon)"
+            },
+            "jigsaw": {
+                "content": "$2",
+                "example": "(image for the jigsaw icon)"
+            }
+        }
+    },
+    "settingsApiData": {
+        "message": "從 getindie.wiki 取得最新 Wiki 資料"
+    },
+    "settingsBreezeWikiHostNote": {
+        "message": "若您在查看 BreezeWiki 时經常出錯，可以換一個服務提供方。Indie Wiki Buddy 不對 BreezeWiki 或者任何它的服務提供者負責。"
     }
 }

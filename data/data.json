@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-08-26T01:55:54+00:00",
-  "commit": "0ba26fbdf6ac53b9f95403084d777f51001429b3",
-  "count": 834,
+  "generated": "2026-09-01T10:23:11+00:00",
+  "commit": "456342edf45d2f16a5921d24b59ddf48586cbc63",
+  "count": 838,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -17234,6 +17234,26 @@
       "language": "FR"
     },
     {
+      "id": "fr-undertale",
+      "origins_label": "Undertale Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Undertale Fandom Wiki",
+          "origin_base_url": "undertale.fandom.com/fr",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Accueil"
+        }
+      ],
+      "destination": "Undertale Wiki FR",
+      "destination_base_url": "fr.undertale.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "undertalewiki.png",
+      "destination_main_page": "Accueil",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "language": "FR"
+    },
+    {
       "id": "fr-warhammer40k",
       "origins_label": "Warhammer 40,000 Fandom Wiki",
       "origins": [
@@ -17489,6 +17509,26 @@
       "language": "JA"
     },
     {
+      "id": "ja-deltarune",
+      "origins_label": "Deltarune Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Deltarune Fandom Wiki",
+          "origin_base_url": "deltarune.fandom.com/ja",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Deltarune_Wiki"
+        }
+      ],
+      "destination": "Deltarune Wiki",
+      "destination_base_url": "ja.deltarune.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "deltarunewiki.png",
+      "destination_main_page": "Deltarune_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/w/",
+      "language": "JA"
+    },
+    {
       "id": "ja-fridaynightfunkin",
       "origins_label": "Friday Night Funkin' Fandom Wiki",
       "origins": [
@@ -17568,6 +17608,26 @@
       "destination_main_page": "メインページ",
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
+      "language": "JA"
+    },
+    {
+      "id": "ja-undertale",
+      "origins_label": "Undertale Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Undertale Fandom Wiki",
+          "origin_base_url": "undertale.fandom.com/ja",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Undertale_Japan_Wiki"
+        }
+      ],
+      "destination": "Undertale Wiki",
+      "destination_base_url": "ja.undertale.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "undertalewiki.png",
+      "destination_main_page": "Undertale_Japan_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/w/",
       "language": "JA"
     },
     {
@@ -18264,6 +18324,26 @@
       "destination_main_page": "Заглавная_страница",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
+      "language": "RU"
+    },
+    {
+      "id": "ru-undertale",
+      "origins_label": "Undertale Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Undertale Fandom Wiki",
+          "origin_base_url": "undertale.fandom.com/ru",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Undertale_Вики"
+        }
+      ],
+      "destination": "Undertale Wiki",
+      "destination_base_url": "ru.undertale.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "undertalewiki.png",
+      "destination_main_page": "Undertale_Вики",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/w/",
       "language": "RU"
     },
     {

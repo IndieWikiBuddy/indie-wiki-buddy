@@ -268,10 +268,10 @@
         "message": "按照搜尋引擎調整過濾設定"
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "目前支援：Google、Bing、DuckDuckGo、Brave、Ecosia、Kagi、Qwant、Startpage、Yahoo! 和 Yandex。"
+        "message": "目前支援：Google、Bing、DuckDuckGo、Brave、Ecosia、Kagi、Qwant、Startpage、Yahoo! 和 Yandex；對於 Google，本擴充功能還可在設置中開關對類似 google.com.tw 這樣本地化網域名稱的支援。"
     },
     "guideReorderResultsHelp2": {
-        "message": "由於維護不易，該功能僅適用於 Google 搜尋。"
+        "message": "若搜尋結果存在來自獨立和非獨立 Wiki 的同一篇文章，本擴充功能將自動隱藏來自非獨立 Wiki 的重複搜尋結果。"
     },
     "guideBreezeWikiDisabledHelp": {
         "message": "不要將 Fandom 重新導向至 BreezeWiki。"
@@ -507,7 +507,7 @@
         "message": "一個官方獨立"
     },
     "settingsReorderResults": {
-        "message": "使用 Google 時，將獨立 Wiki 搜尋結果移動到非獨立 Wiki 之上，並隱藏重複的結果。"
+        "message": "將獨立 Wiki 搜尋結果移動到非獨立 Wiki 之上，並隱藏重複的結果"
     },
     "settingsBannerReviewContact": {
         "message": "有任何問題或是建議？請$linkStart$聯繫我$linkEnd$！",
@@ -567,7 +567,7 @@
         "message": "重新隱藏過濾結果"
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "預設情況下，Indie Wiki Buddy 會過濾所有搜尋引擎的所有結果。過濾設定可根據不童的 Wiki 自由更改。預設會用獨立 Wiki 的連結替換搜尋結果中的非獨立 Wiki。"
+        "message": "預設情況下，Indie Wiki Buddy 僅會過濾 Google.com 的搜尋結果。您在設置中可以手動開啟其他搜尋引擎的過濾（需同時授予本擴充功能在對應搜索引擎站點上的存取權限）。過濾設定可根據不同的 Wiki 自由更改。預設會用獨立 Wiki 的連結替換搜尋結果中的非獨立 Wiki。"
     },
     "settingsBreezeWikiCustomHostSet": {
         "message": "設定網域名稱"
@@ -645,7 +645,7 @@
         }
     },
     "guideBreezeWikiHostHelp": {
-        "message": "當啟用 BreezeWiki 時，您可以在下拉式選單選擇一個 BreezeWiki 的網域名稱。若您選則無法連結的網域名稱，您也可以回到此處重新選擇一個網域名稱。"
+        "message": "當啟用 BreezeWiki 時，您可以在顯示出的下拉式選單選擇或鍵入一個 BreezeWiki 服務的網域名稱。之後，瀏覽器會向您請求授予本擴充功能存取所選站點的權限。若您選擇了無法連結的網域名稱，您也可以回到此處重新選定。"
     },
     "notificationMessageBreezeWiki": {
         "message": "Indie Wiki Buddy 已將您重新導向至 BreezeWiki，享受體驗清爽乾淨無廣告的 Fandom 頁面。"
@@ -812,5 +812,47 @@
     },
     "settingsBreezeWikiHostNote": {
         "message": "若您在查看 BreezeWiki 时經常出錯，可以換一個服務提供方。Indie Wiki Buddy 不對 BreezeWiki 或者任何它的服務提供者負責。"
+    },
+    "customSearchEngines": {
+        "message": "自訂搜尋引擎"
+    },
+    "customSearchEnginesAdd": {
+        "message": "新增"
+    },
+    "customSearchEnginesDelete": {
+        "message": "刪除"
+    },
+    "customSearchEnginesDomain": {
+        "message": "搜尋引擎網域名稱（如：search.example.org）"
+    },
+    "customSearchEnginesPreset": {
+        "message": "搜尋引擎種類"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "網域名稱無效，應似 search.example.org 此類"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "網域名稱格式不正確"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "網域名稱無效，應似 bw.example.com 此類"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "BreezeWiki 站點配置加載中……"
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "應用"
+    },
+    "settingsLangCA": {
+        "message": "[CA] 加泰隆尼亞語 / Català"
+    },
+    "settingsLangHR": {
+        "message": "[HR] 克羅埃西亞語 / Hrvatski"
+    },
+    "guideApiDataHelp": {
+        "message": "若啟用該項，本擴充功能會定期自 getindie.wiki 取得最新的受支援 Wiki 列。若禁用則僅使用預置列表。"
+    },
+    "guideCustomSearchEnginesHelp": {
+        "message": "若您有采用 SearXNG 或者 Whoogle 的平臺來運行自己的搜尋引擎，則可以在搜尋引擎設置下面添加您自己的網域名稱。瀏覽器會自動向您索要存取該網域名稱之權限。"
     }
 }

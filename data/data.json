@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-01T10:23:11+00:00",
-  "commit": "456342edf45d2f16a5921d24b59ddf48586cbc63",
-  "count": 838,
+  "generated": "2026-09-02T17:08:31+00:00",
+  "commit": "e73c82a413e6388f7f550ffb1b5febe8e79195ec",
+  "count": 839,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -4249,6 +4249,30 @@
       "destination_main_page": "Entryway",
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
+      "language": "EN"
+    },
+    {
+      "id": "en-doorsroblox",
+      "origins_label": "DOORS Fandom Wiki",
+      "origins": [
+        {
+          "origin": "DOORS Fandom Wiki",
+          "origin_base_url": "doors-game.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "DOORS_Wiki"
+        }
+      ],
+      "destination": "DOORS Wiki",
+      "destination_base_url": "doorsgame.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "doorswiki.png",
+      "destination_main_page": "DOORS_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
+      "tags": [
+        "official"
+      ],
       "language": "EN"
     },
     {

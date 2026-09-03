@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-02T17:08:31+00:00",
-  "commit": "e73c82a413e6388f7f550ffb1b5febe8e79195ec",
+  "generated": "2026-09-03T18:09:26+00:00",
+  "commit": "c112712ccedf80873f74d213ed5f59093ee46ae2",
   "count": 839,
   "sites": [
     {
@@ -4253,11 +4253,23 @@
     },
     {
       "id": "en-doorsroblox",
-      "origins_label": "DOORS Fandom Wiki",
+      "origins_label": "DOORS Fandom Wikis",
       "origins": [
         {
           "origin": "DOORS Fandom Wiki",
           "origin_base_url": "doors-game.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "DOORS_Wiki"
+        },
+        {
+          "origin": "Roblox DOORS Fandom Wiki",
+          "origin_base_url": "roblox-doors.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Roblox_Doors_Wiki"
+        },
+        {
+          "origin": "DOORS Fanmade Wiki",
+          "origin_base_url": "doors-fanmake.fandom.com",
           "origin_content_path": "/wiki/",
           "origin_main_page": "DOORS_Wiki"
         }

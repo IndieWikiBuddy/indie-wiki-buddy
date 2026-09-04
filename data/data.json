@@ -6467,6 +6467,28 @@
       "language": "EN"
     },
     {
+      "id": "en-grimdawn",
+      "origins_label": "Grim Dawn Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Grim Dawn Fandom Wiki",
+          "origin_base_url": "grimdawn.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Grim_Dawn_Wiki"
+        }
+      ],
+      "destination": "Grim Dawn Wiki",
+      "destination_base_url": "grimdawn.miraheze.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "grimdawnwiki.png",
+      "destination_main_page": "Grim_Dawn_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
+      "tags": ["official"],
+      "language": "EN"
+    },
+    {
       "id": "en-grounded",
       "origins_label": "Grounded Fandom Wiki",
       "origins": [

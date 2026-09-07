@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-03T18:09:26+00:00",
-  "commit": "c112712ccedf80873f74d213ed5f59093ee46ae2",
-  "count": 839,
+  "generated": "2026-09-07T15:01:34+00:00",
+  "commit": "2f1b67ef5940a60322e2ed0f37cdaf8ecfd47c7b",
+  "count": 840,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -14902,6 +14902,26 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "Miraheze",
+      "language": "EN"
+    },
+    {
+      "id": "en-valheim",
+      "origins_label": "Valheim Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Valheim Fandom Wiki",
+          "origin_base_url": "valheim.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Valheim_Wiki"
+        }
+      ],
+      "destination": "Valheim Wiki",
+      "destination_base_url": "valheim.weirdgloop.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "valheimwiki.png",
+      "destination_main_page": "Valheim_Wiki",
+      "destination_search_path": "/",
+      "destination_content_path": "/w/",
       "language": "EN"
     },
     {

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-07T15:01:34+00:00",
-  "commit": "2f1b67ef5940a60322e2ed0f37cdaf8ecfd47c7b",
-  "count": 840,
+  "generated": "2026-09-14T02:47:07+00:00",
+  "commit": "0f384a6420f94c29d6c4dec369a7751f409e3d59",
+  "count": 841,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -14244,6 +14244,29 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-towerdefensesimulator",
+      "origins_label": "Tower Defense Simulator Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Tower Defense Simulator Fandom Wiki",
+          "origin_base_url": "tds.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Tower_Defense_Simulator_Wiki"
+        }
+      ],
+      "destination": "Tower Defense Simulator Wiki",
+      "destination_base_url": "tds.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "towerdefensesimulatorwiki.png",
+      "destination_main_page": "Tower_Defense_Simulator_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/w/",
+      "tags": [
+        "official"
+      ],
       "language": "EN"
     },
     {

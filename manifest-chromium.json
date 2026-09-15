@@ -36,7 +36,8 @@
         "favicons/*",
         "data/data.json"
       ],
-      "matches": ["https://*/*", "http://*/*"]
+      "matches": ["https://*/*", "http://*/*"],
+      "use_dynamic_url": true
     }
   ],
   "background": {

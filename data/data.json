@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-15T05:51:02+00:00",
-  "commit": "6017359abeaca67f7552421a5bde5ec77633b564",
-  "count": 842,
+  "generated": "2026-09-15T05:52:28+00:00",
+  "commit": "739930a1a3b1afe5f568a6e284d17f292640e05b",
+  "count": 843,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -7368,6 +7368,27 @@
       "tags": [
         "official"
       ],
+      "language": "EN"
+    },
+    {
+      "id": "en-infalsus",
+      "origins_label": "In Falsus Fandom Wiki",
+      "origins": [
+        {
+          "origin": "In Falsus Fandom Wiki",
+          "origin_base_url": "in-falsus.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "In_Falsus_Wiki"
+        }
+      ],
+      "destination": "In Falsus Wiki",
+      "destination_base_url": "infalsus.miraheze.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "infalsuswiki.png",
+      "destination_main_page": "In_Falsus_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
       "language": "EN"
     },
     {

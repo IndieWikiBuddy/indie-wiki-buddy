@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-14T02:47:07+00:00",
-  "commit": "0f384a6420f94c29d6c4dec369a7751f409e3d59",
-  "count": 841,
+  "generated": "2026-09-15T05:51:02+00:00",
+  "commit": "6017359abeaca67f7552421a5bde5ec77633b564",
+  "count": 842,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -15318,6 +15318,26 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-wardogs",
+      "origins_label": "WARDOGS Fandom Wiki",
+      "origins": [
+        {
+          "origin": "WARDOGS Fandom Wiki",
+          "origin_base_url": "wardogs.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "WARDOGS_Wiki"
+        }
+      ],
+      "destination": "WARDOGS Wiki",
+      "destination_base_url": "wardogs.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "wardogs.png",
+      "destination_main_page": "Main_Page",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/index.php/",
       "language": "EN"
     },
     {

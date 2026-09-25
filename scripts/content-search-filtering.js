@@ -861,6 +861,28 @@ function getGoogleBreadcrumbURL(searchResult) {
   }
 }
 
+/**
+ * Extract URLs from Google links
+ * Used for links pointing to Google Translate
+ * @param {string} urlText
+ * @returns {string | null}
+ */
+function getExternalURLFromGoogle(urlText) {
+  try {
+    let url = new URL(urlText);
+    // Translated results point at Google Translate
+    // Real URL in u= param
+    if (url.hostname === 'translate.google.com') {
+      url = new URL(url.searchParams.get('u') ?? '');
+    }
+    // Reject other Google URLs
+    if (url.hostname.includes('google.')) return null;
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+
 /** @type {Map<string, string>} */
 const googleTokenURLs = new Map();
 /** @type {WeakSet<HTMLScriptElement>} */
@@ -885,12 +907,62 @@ function getGoogleScriptURL(token) {
     if (!text.includes('/goto?url')) continue;
     for (const [, linkToken, url] of text.matchAll(googleResultPattern)) {
       try {
-        googleTokenURLs.set(linkToken, JSON.parse(`"${url}"`));
+        const destination = getExternalURLFromGoogle(JSON.parse(`"${url}"`));
+        if (destination) googleTokenURLs.set(linkToken, destination);
       } catch {}
     }
   }
 
   return googleTokenURLs.get(token) ?? null;
+}
+
+/**
+ * Resolve Google result passthrough or translate links into data-iwb-href
+ * @param {HTMLAnchorElement} searchResult
+ * @returns {boolean}
+ */
+function resolveGoogleSearchResult(searchResult) {
+  if (!searchResult.href) return true;
+  try {
+    const link = new URL(searchResult.href);
+    /** @type {string | null} */
+    let destinationLink = null;
+
+    // Handle Google Translate links
+    if (link.hostname === 'translate.google.com') {
+      destinationLink = getExternalURLFromGoogle(link.href);
+    } else if (link.hostname.startsWith('www.google.') && (link.pathname === '/url' || link.pathname === '/goto')) {
+      const param = link.searchParams.get('url') || link.searchParams.get('q');
+      if (/^https?:\/\//.test(param ?? '')) {
+        destinationLink = getExternalURLFromGoogle(param ?? '');
+      } else {
+        // Script data loads after results
+        if (document.readyState === 'loading') return false;
+        // Resolve each href once
+        if (searchResult.getAttribute('data-iwb-resolved') === searchResult.href) {
+          return searchResult.hasAttribute('data-iwb-href');
+        }
+        searchResult.setAttribute('data-iwb-resolved', searchResult.href);
+        // Handle Google passthrough links with two checks: 
+        // script data and breadcrumbs
+        const scriptURL = getGoogleScriptURL(param ?? '');
+        const breadcrumbURL = getGoogleBreadcrumbURL(searchResult);
+        // Prioritize script data as more reliable
+        // Breadcrumbs can be truncated, wrong for subpages, etc.
+        destinationLink = scriptURL ?? breadcrumbURL;
+      }
+    } else {
+      // No longer a passthrough link
+      searchResult.removeAttribute('data-iwb-href');
+      return true;
+    }
+
+    if (!destinationLink) return false;
+    searchResult.setAttribute('data-iwb-href', destinationLink);
+  } catch (e) {
+    console.error('Indie Wiki Buddy failed to parse Google link with error: ', e);
+  }
+  return true;
 }
 
 /**
@@ -914,42 +986,7 @@ function filterAnchors(newAnchors) {
           )
       );
       // Drop unresolved token links
-      searchResults = searchResults.filter(
-        /** @param {HTMLAnchorElement} searchResult */ searchResult => {
-          if (!searchResult.href) return true;
-          try {
-            const link = new URL(searchResult.href);
-            if (link.hostname.startsWith('www.google.') && (link.pathname === '/url' || link.pathname === '/goto')) {
-              let destinationLink = link.searchParams.get('url') || link.searchParams.get('q');
-              if (!/^https?:\/\//.test(destinationLink ?? '')) {
-                // Script data loads after the results
-                if (document.readyState === 'loading') return false;
-                // Resolve each href once
-                if (searchResult.getAttribute('data-iwb-resolved') === searchResult.href) {
-                  return searchResult.hasAttribute('data-iwb-href');
-                }
-                searchResult.setAttribute('data-iwb-resolved', searchResult.href);
-                // Handle Google passthrough links with two checks: 
-                // script data and breadcrumbs
-                const scriptURL = getGoogleScriptURL(destinationLink ?? '');
-                const breadcrumbURL = getGoogleBreadcrumbURL(searchResult);
-                // Prioritize script data as it is consistent and complete
-                // (breadcrumbs can be truncated, wrong for subpages, etc.)
-                // We still check breadcrumbs as a fallback
-                destinationLink = scriptURL ?? breadcrumbURL;
-                if (!destinationLink) return false;
-              }
-              searchResult.setAttribute('data-iwb-href', destinationLink ?? '');
-            } else {
-              // No longer a passthrough link
-              searchResult.removeAttribute('data-iwb-href');
-            }
-          } catch (e) {
-            console.error('Indie Wiki Buddy failed to parse Google link with error: ', e);
-          }
-          return true;
-        }
-      );
+      searchResults = searchResults.filter(resolveGoogleSearchResult);
 
       filterSearchResults(searchResults);
       break;

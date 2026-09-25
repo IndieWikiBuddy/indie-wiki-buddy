@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-25T04:58:18+00:00",
-  "commit": "a49340cb7fc98d04549d867db07db4159f24b94d",
-  "count": 844,
+  "generated": "2026-09-25T04:58:35+00:00",
+  "commit": "f77568954c6285719ac8f6923107733cea271d19",
+  "count": 845,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -3390,6 +3390,27 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "Miraheze",
+      "language": "EN"
+    },
+    {
+      "id": "en-cultic",
+      "origins_label": "Cultic Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Cultic Fandom Wiki",
+          "origin_base_url": "cultic.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Cultic_Wiki"
+        }
+      ],
+      "destination": "Cultic Wiki",
+      "destination_base_url": "cultic.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "culticwiki.png",
+      "destination_main_page": "Cultic_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-15T05:52:28+00:00",
-  "commit": "739930a1a3b1afe5f568a6e284d17f292640e05b",
-  "count": 843,
+  "generated": "2026-09-25T04:58:18+00:00",
+  "commit": "a49340cb7fc98d04549d867db07db4159f24b94d",
+  "count": 844,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -6361,6 +6361,27 @@
       "destination_main_page": "Main_Page",
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
+      "language": "EN"
+    },
+    {
+      "id": "en-gorebox",
+      "origins_label": "GoreBox Fandom Wiki",
+      "origins": [
+        {
+          "origin": "GoreBox Fandom Wiki",
+          "origin_base_url": "gorebox.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "GoreBox_Wiki"
+        }
+      ],
+      "destination": "GoreBox Wiki",
+      "destination_base_url": "gorebox.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "goreboxwiki.png",
+      "destination_main_page": "GoreBox_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

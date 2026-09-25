@@ -165,7 +165,7 @@
         "message": "Falls du keinen Hinweis darüber möchtest, dass Suchergebnisse versteckt wurden, deaktiviere diese Einstellung."
     },
     "guideReorderResultsHelp2": {
-        "message": "Diese Funktion ist aktuell nur für Google verfügbar, da sie ziemlich schwierig zu warten ist."
+        "message": "Wenn derselbe Artikel sowohl im Indie-Wiki als auch im Nicht-Indie-Wiki erscheint, wird das doppelte Ergebnis aus dem Nicht-Indie-Wiki ausgeblendet."
     },
     "guideBreezeWikiDisabledHelp": {
         "message": "Fandom-Wikis werden nicht auf BreezeWiki umgeleitet."
@@ -315,7 +315,7 @@
         "description": "Select for a language filter"
     },
     "guideBreezeWikiHostHelp": {
-        "message": "Sobald du BreezeWiki aktiviert hast, erscheint ein Dropdown-Menü, mit dem du deinen bevorzugten BreezeWiki-Host/-Mirror auswählen kannst. Falls dein ausgewählter BreezeWiki-Host nicht verfügbar ist, kannst du zu diesen Einstellungen zurückkehren und deinen Host ändern."
+        "message": "Sobald du BreezeWiki aktiviert hast, erscheint ein Dropdown-Menü, mit dem du deinen bevorzugten BreezeWiki-Host/-Mirror auswählen kannst. Dein Browser wird dich nach Zugriffsrechten auf die ausgewählte Domäne für die Erweiterung fragen. Du kannst auch eine benutzerdefinierte BreezeWiki Domäne eingeben. Falls dein ausgewählter BreezeWiki-Host nicht verfügbar ist, kannst du zu diesen Einstellungen zurückkehren und deinen Host ändern."
     },
     "popupOpenSettings": {
         "message": "Alle Einstellungen öffnen",
@@ -346,7 +346,7 @@
         "description": "Do not translate the language code in brackets. If this language is your language, leave only one name. Otherwise, add the name of the language in your language before the slash. For example, TH should be \"[TH] Thai / ไทย\" in English, but just \"[TH] ไทย\" in Thai."
     },
     "guideReorderResultsHelp1": {
-        "message": "Standardmäßig sortiert Indie Wiki Buddy die Suchergebnisse auf Google um, sodass die Ergebnisse von unabhängigen Wikis immer über denen der nicht unabhängigen Wikis (Fandom / Fextralife / Neoseeker) angezeigt werden. Dies erlaubt es dir, die Artikel auf unabhängigen Wikis, nach denen du suchst, einfacher zu finden."
+        "message": "Standardmäßig sortiert Indie Wiki Buddy die Suchergebnisse um, sodass die Ergebnisse von unabhängigen Wikis immer über denen der nicht unabhängigen Wikis (Fandom / Fextralife / Neoseeker) angezeigt werden. Dies erlaubt es dir, die Artikel auf unabhängigen Wikis, nach denen du suchst, einfacher zu finden."
     },
     "popupWikiLegendSearchExp": {
         "message": "Wenn Suchergebnisse Fandom-, Fextralife- oder Neoseeker-Wikis mit einer unabhängigen Alternative enthalten, kann IWB:",
@@ -627,7 +627,7 @@
         "message": ": Du wirst automatisch auf das unabhängige Wiki umgeleitet."
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "Die aktuell unterstützten Suchmaschinen sind Google, Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo! und Yandex."
+        "message": "Die aktuell unterstützten Suchmaschinen sind Google (mit einem separaten Schalter für internationale Domänen wie google.co.uk), Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo! und Yandex."
     },
     "searchResultVisit": {
         "message": "Stattdessen $destination$ besuchen",
@@ -658,14 +658,14 @@
         "description": "General settings section"
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "Standardmäßig ist das Filtern für alle Suchmaschinen aktiviert, basierend auf den ausgewählten Einstellungen für jedes Wiki. Die Standard-Filtereinstellung für alle Wikis ist es, die nicht unabhängigen Suchergebnisse durch Schaltflächen zu ersetzen, die auf die unabhängigen Gegenstücke verlinken."
+        "message": "Standardmäßig funktioniert das Filtern auf Google.com Für jede andere Suchmaschine ist es aus, bis es angeschaltet und die notwendige Berechtigung erteilt wird. Die Filterung wird basierend auf den ausgewählten Einstellungen für jedes Wiki durchgeführt. Die Standard-Filtereinstellung für alle Wikis ist es, die nicht unabhängigen Suchergebnisse durch Schaltflächen zu ersetzen, die auf die unabhängigen Gegenstücke verlinken."
     },
     "settingsWebsite": {
         "message": "Website",
         "description": "Link to the website"
     },
     "settingsWikiLegendSearchExp": {
-        "message": "Wenn Suchergebnisse Fandom-, Fextralife- oder Neoseeker-Wikis mit einer unabhängigen Alternative enthalten, kann IWB:",
+        "message": "Wenn Suchergebnisse Fandom-, Fextralife- oder Neoseeker-Wikis mit einer unabhängigen Alternative enthalten, soll IWB:",
         "description": "Explanation for the icons in search experience"
     },
     "bannerVisit": {
@@ -885,5 +885,95 @@
     },
     "settingsBreezeWikiHostNote": {
         "message": "Wenn du beim Besuchen von BreezeWiki regelmäßig Fehlermeldungen erhältst, versuche zu einem anderen Host zu wechseln. Indie Wiki Buddy übernimmt keine Verantwortung für BreezeWiki und dessen Hosts."
+    },
+    "bannerClose": {
+        "message": "Banner schließen"
+    },
+    "settingsBannerCorePermissions": {
+        "message": "Indie Wiki Buddy kann Seiten von Fandom, Fextralife und/oder Neoseeker nicht lesen, daher werden Benachrichtigungen und Weiterleitungen nicht funktionieren."
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "Zugriff gewähren"
+    },
+    "firstInstallInfoWelcome": {
+        "message": "Vielen Dank für das Installieren von Indie Wiki Buddy! Lass uns mit einigen der wichtigsten Einstellungen anfangen."
+    },
+    "firstInstallInfoSearchFiltering": {
+        "message": "Indie Wiki Buddy filtert standardmäßig Google Suchergebnisse. Google und andere Suchmaschinen können hier unten an- und ausgeschaltet werden."
+    },
+    "firstInstallInfoDefaults": {
+        "message": "Du kannst das Standardverhalten beim Öffnen von nicht-indie Wikis festlegen:"
+    },
+    "firstInstallInfoBreezeWiki": {
+        "message": "Aktiviere $BreezeWiki$ wenn du Fandom Wikis in einer alternativen Benutzeroberfläche nutzen möchtest, die Wikis ohne Werbung oder überflüssige Elemente anzeigt:",
+        "placeholders": {
+            "BreezeWiki": {
+                "content": "$1",
+                "example": "BreezeWiki"
+            }
+        }
+    },
+    "firstInstallInfoSettingsLink": {
+        "message": "Besuche die vollständige $linkStart$Einstellungsseite$linkEnd$ für eine komplette Liste aller Einstellung, unter Anderem pro-Wiki Einstellungen.",
+        "placeholders": {
+            "linkStart": {
+                "content": "$1"
+            },
+            "linkEnd": {
+                "content": "$2"
+            }
+        }
+    },
+    "firstInstallInfoSettingsAccess": {
+        "message": "In Zukunft kannst du über das Erweiterungssymbol $logo$ oben rechts in deinem Browser auf die Einstellungen zugreifen. Wenn du das Symbol nicht siehst, befindet es sich möglicherweise im Erweiterungs-Dropdown deines Browsers, welches du über das Puzzleteilsymbol $jigsaw$ öffnen kannst (auch oben rechts in deinem Browser).",
+        "placeholders": {
+            "logo": {
+                "content": "$1",
+                "example": "(image for the extension icon)"
+            },
+            "jigsaw": {
+                "content": "$2",
+                "example": "(image for the jigsaw icon)"
+            }
+        }
+    },
+    "settingsApiData": {
+        "message": "Rufe die neusten Wiki-Daten von getindie.wiki ab"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "Lade Hostoptionen..."
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "Übernehmen"
+    },
+    "guideApiDataHelp": {
+        "message": "Wenn diese Option aktiviert ist, ruft die Erweiterung regelmäßig die neuste Liste unterstützter Wikis von getindie.wiki ab. Deaktiviere sie um nur die Wikiliste zu verwenden, die als Teil der Erweiterung ausgeliefert wird."
+    },
+    "guideCustomSearchEnginesHelp": {
+        "message": "Wenn du mit SearXNG oder Whoogle deine eigene Suchmaschine betreibst, kannst du ihre Domäne am Ende der Suchmaschinenliste hinzufügen. Dein Browser wird dich nach den Zugriffsrechten auf die Domäne fragen."
+    },
+    "customSearchEngines": {
+        "message": "Benutzerdefinierte Suchmaschinen"
+    },
+    "customSearchEnginesAdd": {
+        "message": "Hinzufügen"
+    },
+    "customSearchEnginesDelete": {
+        "message": "Löschen"
+    },
+    "customSearchEnginesDomain": {
+        "message": "Suchmaschinendomäne (z.B. search.example.org)"
+    },
+    "customSearchEnginesPreset": {
+        "message": "Suchmaschinenplattform"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "Gib eine gültige Domäne ein, wie search.example.org"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "Gib eine gültige Domäne ein"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "Gib eine gültige Domäne ein, wie bw.example.com"
     }
 }

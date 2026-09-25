@@ -203,5 +203,92 @@
     },
     "settingsNotifications": {
         "message": "Notificacions d'escriptori de redireccions"
+    },
+    "settingsBreezeWikiRedirect": {
+        "message": "Redirigeix automàticament de Fandom a BreezeWiki"
+    },
+    "settingsBreezeWikiCustomHost": {
+        "message": "Domini personalitzat de BreezeWiki:"
+    },
+    "settingsWikiLegendWikiExp": {
+        "message": "Al visitar viquis de Fandom, Fextralife o Neoseeker amb una alternativa independent, IWB pot:"
+    },
+    "settingsDisabled": {
+        "message": "No fer res"
+    },
+    "settingsRedirect": {
+        "message": "Redirigir a viqui indie"
+    },
+    "settingsAlert": {
+        "message": "Mostrar un bàner enllaçant al viqui indie"
+    },
+    "settingsWikiLegend": {
+        "message": "Llegenda d'icones"
+    },
+    "settingsFilterByLanguage": {
+        "message": "Filtra viquis per llengua:"
+    },
+    "settingsFilterByName": {
+        "message": "Filtra viquis per nom:"
+    },
+    "settingsLangDE": {
+        "message": "[DE] Alemany / Deutsch"
+    },
+    "settingsLangFI": {
+        "message": "[FI] Finlandès / suomi"
+    },
+    "settingsLangFR": {
+        "message": "[FR] Francès / Français"
+    },
+    "settingsLangHR": {
+        "message": "[HR] Croata / Hrvatski"
+    },
+    "settingsLangHU": {
+        "message": "[HU] Hongarès / Magyar"
+    },
+    "settingsLangIT": {
+        "message": "[IT] Italià / Italiano"
+    },
+    "settingsLangJA": {
+        "message": "[JA] Japonès / 日本語"
+    },
+    "settingsLangKO": {
+        "message": "[KO] Coreà / 한국어"
+    },
+    "settingsLangLZH": {
+        "message": "[LZH] Xinès classic / 文言"
+    },
+    "settingsLangNL": {
+        "message": "[NL] Neerlandès / Nederlands"
+    },
+    "settingsLangPL": {
+        "message": "[PL] Polonès / Polski"
+    },
+    "settingsLangPT": {
+        "message": "[PT] Portuguès / Português"
+    },
+    "settingsLangRU": {
+        "message": "[RU] Rus / Русский"
+    },
+    "settingsLangSV": {
+        "message": "[SV] Suec / Svenska"
+    },
+    "settingsLangTH": {
+        "message": "[TH] Tai / ไทย"
+    },
+    "settingsLangTOK": {
+        "message": "[TOK] Toki pona / toki pona"
+    },
+    "settingsLangTR": {
+        "message": "[TR] Turc / Türkçe"
+    },
+    "settingsLangUK": {
+        "message": "[UK] Ucraïnès / Українська"
+    },
+    "settingsLangZH": {
+        "message": "[ZH] Xinès / 中文"
+    },
+    "guideOverviewPara1": {
+        "message": "Indie Wiki Buddy proveeix un assortiment de funcions per ajudar-te a descobrir viquis independents i millorar la teva experiència llegint viquis en general"
     }
 }

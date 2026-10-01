@@ -1,6 +1,8 @@
 // @ts-check
 
-import {
+export {}; // keep this so that we can use top-level await
+
+const {
   extensionAPI,
   getUserSettings,
   findMatchingSite,
@@ -14,7 +16,8 @@ import {
   makeKeyboardButton,
   safeDecodeURI,
   safeDecodeURIComponent,
- } from './common-functions.js';
+ // @ts-ignore: browser.runtime API is available in extension scripts
+ } = await import(browser.runtime.getURL('scripts/common-functions.js'));
 
 /**
  * @typedef {import('./common-functions').SiteData} SiteData

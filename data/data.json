@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-25T06:16:24+00:00",
-  "commit": "ab40824b6b9ecee7e4fc3afaeec9ddeaa6ee17d3",
-  "count": 848,
+  "generated": "2026-10-25T06:17:36+00:00",
+  "commit": "b9f46dd2cee9ebc5ebcea0adfcd4ea99b5c7cc18",
+  "count": 849,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -8607,6 +8607,27 @@
       "destination_main_page": "Main_Page",
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/",
+      "language": "EN"
+    },
+    {
+      "id": "en-mafiagame",
+      "origins_label": "Mafia Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Mafia Fandom Wiki",
+          "origin_base_url": "mafiagame.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Mafia_Wiki"
+        }
+      ],
+      "destination": "Mafia Wiki",
+      "destination_base_url": "mafia.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "mafiawiki.png",
+      "destination_main_page": "Mafia_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

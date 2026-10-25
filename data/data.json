@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-25T16:06:57+00:00",
-  "commit": "13f37952db2bae39f4150c2b0600a158fdcda341",
-  "count": 846,
+  "generated": "2026-10-25T06:15:08+00:00",
+  "commit": "9b87d6c0e402d21ea4205fc5a66fb349cd37259a",
+  "count": 847,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -18822,6 +18822,27 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_content_suffix": "/zh-hans",
+      "language": "ZH"
+    },
+    {
+      "id": "zh-kartrider",
+      "origins_label": "跑跑卡丁车 Fandom Wiki",
+      "origins": [
+        {
+          "origin": "跑跑卡丁车 Fandom Wiki",
+          "origin_base_url": "kartrider.fandom.com/zh",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "首页"
+        }
+      ],
+      "destination": "跑跑卡丁车Wiki",
+      "destination_base_url": "kartrider.wiki.gg/zh",
+      "destination_platform": "mediawiki",
+      "destination_icon": "kartriderwiki.png",
+      "destination_main_page": "跑跑卡丁车Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "ZH"
     },
     {

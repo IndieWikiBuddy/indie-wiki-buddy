@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-25T06:15:08+00:00",
-  "commit": "9b87d6c0e402d21ea4205fc5a66fb349cd37259a",
-  "count": 847,
+  "generated": "2026-10-25T06:16:24+00:00",
+  "commit": "ab40824b6b9ecee7e4fc3afaeec9ddeaa6ee17d3",
+  "count": 848,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -3153,6 +3153,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "contentwarningwiki.png",
       "destination_main_page": "Main_Page",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-convallaria",
+      "origins_label": "Sword of Convallaria Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Sword of Convallaria Fandom Wiki",
+          "origin_base_url": "convallaria.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Sword_of_Convallaria_Wiki"
+        }
+      ],
+      "destination": "Sword of Convallaria Wiki",
+      "destination_base_url": "swordofconvallaria.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "swordofconvallariawiki.png",
+      "destination_main_page": "Sword_of_Convallaria_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

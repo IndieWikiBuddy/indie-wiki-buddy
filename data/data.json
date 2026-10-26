@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:12:31+00:00",
-  "commit": "8ee89400bfaeb70f97d38c8df67cdf266315ee91",
-  "count": 852,
+  "generated": "2026-10-26T17:12:47+00:00",
+  "commit": "0411e1730a8f6f7239bc4cb8f35596d2a1bfb145",
+  "count": 853,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -4194,6 +4194,27 @@
       "destination_main_page": "Main_Page",
       "destination_search_path": "/wiki/index.php",
       "destination_content_path": "/wiki/",
+      "language": "EN"
+    },
+    {
+      "id": "en-doloctown",
+      "origins_label": "DolocTown Fandom Wiki",
+      "origins": [
+        {
+          "origin": "DolocTown Fandom Wiki",
+          "origin_base_url": "doloctown.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "DolocTown_Wiki"
+        }
+      ],
+      "destination": "Doloc Town Wiki",
+      "destination_base_url": "doloctown.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "doloctownwiki.png",
+      "destination_main_page": "Doloc_Town_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

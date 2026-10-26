@@ -18,9 +18,6 @@
 .iwb-hide {
   display: none !important;
 }
-.iwb-show {
-  display: block !important;
-}
 .iwb-new-link-container {
   display: block;
   width: 100%;
@@ -103,6 +100,10 @@
   text-decoration-style: dotted;
   text-decoration-thickness: 1px;
   padding: 0 1em;
+}
+.iwb-result-controls > div:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .iwb-notice .iwb-result-controls {

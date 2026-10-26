@@ -46,6 +46,11 @@
 .indie-wiki-banner-link:focus {
   color: #000080;
 }
+.indie-wiki-banner-link:focus-visible,
+.indie-wiki-banner-exit:focus-visible {
+  outline: 2px solid #000080;
+  outline-offset: 2px;
+}
 .indie-wiki-banner-link-small {
   display: inline-block;
   font-size: 12px;

@@ -1,5 +1,38 @@
-const breezewikiRegex = /breezewiki\.com$|antifandom\.com$|bw\.artemislena\.eu$|breezewiki\.catsarch\.com$|breezewiki\.esmailelbob\.xyz$|breezewiki\.frontendfriendly\.xyz$|bw\.hamstro\.dev$|breeze\.hostux\.net$|breezewiki\.hyperreal\.coffee$|breeze\.mint\.lgbt$|breezewiki\.nadeko\.net$|nerd\.whatever\.social$|breeze\.nohost\.network$|z\.opnxng\.com$|bw\.projectsegfau\.lt$|breezewiki\.pussthecat\.org$|bw\.vern\.cc$|breeze\.whateveritworks\.org$|breezewiki\.woodland\.cafe$/;
+import {
+  extensionAPI,
+  getUserSettings,
+  setUserSetting,
+  getSiteDataByOrigin,
+  getNewURL,
+  findMatchingSite,
+  fetchBreezewikiHosts,
+  makeKeyboardButton,
+  normalizeBreezewikiHost,
+  pickBreezewikiHost,
+} from "./common-functions.js";
+
 const currentURL = new URL(document.location);
+
+// Breezewiki mirrors come from bw.getindie.wiki as 'breezewikiHostOptions'
+function isBreezewikiHost(storage) {
+  const hostname = currentURL.hostname;
+  if (hostname === 'breezewiki.com') {
+    return true;
+  }
+  const hosts = Array.isArray(storage.breezewikiHostOptions)
+    ? storage.breezewikiHostOptions.map((host) => host?.instance)
+    : [];
+  if (storage.breezewikiHost === 'CUSTOM' && storage.breezewikiCustomHost) {
+    hosts.push(storage.breezewikiCustomHost);
+  }
+  return hosts.some((host) => {
+    try {
+      return new URL(host).hostname === hostname;
+    } catch {
+      return false;
+    }
+  });
+}
 
 function outputBannerContainer() {
   if (!document.getElementById('indie-wiki-banner-container')) {
@@ -9,6 +42,7 @@ function outputBannerContainer() {
     containerExit.classList.add('indie-wiki-banner-exit');
     container.appendChild(containerExit);
     containerExit.textContent = '✕';
+    makeKeyboardButton(containerExit, extensionAPI.i18n.getMessage('bannerClose'));
     containerExit.onclick = function () { this.parentElement.remove(); };
     document.body.insertAdjacentElement('beforeBegin', container);
   }
@@ -20,49 +54,30 @@ function processBreezeWikiBanner(storage) {
     // Extract article from URL
     const subdomain = currentURL.hostname.split(".")[0];
     const article = currentURL.toString().split('fandom.com/wiki/')[1].replaceAll('%20', '_');
-    breezewikiHost = '';
     if (!(storage.breezewikiHost ?? null)) {
-      fetch('https://bw.getindie.wiki/instances.json')
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error('Indie Wiki Buddy failed to get BreezeWiki data.');
-        }).then((breezewikiHosts) => {
-          breezewikiHosts = breezewikiHosts.filter(host =>
-            extensionAPI.runtime.getManifest().version.localeCompare(host.iwb_version,
-              undefined,
-              { numeric: true, sensitivity: 'base' }
-            ) >= 0
-          );
-          // Check if BreezeWiki's main site is available
-          let breezewikiMain = breezewikiHosts.filter(host => host.instance === 'https://breezewiki.com');
-          if (breezewikiMain.length > 0) {
-            extensionAPI.storage.sync.set({ 'breezewikiHost': breezewikiMain[0].instance });
-          } else {
-            // If BreezeWiki.com is not available, set to a random mirror
-            try {
-              extensionAPI.storage.sync.set({ 'breezewikiHost': breezewikiHosts[Math.floor(Math.random() * breezewikiHosts.length)].instance });
-            } catch (e) {
-              console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-            }
-          }
-          extensionAPI.storage.sync.set({ 'breezewikiHostOptions': breezewikiHosts });
-          extensionAPI.storage.sync.set({ 'breezewikiHostFetchTimestamp': Date.now() });
-          breezewikiHost = host;
-        }).catch((e) => {
-          console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-          extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+      fetchBreezewikiHosts().then((breezewikiHosts) => {
+        const selectedHost = pickBreezewikiHost(breezewikiHosts);
+        extensionAPI.storage.sync.set({
+          'breezewikiHost': selectedHost,
+          'breezewikiHostOptions': breezewikiHosts,
+          'breezewikiHostFetchTimestamp': Date.now()
         });
+        displayBreezewikiBanner(selectedHost + '/' + subdomain + '/wiki/' + article);
+      }).catch((e) => {
+        console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
+        extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+      });
     } else {
+      let breezewikiHost;
       if (storage.breezewikiHost === 'CUSTOM') {
+        // User-set custom host, validated when saved
         breezewikiHost = storage.breezewikiCustomHost || 'https://breezewiki.com';
       } else {
-        breezewikiHost = storage.breezewikiHost;
+        // Re-validate in case an older build stored a bad value
+        breezewikiHost = normalizeBreezewikiHost(storage.breezewikiHost) || 'https://breezewiki.com';
       }
+      displayBreezewikiBanner(breezewikiHost + '/' + subdomain + '/wiki/' + article);
     }
-
-    displayBreezewikiBanner(breezewikiHost + '/' + subdomain + '/wiki/' + article);
   }
 }
 
@@ -89,7 +104,7 @@ function displayBreezewikiBanner(newUrl) {
       // Add banner container if not already in doc
       outputBannerContainer();
       // Ensure banner isn't already outputted
-      if (!document.querySelector(':root > #indie-wiki-banner-bw')) {
+      if (!document.getElementById('indie-wiki-banner-bw')) {
         document.getElementById('indie-wiki-banner-container').appendChild(banner);
       }
 
@@ -120,12 +135,10 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
   bannerRestoreLink.classList.add('indie-wiki-banner-link-small');
   bannerRestoreLink.classList.add('indie-wiki-banner-hidden');
   bannerRestoreLink.textContent = '⎌ ' + extensionAPI.i18n.getMessage('bannerRestore');
+  makeKeyboardButton(bannerRestoreLink);
   bannerControls.appendChild(bannerRestoreLink);
   bannerRestoreLink.onclick = function (e) {
-    extensionAPI.storage.sync.get({ 'wikiSettings': {} }, async (response) => {
-      let wikiSettings = await commonFunctionDecompressJSON(response.wikiSettings);
-      wikiSettings[id] = 'alert';
-      extensionAPI.storage.sync.set({ 'wikiSettings': await commonFunctionCompressJSON(wikiSettings) });
+    setUserSetting('wikiSettings', id, 'alert').then(() => {
       e.target.textContent = '✓ ' + extensionAPI.i18n.getMessage('bannerRestoreDone');
       e.target.classList.add('indie-wiki-banner-disabled');
       bannerControls.querySelector('.indie-wiki-banner-redirect').textContent = '↪ ' + extensionAPI.i18n.getMessage('bannerRedirect');
@@ -142,12 +155,10 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
   bannerDisableLink.classList.add('indie-wiki-banner-link');
   bannerDisableLink.classList.add('indie-wiki-banner-link-small');
   bannerDisableLink.textContent = '✕ ' + extensionAPI.i18n.getMessage('bannerDisable');
+  makeKeyboardButton(bannerDisableLink);
   bannerControls.appendChild(bannerDisableLink);
   bannerDisableLink.onclick = function (e) {
-    extensionAPI.storage.sync.get({ 'wikiSettings': {} }, async (response) => {
-      let wikiSettings = await commonFunctionDecompressJSON(response.wikiSettings);
-      wikiSettings[id] = 'disabled';
-      extensionAPI.storage.sync.set({ 'wikiSettings': await commonFunctionCompressJSON(wikiSettings) });
+    setUserSetting('wikiSettings', id, 'disabled').then(() => {
       e.target.textContent = '✓ ' + extensionAPI.i18n.getMessage('bannerDisableDone');
       e.target.classList.add('indie-wiki-banner-disabled');
       bannerControls.querySelector('.indie-wiki-banner-restore').textContent = '⎌ ' + extensionAPI.i18n.getMessage('bannerRestore');
@@ -162,12 +173,10 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
   bannerRedirectLink.classList.add('indie-wiki-banner-link');
   bannerRedirectLink.classList.add('indie-wiki-banner-link-small');
   bannerRedirectLink.textContent = '↪ ' + extensionAPI.i18n.getMessage('bannerRedirect');
+  makeKeyboardButton(bannerRedirectLink);
   bannerControls.appendChild(bannerRedirectLink);
   bannerRedirectLink.onclick = function (e) {
-    extensionAPI.storage.sync.get({ 'wikiSettings': {} }, async (response) => {
-      let wikiSettings = await commonFunctionDecompressJSON(response.wikiSettings);
-      wikiSettings[id] = 'redirect';
-      extensionAPI.storage.sync.set({ 'wikiSettings': await commonFunctionCompressJSON(wikiSettings) });
+    setUserSetting('wikiSettings', id, 'redirect').then(() => {
       e.target.textContent = '✓ ' + extensionAPI.i18n.getMessage('bannerRedirectDone');
       e.target.classList.add('indie-wiki-banner-disabled');
       bannerControls.querySelector('.indie-wiki-banner-disable').classList.add('indie-wiki-banner-hidden');
@@ -222,19 +231,16 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
       // Add banner container if not already in doc
       outputBannerContainer();
       // Ensure banner isn't already outputted
-      if (!document.querySelector(':root > #indie-wiki-banner-redirect')) {
+      if (!document.getElementById('indie-wiki-banner-redirect')) {
         document.getElementById('indie-wiki-banner-container').appendChild(banner);
         // Increment banner count
-        if (storage.breezewiki === 'on') {
-          if (currentURL.hostname.match(breezewikiRegex) || (storage.breezewikiHost === 'CUSTOM' && storage.breezewikiCustomHost?.includes(currentURL.hostname))) {
-            extensionAPI.storage.sync.set({ 'countAlerts': (storage.countAlerts ?? 0) + 1 });
-          }
-        } else {
+        const breezewikiRedirect = storage.breezewiki === 'redirect' || storage.breezewiki === 'on';
+        if (!breezewikiRedirect || isBreezewikiHost(storage)) {
           extensionAPI.storage.sync.set({ 'countAlerts': (storage.countAlerts ?? 0) + 1 });
         }
 
         // Hide duplicative indie wiki notice on BreezeWiki instances
-        if (currentURL.hostname.match(breezewikiRegex)) {
+        if (isBreezewikiHost(storage)) {
           const bwIndieNotice = document.querySelector('aside.niwa__notice');
           if (bwIndieNotice) {
             bwIndieNotice.style.display = 'none';
@@ -253,6 +259,10 @@ function displayRedirectBanner(newUrl, id, destinationName, destinationLanguage,
 
 function main() {
   extensionAPI.runtime.sendMessage({ action: 'getStorage' }, (storage) => {
+    // Return if no storage (settings unknown)
+    if (extensionAPI.runtime.lastError || !storage) {
+      return;
+    }
     // Check if extension is on:
     if ((storage.power ?? 'on') === 'on') {
       // Check if there is a pathname, to ensure we're looking at an article
@@ -262,7 +272,7 @@ function main() {
         let origin = currentURL.toString();
 
         // If on a BreezeWiki site, convert to Fandom link to match with our list of wikis:
-        if (currentURL.hostname.match(breezewikiRegex) || (storage.breezewikiHost === 'CUSTOM' && storage.breezewikiCustomHost?.includes(currentURL.hostname))) {
+        if (isBreezewikiHost(storage)) {
           origin = String(currentURL.pathname).split('/')[1] + '.fandom.com/wiki/';
           if (currentURL.search.includes('?q=')) {
             origin = 'https://' + origin + currentURL.search.substring(3);
@@ -271,14 +281,14 @@ function main() {
           }
         }
 
-        commonFunctionGetSiteDataByOrigin().then(async sites => {
+        getSiteDataByOrigin().then(async sites => {
           let crossLanguageSetting = storage.crossLanguage || 'off';
-          let matchingSite = await commonFunctionFindMatchingSite(origin, crossLanguageSetting);
+          let matchingSite = await findMatchingSite(origin, crossLanguageSetting);
           if (matchingSite) {
             // Get user's settings for the wiki
             let id = matchingSite['id'];
             let siteSetting = 'alert';
-            let wikiSettings = await commonFunctionDecompressJSON(storage.wikiSettings || {});
+            let wikiSettings = await getUserSettings('wikiSettings', storage);
             if (wikiSettings[id]) {
               siteSetting = wikiSettings[id];
             } else if (storage.defaultWikiAction) {
@@ -287,23 +297,9 @@ function main() {
 
             // Notify if enabled for the wiki:
             if (siteSetting === 'alert') {
-              let newURL = commonFunctionGetNewURL(origin, matchingSite);
-
-              // When head elem is loaded, notify that another wiki is available
-              const docObserver = new MutationObserver((mutations, mutationInstance) => {
-                const headElement = document.querySelector('head');
-                if (headElement) {
-                  try {
-                    displayRedirectBanner(newURL, matchingSite['id'], matchingSite['destination'], matchingSite['language'], matchingSite['destination_host'], matchingSite['tags'], storage);
-                  } finally {
-                    mutationInstance.disconnect();
-                  }
-                }
-              });
-              docObserver.observe(document, {
-                childList: true,
-                subtree: true
-              });
+              let newURL = getNewURL(origin, matchingSite);
+              // Build the banner
+              displayRedirectBanner(newURL, matchingSite['id'], matchingSite['destination'], matchingSite['language'], matchingSite['destination_host'], matchingSite['tags'], storage);
             }
           }
         });

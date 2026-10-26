@@ -1,44 +1,83 @@
-if (typeof importScripts !== 'undefined') {
-  importScripts('scripts/common-functions.js');
+import {
+  extensionAPI,
+  fetchBreezewikiHosts,
+  findMatchingSite,
+  getNewURL,
+  getUserSettings,
+  loadSiteData,
+  migrateUserSettings,
+  normalizeBreezewikiHost,
+  pickBreezewikiHost,
+  refreshSiteData,
+  SEARCHENGINEDOMAINS,
+ } from "./scripts/common-functions.js";
+
+// Local storage keys to cache
+// Older versions kept some of these in sync; those copies are ignored
+const CACHED_LOCAL_KEYS = ['power', 'searchEngineToggles', 'hideOperaPermissionsNote', 'countSettingsOpened', 'hideReviewReminder'];
+
+async function loadCachedStorage() {
+  const [localStorageData, syncStorageData] = await Promise.all([
+    extensionAPI.storage.local.get(CACHED_LOCAL_KEYS),
+    extensionAPI.storage.sync.get(null)
+  ]);
+  return { ...syncStorageData, ...localStorageData };
 }
 
-let cachedStorage = {};
-
-function getLocalStorageData() {
-  // Wrap the extensionAPI.storage.sync.get method in a promise
-  // Needed for Firefox manifest v2
-  return new Promise((resolve, reject) => {
-      extensionAPI.storage.local.get(null, (items) => {
-        resolve(items);
-      });
-  });
-}
-
-function getSyncStorageData() {
-  // Wrap the extensionAPI.storage.sync.get method in a promise
-  // Needed for Firefox manifest v2
-  return new Promise((resolve, reject) => {
-      extensionAPI.storage.sync.get(null, (items) => {
-        resolve(items);
-      });
-  });
-}
-
-async function updateCachedStorage() {
-  let localStorage = await getLocalStorageData();
-  let syncStorage = await getSyncStorageData();
-  cachedStorage = {...localStorage, ...syncStorage};
-}
-
-async function getCachedStorage() {
-  if (Object.keys(cachedStorage).length === 0) {
-    await updateCachedStorage();
+function applyStorageChanges(storage, changes, area) {
+  if (area !== 'local' && area !== 'sync') {
+    return;
   }
-  return cachedStorage;
+  for (const [key, change] of Object.entries(changes)) {
+    if (CACHED_LOCAL_KEYS.includes(key) !== (area === 'local')) {
+      continue;
+    }
+    if ('newValue' in change) {
+      storage[key] = change.newValue;
+    } else {
+      delete storage[key];
+    }
+  }
 }
 
 // Cache storage in memory so that we don't need to make repeated calls
-updateCachedStorage();
+let cachedStoragePromise = loadCachedStorage();
+
+function getCachedStorage() {
+  return cachedStoragePromise;
+}
+
+// Refresh remote site data every 3 hours
+const SITE_DATA_ALARM = 'refreshSiteData';
+
+extensionAPI.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === SITE_DATA_ALARM) {
+    refreshSiteData(true);
+  }
+});
+
+extensionAPI.alarms.get(SITE_DATA_ALARM, (alarm) => {
+  if (!alarm) {
+    extensionAPI.alarms.create(SITE_DATA_ALARM, { periodInMinutes: 180 });
+  }
+});
+
+// Also refresh on-load
+// (in case alarm is missed or fresh install)
+refreshSiteData();
+
+// Fold pre-4.0 settings keys into the sharded keys
+migrateUserSettings();
+
+// Older devices can recreate the pre-4.0 keys via sync
+extensionAPI.storage.onChanged.addListener((changes, area) => {
+  if (
+    area === 'sync' &&
+    (changes.wikiSettings?.newValue !== undefined || changes.searchEngineSettings?.newValue !== undefined)
+  ) {
+    migrateUserSettings();
+  }
+});
 
 // Capture web requests
 extensionAPI.webRequest.onBeforeSendHeaders.addListener(
@@ -59,9 +98,12 @@ extensionAPI.webRequest.onBeforeSendHeaders.addListener(
     });
 
     if (!isPrefetch && event.documentLifecycle !== 'prerender') {
-      if (event.frameType === 'sub_frame') {
-        let tabInfo = await extensionAPI.tabs.get(event.tabId);
-        main(tabInfo.url, event.tabId);
+      if (event.type === 'sub_frame') {
+        // A framed wiki redirects the whole tab, so act on the tab's own URL
+        const tabInfo = await extensionAPI.tabs.get(event.tabId).catch(() => null);
+        if (tabInfo?.url) {
+          main(tabInfo.url, event.tabId);
+        }
       } else {
         main(event.url, event.tabId);
       }
@@ -74,14 +116,165 @@ extensionAPI.webRequest.onBeforeSendHeaders.addListener(
   ['requestHeaders']
 );
 
+// Convert a match pattern like "https://*.bing.com/search*" to an anchored regex
+function matchPatternToRegex(pattern) {
+  const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+  // Match patterns ignore ports, so allow an optional port after host
+  // (needed for localhost instances)
+  const withPort = escaped.replace(/^([^/]+:\/\/[^/]*)\//, '$1(?::\\d+)?/');
+  return new RegExp('^' + withPort
+    .replace(/\*\\\./g, '\x00')
+    .replace(/\*/g, '.*')
+    .replace(/\x00/g, '(?:[^/]*\\.)?'));
+}
+
+// Compile custom entries on first use
+const builtinSearchEngineRegexes = {};
+for (const [engine, patterns] of Object.entries(SEARCHENGINEDOMAINS)) {
+  builtinSearchEngineRegexes[engine] = patterns.map(matchPatternToRegex);
+}
+/** @type {Record<string, RegExp[]> | null} */
+let customSearchEngineRegexes = null;
+/** @type {RegExp[] | null} */
+let breezewikiRegexes = null;
+
+extensionAPI.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes.customSearchEngines) customSearchEngineRegexes = null;
+  if (area === 'sync' && (changes.breezewikiCustomHost || changes.breezewikiHostOptions)) breezewikiRegexes = null;
+});
+
+// Custom engines are per-device (since permissions are local)
+function loadCustomSearchEngineRegexes(callback) {
+  if (customSearchEngineRegexes) {
+    callback(customSearchEngineRegexes);
+    return;
+  }
+  extensionAPI.storage.local.get({ 'customSearchEngines': {} }, (item) => {
+    customSearchEngineRegexes = {};
+    for (const [engine, patterns] of Object.entries(item.customSearchEngines)) {
+      customSearchEngineRegexes[engine] = patterns.map(matchPatternToRegex);
+    }
+    callback(customSearchEngineRegexes);
+  });
+}
+
+// Breezewiki mirrors come from bw.getindie.wiki as 'breezewikiHostOptions'
+function loadBreezewikiRegexes(callback) {
+  if (breezewikiRegexes) {
+    callback(breezewikiRegexes);
+    return;
+  }
+  extensionAPI.storage.sync.get({ 'breezewikiHostOptions': [], 'breezewikiCustomHost': '' }, (item) => {
+    const patterns = ['https://breezewiki.com/*'];
+    if (Array.isArray(item.breezewikiHostOptions)) {
+      for (const host of item.breezewikiHostOptions) {
+        // Re-validate: a value stored by an older build could be unsafe
+        const origin = normalizeBreezewikiHost(host?.instance);
+        if (origin) {
+          patterns.push(origin + '/*');
+        }
+      }
+    }
+    // breezewikiCustomHost is a string URL for the user's custom BreezeWiki host
+    const customHost = item.breezewikiCustomHost;
+    if (customHost && typeof customHost === 'string') {
+      patterns.push(customHost.replace(/\/$/, '') + '/*');
+    }
+    breezewikiRegexes = patterns.map(matchPatternToRegex);
+    callback(breezewikiRegexes);
+  });
+}
+
+function getSearchEngine(url, callback) {
+  loadCustomSearchEngineRegexes((customRegexes) => {
+    const searchEngines = { ...builtinSearchEngineRegexes, ...customRegexes };
+    for (const engine in searchEngines) {
+      if (searchEngines[engine].some((regex) => regex.test(url))) {
+        callback(engine);
+        return;
+      }
+    }
+    callback(null); // Return null if no match
+  });
+}
+
+function getBreezewikiHost(url, callback) {
+  loadBreezewikiRegexes((regexes) => {
+    callback(regexes.some((regex) => regex.test(url)));
+  });
+}
+
+// Injection fails when the tab navigates away mid-flight; nothing to do
+function ignoreInjectionError() {}
+
+extensionAPI.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  if (tab.url && changeInfo.status === 'loading') {
+    const currentUrl = new URL(tab.url);
+
+    // Static content scripts cover these hosts
+    if (currentUrl.hostname === 'www.google.com' || currentUrl.hostname === 'breezewiki.com') {
+      return;
+    }
+
+    // Check if search engine
+    getSearchEngine(currentUrl.href, (searchEngine) => {
+      if (searchEngine) {
+        // The script asks the background for its engine via 'getSearchEngine'
+        // injectImmediately: run before document_idle
+        extensionAPI.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['scripts/content-search-filtering-importer.js'],
+          injectImmediately: true
+        }).catch(ignoreInjectionError);
+        extensionAPI.scripting.insertCSS({
+          target: { tabId: tab.id },
+          files: ['css/content-search-filtering.css']
+        }).catch(ignoreInjectionError);
+      } else {
+        // If not search engine, check if Breezewiki
+        getBreezewikiHost(currentUrl.href, (breezewikiHost) => {
+          if (breezewikiHost) {
+            extensionAPI.scripting.executeScript({
+              target: { tabId: tab.id },
+              files: ['scripts/content-banners-importer.js'],
+              injectImmediately: true
+            }).catch(ignoreInjectionError);
+            extensionAPI.scripting.insertCSS({
+              target: { tabId: tab.id },
+              files: ['css/content-banners.css']
+            }).catch(ignoreInjectionError);
+            extensionAPI.scripting.executeScript({
+              target: { tabId: tab.id },
+              files: ['scripts/content-breezewiki.js']
+            }).catch(ignoreInjectionError);
+          }
+        });
+      }
+    });
+  }
+});
+
 // Listen for user turning extension on or off, to update icon
-extensionAPI.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+extensionAPI.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.action === 'updateIcon') {
     setPowerIcon(msg.value);
   } else if (msg.action === 'getStorage') {
     getCachedStorage().then((res) => {
       sendResponse(res);
-      return res;
+    });
+    return true;
+  } else if (msg.action === 'getSiteData') {
+    loadSiteData().then((sites) => {
+      sendResponse(sites);
+    }).catch(() => {
+      // Answer with null so the caller falls back to reading directly
+      sendResponse(null);
+    });
+    return true;
+  } else if (msg.action === 'getSearchEngine') {
+    // The search filtering script asking which engine its page is
+    getSearchEngine(sender.url, (engine) => {
+      sendResponse(engine);
     });
     return true;
   }
@@ -94,10 +287,134 @@ extensionAPI.runtime.onStartup.addListener(() => {
   });
 });
 
-// Listen for changes to stored data, and updated our cached data
-extensionAPI.storage.onChanged.addListener(() => {
-  updateCachedStorage();
+// Listen for changes to stored data, and update our cached data
+extensionAPI.storage.onChanged.addListener((changes, area) => {
+  cachedStoragePromise = cachedStoragePromise.then((storage) => {
+    applyStorageChanges(storage, changes, area);
+    return storage;
+  });
 })
+
+// Firefox stores granted origins without their path,
+// so "https://search.brave.com/search*" comes back as "https://search.brave.com/*"
+function patternHost(pattern) {
+  return pattern.replace(/^([^/]+:\/\/[^/]*)\/.*$/, '$1/*');
+}
+
+// Listen for optional permissions being revoked externally (i.e. via the browser's
+// extensions management page) and update searchEngineToggles accordingly.
+extensionAPI.permissions.onRemoved.addListener((permissions) => {
+  const removedOrigins = permissions.origins || [];
+  if (removedOrigins.length === 0) return;
+  const removedHosts = removedOrigins.map(patternHost);
+  extensionAPI.storage.local.get({ 'searchEngineToggles': {} }, (settings) => {
+    let updated = false;
+    for (const [engine, origins] of Object.entries(SEARCHENGINEDOMAINS)) {
+      // google.com filtering is declared in content_scripts, so perms don't switch
+      if (engine === 'google') {
+        continue;
+      }
+      if (origins.some((o) => removedHosts.includes(patternHost(o)))) {
+        if (settings.searchEngineToggles[engine] !== 'off') {
+          settings.searchEngineToggles[engine] = 'off';
+          updated = true;
+        }
+      }
+    }
+    if (updated) {
+      extensionAPI.storage.local.set({ 'searchEngineToggles': settings.searchEngineToggles });
+    }
+  });
+});
+
+// Listen for optional permissions being granted to sync settings
+// This is necessary because if a permission is requested from a popup, the popup might close
+// before the callback executes, preventing the setting from being saved.
+extensionAPI.permissions.onAdded.addListener((permissions) => {
+  const addedOrigins = permissions.origins || [];
+  if (addedOrigins.length === 0) return;
+  const addedHosts = addedOrigins.map(patternHost);
+
+  // For each engine the grant names (or the popup asked for),
+  // confirm its full origin set is now held before toggling it on.
+  // All-access grants are not considered opt-in/out to every engine
+  extensionAPI.storage.local.get(['pendingSearchEngine'], (local) => {
+    const engineChecks = Object.entries(SEARCHENGINEDOMAINS)
+      .filter(([engine, origins]) =>
+        // google.com filtering is declared in content_scripts, so perms don't switch
+        engine !== 'google' &&
+        (engine === local.pendingSearchEngine || origins.some((o) => addedHosts.includes(patternHost(o))))
+      )
+      .map(([engine, origins]) =>
+        new Promise((resolve) => {
+          extensionAPI.permissions.contains({ origins }, (hasAllOrigins) => {
+            resolve(hasAllOrigins ? engine : null);
+          });
+        })
+      );
+
+    Promise.all(engineChecks).then((engines) => {
+      extensionAPI.storage.local.remove(['pendingSearchEngine']);
+      const enginesToEnable = engines.filter(Boolean);
+      if (enginesToEnable.length === 0) return;
+      extensionAPI.storage.local.get({ 'searchEngineToggles': {} }, (settings) => {
+        let updated = false;
+        for (const engine of enginesToEnable) {
+          if (settings.searchEngineToggles[engine] !== 'on') {
+            settings.searchEngineToggles[engine] = 'on';
+            updated = true;
+          }
+        }
+        if (updated) {
+          extensionAPI.storage.local.set({ 'searchEngineToggles': settings.searchEngineToggles });
+        }
+      });
+    });
+  });
+
+  // Check if there are any pending BreezeWiki setting updates
+  commitPendingBreezewikiHosts(addedOrigins);
+});
+
+// Commit a pending BreezeWiki host choice once its permission is held
+function commitPendingBreezewikiHosts(addedOrigins) {
+  const grantCoversHost = (host) => addedOrigins.includes(host + '/*');
+
+  extensionAPI.storage.local.get(['pendingBreezeWikiHost', 'pendingCustomBreezeWikiHost'], (local) => {
+    if (local.pendingBreezeWikiHost && grantCoversHost(local.pendingBreezeWikiHost)) {
+      extensionAPI.permissions.contains({ origins: [local.pendingBreezeWikiHost + '/*'] }, (hasPermission) => {
+        if (hasPermission) {
+          extensionAPI.storage.sync.set({ 'breezewikiHost': local.pendingBreezeWikiHost });
+          extensionAPI.storage.local.remove(['pendingBreezeWikiHost']);
+        }
+      });
+    }
+    if (local.pendingCustomBreezeWikiHost && grantCoversHost(local.pendingCustomBreezeWikiHost)) {
+      extensionAPI.permissions.contains({ origins: [local.pendingCustomBreezeWikiHost + '/*'] }, (hasPermission) => {
+        if (hasPermission) {
+          extensionAPI.storage.sync.set({
+            'breezewikiHost': 'CUSTOM',
+            'breezewikiCustomHost': local.pendingCustomBreezeWikiHost
+          });
+          extensionAPI.storage.local.remove(['pendingCustomBreezeWikiHost']);
+        }
+      });
+    }
+  });
+}
+
+// Pages write the pending key before calling permissions.request
+extensionAPI.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local') return;
+  const origins = [];
+  if (changes.pendingBreezeWikiHost?.newValue) {
+    origins.push(changes.pendingBreezeWikiHost.newValue + '/*');
+  }
+  if (changes.pendingCustomBreezeWikiHost?.newValue) {
+    origins.push(changes.pendingCustomBreezeWikiHost.newValue + '/*');
+  }
+  if (origins.length) commitPendingBreezewikiHosts(origins);
+});
 
 // Listen for extension installed/updating
 extensionAPI.runtime.onInstalled.addListener(async (detail) => {
@@ -108,46 +425,79 @@ extensionAPI.runtime.onInstalled.addListener(async (detail) => {
 
   // If new install, open settings with starter guide
   if (detail.reason === 'install') {
-    extensionAPI.tabs.create({ url: 'pages/settings/index.html?newinstall=true' });
+    extensionAPI.tabs.create({ url: 'pages/setup/index.html' });
   }
 
+  const isPre4Update = detail.reason === 'update' && parseInt(detail.previousVersion.split('.')[0], 10) < 4;
+
   // If update, open changelog if setting is enabled
+  // (skipped when the permissions update page below is also opening)
   extensionAPI.storage.sync.get({ 'openChangelog': 'off' }, (item) => {
-    if (item.openChangelog === 'on' && detail.reason === 'update') {
+    if (item.openChangelog === 'on' && detail.reason === 'update' && !isPre4Update) {
       extensionAPI.tabs.create({ url: 'https://getindie.wiki/changelog/?updated=true', active: false });
     }
   });
 
-  // Temporary functions for 3.0 migration
-  if (detail.reason === 'update') {
-    commonFunctionMigrateToV3();
+  // If updating from pre-4.0, show permissions update page
+  if (isPre4Update) {
+    // Reset Breezewiki settings
+    extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+    extensionAPI.storage.sync.set({ 'breezewikiCustomHost': '' });
+
+    // Search engine settings are per-device from 4.0
+    // The sync keys stay for devices still on 3.x
+    extensionAPI.storage.sync.get({ 'searchEngineToggles': {}, 'customSearchEngines': {} }, (item) => {
+      extensionAPI.storage.local.set({ 'searchEngineToggles': item.searchEngineToggles }, () => {
+        // Open the update page once its toggles can read the migrated values
+        extensionAPI.tabs.create({ url: 'pages/permissions-update/index.html', active: false });
+      });
+
+      // Convert custom search engines from the pre-4.0 {hostname: preset}
+      // format to {preset: [origin patterns]}, keeping those this device can access
+      const checks = Object.entries(item.customSearchEngines).map(([hostname, preset]) => {
+        const pattern = 'https://' + hostname + '/*';
+        return new Promise((resolve) => {
+          extensionAPI.permissions.contains({ origins: [pattern] }, (held) => {
+            resolve(held ? [preset, pattern] : null);
+          });
+        });
+      });
+      Promise.all(checks).then((entries) => {
+        const migrated = {};
+        for (const [preset, pattern] of entries.filter(Boolean)) {
+          (migrated[preset] ??= []).push(pattern);
+        }
+        extensionAPI.storage.local.set({ 'customSearchEngines': migrated });
+      });
+    });
   }
 });
 
 function setPowerIcon(status) {
-  const manifestVersion = extensionAPI.runtime.getManifest().manifest_version;
-  if (status === 'on') {
-    if (manifestVersion === 2) {
-      extensionAPI.browserAction.setIcon({ path: "/images/logo-128.png" });
-    } else {
-      extensionAPI.action.setIcon({ path: "/images/logo-128.png" });
-    }
-  } else {
-    if (manifestVersion === 2) {
-      extensionAPI.browserAction.setIcon({ path: "/images/logo-off.png" });
-    } else {
-      extensionAPI.action.setIcon({ path: "/images/logo-off.png" });
-    }
-  }
+  extensionAPI.action.setIcon({
+    path: status === 'on' ? "/images/logo-128.png" : "/images/logo-off.png"
+  });
 }
 
 function redirectToBreezeWiki(storage, tabId, url) {
   function processRedirect(host) {
+    // Ensure host has a protocol (guard against stored values missing https://)
+    if (host && !host.startsWith('http')) {
+      host = 'https://' + host;
+    }
+
     // Extract article from URL
     const urlFormatted = new URL(url);
     urlFormatted.search = '';
     const subdomain = urlFormatted.hostname.split(".")[0];
-    const article = String(urlFormatted).split('fandom.com/wiki/')[1].replaceAll('%20', '_');
+    
+    let article = '';
+    if (urlFormatted.pathname.startsWith('/wiki/')) {
+      article = urlFormatted.pathname.substring(6).replaceAll('%20', '_');
+      if (urlFormatted.hash) {
+        article += urlFormatted.hash;
+      }
+    }
 
     // Perform redirect
     if (article) {
@@ -173,46 +523,39 @@ function redirectToBreezeWiki(storage, tabId, url) {
     }
   }
 
-  if (url.includes('fandom.com/wiki/') && !url.includes('fandom.com/wiki/Special:') && !url.includes('fandom.com/wiki/Spezial:') && !url.includes('fandom=allow')) {
+  let urlObj;
+  try {
+    urlObj = new URL(url);
+  } catch (e) {
+    return;
+  }
+
+  if (
+    urlObj.hostname.endsWith('fandom.com') && 
+    urlObj.pathname.startsWith('/wiki/') && 
+    !urlObj.pathname.startsWith('/wiki/Special:') && 
+    !urlObj.pathname.startsWith('/wiki/Spezial:') && 
+    !urlObj.search.includes('fandom=allow')
+  ) {
     if (!(storage.breezewikiHost ?? null)) {
-      fetch('https://bw.getindie.wiki/instances.json')
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error('Indie Wiki Buddy failed to get BreezeWiki data.');
-        }).then((breezewikiHosts) => {
-          breezewikiHosts = breezewikiHosts.filter(host =>
-            extensionAPI.runtime.getManifest().version.localeCompare(host.iwb_version,
-              undefined,
-              { numeric: true, sensitivity: 'base' }
-            ) >= 0
-          );
-          // Check if BreezeWiki's main site is available
-          let breezewikiMain = breezewikiHosts.filter(host => host.instance === 'https://breezewiki.com');
-          if (breezewikiMain.length > 0) {
-            extensionAPI.storage.sync.set({ 'breezewikiHost': breezewikiMain[0].instance });
-          } else {
-            // If BreezeWiki.com is not available, set to a random mirror
-            try {
-              extensionAPI.storage.sync.set({ 'breezewikiHost': breezewikiHosts[Math.floor(Math.random() * breezewikiHosts.length)].instance });
-            } catch (e) {
-              console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-            }
-          }
-          extensionAPI.storage.sync.set({ 'breezewikiHostOptions': breezewikiHosts });
-          extensionAPI.storage.sync.set({ 'breezewikiHostFetchTimestamp': Date.now() });
-          processRedirect(host);
-        }).catch((e) => {
-          console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
-          extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+      fetchBreezewikiHosts().then((breezewikiHosts) => {
+        const selectedHost = pickBreezewikiHost(breezewikiHosts);
+        extensionAPI.storage.sync.set({
+          'breezewikiHost': selectedHost,
+          'breezewikiHostOptions': breezewikiHosts,
+          'breezewikiHostFetchTimestamp': Date.now()
         });
+        processRedirect(selectedHost);
+      }).catch((e) => {
+        console.log('Indie Wiki Buddy failed to get BreezeWiki data: ' + e);
+        extensionAPI.storage.sync.set({ 'breezewikiHost': 'https://breezewiki.com' });
+      });
+    } else if (storage.breezewikiHost === 'CUSTOM') {
+      // User-set custom host, validated when saved
+      processRedirect(storage.breezewikiCustomHost || 'https://breezewiki.com');
     } else {
-      if (storage.breezewikiHost === 'CUSTOM') {
-        processRedirect(storage.breezewikiCustomHost || 'https://breezewiki.com');
-      } else {
-        processRedirect(storage.breezewikiHost);
-      }
+      // Re-validate in case an older build stored a bad value
+      processRedirect(normalizeBreezewikiHost(storage.breezewikiHost) || 'https://breezewiki.com');
     }
   }
 }
@@ -222,17 +565,17 @@ async function main(url, tabId) {
 
   if ((storage.power ?? 'on') === 'on') {
     let crossLanguageSetting = storage.crossLanguage || 'off';
-    let matchingSite = await commonFunctionFindMatchingSite(url, crossLanguageSetting);
+    let matchingSite = await findMatchingSite(url, crossLanguageSetting);
 
     if (matchingSite) {
       // Get user's settings for the wiki
-      let settings = await commonFunctionDecompressJSON(storage.wikiSettings) || {};
+      let settings = await getUserSettings('wikiSettings', storage);
       let id = matchingSite['id'];
       let siteSetting = settings[id] || storage.defaultWikiAction || 'alert';
 
       // Check if redirects are enabled for the site
       if (siteSetting === 'redirect') {
-        let newURL = commonFunctionGetNewURL(url, matchingSite);
+        let newURL = getNewURL(url, matchingSite);
 
         // Perform redirect
         extensionAPI.tabs.update(tabId, { url: newURL });

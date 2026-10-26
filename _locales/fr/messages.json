@@ -218,7 +218,7 @@
         "description": "Option to redirect Fandom wikis to BreezeWiki"
     },
     "settingsBreezeWikiHost": {
-        "message": "Hébergeur BreezeWiki :",
+        "message": "Hébergeur BreezeWiki :",
         "description": "Select for a BreezeWiki host"
     },
     "settingsBreezeWikiDisabled": {
@@ -230,7 +230,7 @@
         "description": "Prompt that the custom BreezeWiki host has failed to be added"
     },
     "settingsBreezeWikiCustomHostSet": {
-        "message": "Confirmer le domaine",
+        "message": "Définir le domaine",
         "description": "Button to confirm input for a custom BreezeWiki host"
     },
     "settingsBreezeWikiCustomHostSetSuccessful": {
@@ -238,7 +238,7 @@
         "description": "Prompt that the custom BreezeWiki host has been successfully added"
     },
     "settingsBreezeWikiCustomHost": {
-        "message": "Domaine BreezeWiki personnalisé :",
+        "message": "Domaine BreezeWiki personnalisé :",
         "description": "Input for a custom BreezeWiki host not included by default"
     },
     "settingsWikiLegendWikiExp": {
@@ -258,7 +258,7 @@
         "description": "Option to disable any action"
     },
     "settingsWikiLegendSearchExp": {
-        "message": "Lorsque les résultats des moteurs de recherche incluent des wikis Fandom, Fextralife ou Neoseeker ayant un wiki alternatif indépendant, l’extension peut :",
+        "message": "Lorsque les résultats des moteurs de recherche incluent des wikis Fandom, Fextralife ou Neoseeker ayant un wiki alternatif indépendant, l’extension devrait :",
         "description": "Explanation for the icons in search experience"
     },
     "settingsRedirect": {
@@ -266,11 +266,11 @@
         "description": "Option to redirect to indie wikis when visiting non-indie wikis"
     },
     "settingsFilterByName": {
-        "message": "Filtrer les wikis par nom :",
+        "message": "Filtrer les wikis par nom :",
         "description": "Input for a name filter"
     },
     "settingsFilterByLanguage": {
-        "message": "Filtrer les wikis par langue :",
+        "message": "Filtrer les wikis par langue :",
         "description": "Select for a language filter"
     },
     "settingsLangAll": {
@@ -334,7 +334,7 @@
         "description": "Instruction to set default for new wikis in future updates"
     },
     "settingsSetColumn": {
-        "message": "Cliquez sur une icône pour définir tous les wikis dans la colonne :",
+        "message": "Cliquez sur une icône pour définir tous les wikis dans la colonne :",
         "description": "Instruction to set all wikis in a column"
     },
     "settingsFunStatsRedirects": {
@@ -527,7 +527,7 @@
         }
     },
     "guideReorderResultsHelp2": {
-        "message": "Cette fonctionnalité n’est actuellement disponible que pour Google, en raison de la complexité à maintenir sa fiabilité."
+        "message": "Quand le même article s'affiche sur un wiki indépendant et un wiki qui ne l'est pas, le duplicata du wiki non-indépendant est caché."
     },
     "guideBreezeWikiBannerHelp": {
         "message": "En haut des wikis Fandom en anglais, une bannière sera insérée avec un lien pour vous rediriger vers le wiki BreezeWiki."
@@ -585,10 +585,10 @@
         "description": "The description of the extension"
     },
     "guideTogglePerSearchEngineHelp2": {
-        "message": "Les moteurs de recherche actuellement pris en charge sont Google, Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo ! et Yandex."
+        "message": "Les moteurs de recherche actuellement pris en charge sont Google (avec une option séparée pour les domaines internationaux telles que google.co.uk), Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo ! et Yandex."
     },
     "guideReorderResultsHelp1": {
-        "message": "Par défaut, Indie Wiki Buddy réorganisera les pages de résultats sur Google pour placer les résultats des wikis indépendants au-dessus du premier résultat non indépendant (Fandom / Fextralife / Neoseeker) s’ils se trouvent plus bas que celui-ci. Cela vous permet de trouver les pages que vous souhaitez consulter sur les wikis indépendants plus rapidement."
+        "message": "Par défaut, Indie Wiki Buddy réorganisera les pages de résultats pour placer les résultats des wikis indépendants au-dessus du premier résultat non indépendant (Fandom / Fextralife / Neoseeker) s’ils se trouvent plus bas que celui-ci. Cela vous permet de trouver les pages que vous souhaitez consulter sur les wikis indépendants plus rapidement."
     },
     "guideOverviewPara2": {
         "message": "Lorsque vous consultez un wiki hébergé et géré par une grande entreprise, cette extension vous notifie ou vous redirige automatiquement vers des wikis indépendants de qualité sur le même sujet. Les résultats de recherche dans Google, Bing, DuckDuckGo, Brave, Ecosia, Kagi, Qwant, Startpage, Yahoo ! et Yandex peuvent également être filtrés, en remplaçant les liens des wikis non indépendants par ceux de leurs équivalents indépendants, ou en masquant complètement ces liens."
@@ -626,7 +626,7 @@
         }
     },
     "guideBreezeWikiHostHelp": {
-        "message": "Une fois qu’une option BreezeWiki est activée, un menu déroulant apparaîtra pour vous permettre de sélectionner votre hébergeur BreezeWiki préféré. Si l’hébergeur BreezeWiki que vous avez choisi arrête ses services, vous pourrez revenir à ces paramètres pour le changer."
+        "message": "Une fois qu’une option BreezeWiki est activée, un menu déroulant apparaîtra pour vous permettre de sélectionner votre hébergeur BreezeWiki préféré. Votre navigateur va ensuite vous demander d'accorder l'autorisation pour l'extension d'accéder à l'hébergeur que vous avez choisi. Vous pouvez aussi entrer un domaine personnalisé pour BreezeWiki. Si l’hébergeur BreezeWiki que vous avez choisi arrête ses services, vous pourrez revenir à ces paramètres pour le changer."
     },
     "settingsBreezeWikiCustomHostOption": {
         "message": "Hébergeur personnalisé…",
@@ -748,7 +748,7 @@
         }
     },
     "guideTogglePerSearchEngineHelp1": {
-        "message": "Par défaut, le filtrage est activé pour tous les moteurs de recherche. Le filtrage est effectué en fonction des paramètres sélectionnés par l’utilisateur pour chaque wiki individuellement. Le paramètre de filtrage par défaut pour tous les wikis remplace les résultats de recherche des wikis non indépendant par des boutons menant au wikis indépendants."
+        "message": "Par défaut, le filtrage fonctionne uniquement avec Google. Touts les autres moteurs de recherches nécessite une activation manuelle. Le filtrage est effectué en fonction des paramètres sélectionnés par l’utilisateur pour chaque wiki individuellement. Le paramètre de filtrage par défaut pour tous les wikis remplace les résultats de recherche des wikis non indépendant par des boutons menant aux wikis indépendants."
     },
     "bannerDescriptorWiki": {
         "message": "‌",
@@ -885,5 +885,92 @@
     },
     "settingsBreezeWikiHostNote": {
         "message": "Si vous rencontrez souvent des erreurs lorsque vous utilisez BreezeWiki, essayez de passer à une autre de ses instances. Indie Wiki Buddy n’est pas responsable de BreezeWiki ni de ses instances."
+    },
+    "settingsBannerCorePermissions": {
+        "message": "Indie Wiki Buddy ne peut pas lire les pages Fandom, Fextralife, et/ou Neoseeker, donc les redirections et avertissements ne fonctionneront pas."
+    },
+    "settingsBannerCorePermissionsGrant": {
+        "message": "Donner l'accès"
+    },
+    "firstInstallInfoWelcome": {
+        "message": "Merci d'avoir installé Indie Wiki Buddy ! Commençons en paramétrant le plus important."
+    },
+    "firstInstallInfoSearchFiltering": {
+        "message": "Indie Wiki Buddy peut fitrer les résultats de recherche de différents navigateurs. Vous pouvez changez ces paramètres ci-dessous."
+    },
+    "firstInstallInfoDefaults": {
+        "message": "Vous pouvez définir le comportement par défaut lorsque vous visitez un wiki qui n'est pas indépendant :"
+    },
+    "firstInstallInfoBreezeWiki": {
+        "message": "Activez $BreezeWiki$ si vous voulez voir les pages des wikis Fandom avec une interface alternative qui enlève les pubs et les informations inutiles :",
+        "placeholders": {
+            "BreezeWiki": {
+                "content": "$1",
+                "example": "BreezeWiki"
+            }
+        }
+    },
+    "firstInstallInfoSettingsLink": {
+        "message": "Pour la liste complète des paramètres, incluant la modification des préférences individuelle pour chaque wiki, visiter la $linkStart$page complète des paramètres$linkEnd$.",
+        "placeholders": {
+            "linkStart": {
+                "content": "$1"
+            },
+            "linkEnd": {
+                "content": "$2"
+            }
+        }
+    },
+    "firstInstallInfoSettingsAccess": {
+        "message": "Vous pouvez accéder aux paramètres dans la future en cliquant sur l'icône de l'extension $logo$ en haut à droite de votre navigateur. Si vous ne la voyez pas, elle se trouve probablement dans le menu déroulant des extensions de votre navigateur, ouvrable via l'icône de puzzle $jigsaw$, elle aussi se trouvant en haut à droite du navigateur.",
+        "placeholders": {
+            "logo": {
+                "content": "$1",
+                "example": "(image for the extension icon)"
+            },
+            "jigsaw": {
+                "content": "$2",
+                "example": "(image for the jigsaw icon)"
+            }
+        }
+    },
+    "settingsApiData": {
+        "message": "Récupérer dynamiquement les données de wiki via getindie.wiki"
+    },
+    "settingsBreezeWikiHostLoading": {
+        "message": "Chargement des options de l'hébergeur..."
+    },
+    "settingsBreezeWikiHostApply": {
+        "message": "Appliquer"
+    },
+    "guideApiDataHelp": {
+        "message": "Quand cette option est activée, l'extension va périodiquement récupérer la liste des wikis supporté la plus récente depuis getindie.wiki. Désactivez-la pour utiliser uniquement la liste intégrée à l'extension."
+    },
+    "guideCustomSearchEnginesHelp": {
+        "message": "Si vous utilisez votre propre moteur de recherche en utilisant SearXNG ou Whoogle, vous pouvez ajouter son domaine en dessous des paramètres des moteurs de recherche. Votre navigateur vous demandera par la suite d'accepter l'accès du domaine à l'extension."
+    },
+    "customSearchEngines": {
+        "message": "Moteurs de recherche personnalisé"
+    },
+    "customSearchEnginesAdd": {
+        "message": "Ajouter"
+    },
+    "customSearchEnginesDelete": {
+        "message": "Supprimer"
+    },
+    "customSearchEnginesDomain": {
+        "message": "Nom de domaine du moteur de recherche (ex. search.example.org)"
+    },
+    "customSearchEnginesPreset": {
+        "message": "Plateforme du moteur de recherche"
+    },
+    "customSearchEnginesInvalidDomain": {
+        "message": "Entrez un nom de domaine valide, comme search.example.org"
+    },
+    "customSearchEnginesInvalidScheme": {
+        "message": "Entrez un nom de domaine valide"
+    },
+    "settingsBreezeWikiCustomHostInvalid": {
+        "message": "Entrez un nom de domaine valide, comme bw.example.com"
     }
 }

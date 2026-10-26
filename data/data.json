@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:14:27+00:00",
-  "commit": "0d71c312e4515dcf27fc862c3071689daf1f4ed0",
-  "count": 855,
+  "generated": "2026-10-26T17:15:09+00:00",
+  "commit": "02a890c890ee9667e07f546e14e733f9986e6ce7",
+  "count": 856,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -6357,6 +6357,27 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "Miraheze",
+      "language": "EN"
+    },
+    {
+      "id": "en-gloomwood",
+      "origins_label": "Gloomwood Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Gloomwood Fandom Wiki",
+          "origin_base_url": "gloomwood.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Gloomwood_Wiki"
+        }
+      ],
+      "destination": "Gloomwood Wiki",
+      "destination_base_url": "gloomwood.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "gloomwoodwiki.png",
+      "destination_main_page": "Gloomwood_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

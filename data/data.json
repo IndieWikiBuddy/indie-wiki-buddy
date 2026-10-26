@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-25T06:17:36+00:00",
-  "commit": "b9f46dd2cee9ebc5ebcea0adfcd4ea99b5c7cc18",
-  "count": 849,
+  "generated": "2026-10-26T17:10:12+00:00",
+  "commit": "7542737b72bab87a84e80d01e08d80fd6d4c8869",
+  "count": 850,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -6527,6 +6527,30 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "ShoutWiki",
+      "language": "EN"
+    },
+    {
+      "id": "en-grimdawn",
+      "origins_label": "Grim Dawn Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Grim Dawn Fandom Wiki",
+          "origin_base_url": "grimdawn.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Grim_Dawn_Wiki"
+        }
+      ],
+      "destination": "Grim Dawn Wiki",
+      "destination_base_url": "grimdawn.miraheze.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "grimdawnwiki.png",
+      "destination_main_page": "Grim_Dawn_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
+      "tags": [
+        "official"
+      ],
       "language": "EN"
     },
     {

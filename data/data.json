@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:13:21+00:00",
-  "commit": "2b5aed60017276dd51acc77dbd5a0b6b72c81263",
-  "count": 854,
+  "generated": "2026-10-26T17:14:27+00:00",
+  "commit": "0d71c312e4515dcf27fc862c3071689daf1f4ed0",
+  "count": 855,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -15914,6 +15914,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "wizardrywiki.png",
       "destination_main_page": "Wizardry_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-wobblylife",
+      "origins_label": "Wobbly Life Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Wobbly Life Fandom Wiki",
+          "origin_base_url": "wobbly-life.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Wobbly_Life_Wiki"
+        }
+      ],
+      "destination": "Wobbly Life Wiki",
+      "destination_base_url": "wobblylife.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "wobblylifewiki.png",
+      "destination_main_page": "Wobbly_Life_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

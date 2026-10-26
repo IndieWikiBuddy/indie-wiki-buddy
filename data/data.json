@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:11:41+00:00",
-  "commit": "aabfe1f4c0571aeaa889ea520ab5d0eea99bb411",
-  "count": 851,
+  "generated": "2026-10-26T17:12:31+00:00",
+  "commit": "8ee89400bfaeb70f97d38c8df67cdf266315ee91",
+  "count": 852,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -7279,6 +7279,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "icaruswiki.png",
       "destination_main_page": "ICARUS_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-idlebossrush",
+      "origins_label": "IDLE BOSS RUSH Fandom Wiki",
+      "origins": [
+        {
+          "origin": "IDLE BOSS RUSH Fandom Wiki",
+          "origin_base_url": "idle-boss-rush.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "IDLE_BOSS_RUSH_Wiki"
+        }
+      ],
+      "destination": "IDLE BOSS RUSH Wiki",
+      "destination_base_url": "idlebossrush.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "idlebossrushwiki.png",
+      "destination_main_page": "IDLE_BOSS_RUSH_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

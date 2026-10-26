@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:16:34+00:00",
-  "commit": "902a8548ed8a3520ae2468082eab26f7857288da",
-  "count": 858,
+  "generated": "2026-10-26T17:45:51+00:00",
+  "commit": "39817af38d87ade7a59a607f2d14d4b13343474d",
+  "count": 859,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -5604,6 +5604,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "fearhungerwiki.png",
       "destination_main_page": "\"Fear_and_Hunger:_the_Tormentpedia\"_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-feedthepit",
+      "origins_label": "Feed the Pit Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Feed the Pit Fandom Wiki",
+          "origin_base_url": "feed-the-pit.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Feed_the_Pit_Wiki"
+        }
+      ],
+      "destination": "Feed The Pit Wiki",
+      "destination_base_url": "feedthepit.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "feedthepitwiki.png",
+      "destination_main_page": "Feed_The_Pit_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

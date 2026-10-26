@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:10:12+00:00",
-  "commit": "7542737b72bab87a84e80d01e08d80fd6d4c8869",
-  "count": 850,
+  "generated": "2026-10-26T17:11:41+00:00",
+  "commit": "aabfe1f4c0571aeaa889ea520ab5d0eea99bb411",
+  "count": 851,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -10392,6 +10392,26 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-paperlily",
+      "origins_label": "Paper Lily Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Paper Lily Fandom Wiki",
+          "origin_base_url": "paper-lily.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Paper_Lily_Wiki"
+        }
+      ],
+      "destination": "Paper Lily Wiki",
+      "destination_base_url": "paperlilywiki.com",
+      "destination_platform": "mediawiki",
+      "destination_icon": "paperlilywiki.png",
+      "destination_main_page": "Main_Page",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/",
       "language": "EN"
     },
     {

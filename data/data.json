@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:16:08+00:00",
-  "commit": "1de84ff753ed7ce175c5e41cec126b4b3f445b63",
-  "count": 857,
+  "generated": "2026-10-26T17:16:34+00:00",
+  "commit": "902a8548ed8a3520ae2468082eab26f7857288da",
+  "count": 858,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -4097,6 +4097,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "disfigure.png",
       "destination_main_page": "Disfigure_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-disillusionst",
+      "origins_label": "Disillusion ST Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Disillusion ST Fandom Wiki",
+          "origin_base_url": "disillusion-st.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Disillusion_ST_Wiki"
+        }
+      ],
+      "destination": "Disillusion ST Wiki",
+      "destination_base_url": "disillusionst.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "disillusionstwiki.png",
+      "destination_main_page": "Disillusion_ST_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T18:36:59+00:00",
-  "commit": "888a229ce4d460a93f63dfc5f990c403a2d36664",
-  "count": 859,
+  "generated": "2026-10-26T18:38:06+00:00",
+  "commit": "3f68e16712bf1a33fd5cb64429b68cbebb8deea5",
+  "count": 860,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -1208,6 +1208,27 @@
       "tags": [
         "official"
       ],
+      "language": "EN"
+    },
+    {
+      "id": "en-approximatelyup",
+      "origins_label": "Approximately Up Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Approximately Up Fandom Wiki",
+          "origin_base_url": "approximately-up.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Approximately_Up_Wiki"
+        }
+      ],
+      "destination": "Approximately Up Wiki",
+      "destination_base_url": "approximatelyup.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "approximatelyupwiki.png",
+      "destination_main_page": "Approximately_Up_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

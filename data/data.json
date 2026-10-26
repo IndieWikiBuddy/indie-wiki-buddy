@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:15:09+00:00",
-  "commit": "02a890c890ee9667e07f546e14e733f9986e6ce7",
-  "count": 856,
+  "generated": "2026-10-26T17:16:08+00:00",
+  "commit": "1de84ff753ed7ce175c5e41cec126b4b3f445b63",
+  "count": 857,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -7132,6 +7132,27 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "Miraheze",
+      "language": "EN"
+    },
+    {
+      "id": "en-huntdown",
+      "origins_label": "Huntdown Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Huntdown Fandom Wiki",
+          "origin_base_url": "huntdown.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Huntdown_Wiki"
+        }
+      ],
+      "destination": "Huntdown Wiki",
+      "destination_base_url": "huntdown.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "huntdownwiki.png",
+      "destination_main_page": "Huntdown_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

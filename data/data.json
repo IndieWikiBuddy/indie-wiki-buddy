@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-26T17:12:47+00:00",
-  "commit": "0411e1730a8f6f7239bc4cb8f35596d2a1bfb145",
-  "count": 853,
+  "generated": "2026-10-26T17:13:21+00:00",
+  "commit": "2b5aed60017276dd51acc77dbd5a0b6b72c81263",
+  "count": 854,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -11540,6 +11540,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "ratatan.png",
       "destination_main_page": "Main_Page",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-ravenswatch",
+      "origins_label": "Ravenswatch Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Ravenswatch Fandom Wiki",
+          "origin_base_url": "ravenswatch.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Ravenswatch_Wiki"
+        }
+      ],
+      "destination": "Ravenswatch Wiki",
+      "destination_base_url": "ravenswatch.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "ravenswatchwiki.png",
+      "destination_main_page": "Ravenswatch_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

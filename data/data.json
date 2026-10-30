@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-30T15:22:55+00:00",
-  "commit": "1ab21b396937fa281fc6df83378cdf80dbccd5a6",
-  "count": 862,
+  "generated": "2026-10-30T15:24:58+00:00",
+  "commit": "b92b8230cff82a9a801feae749d7ab851d24af8d",
+  "count": 863,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -2242,6 +2242,27 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-blocktales",
+      "origins_label": "Block Tales Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Block Tales Fandom Wiki",
+          "origin_base_url": "block-tales.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Block_Tales_Wiki"
+        }
+      ],
+      "destination": "Block Tales Wiki",
+      "destination_base_url": "blocktales.miraheze.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "blocktaleswiki.png",
+      "destination_main_page": "Block_Tales_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
       "language": "EN"
     },
     {

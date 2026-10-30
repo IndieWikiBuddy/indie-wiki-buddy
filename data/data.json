@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-10-30T15:20:53+00:00",
-  "commit": "e06542883fdd43696d62de5b180fb7ac9961a617",
-  "count": 861,
+  "generated": "2026-10-30T15:22:55+00:00",
+  "commit": "1ab21b396937fa281fc6df83378cdf80dbccd5a6",
+  "count": 862,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -14189,6 +14189,27 @@
       "destination_search_path": "/w/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "Miraheze",
+      "language": "EN"
+    },
+    {
+      "id": "en-theinfected",
+      "origins_label": "The Infected Fandom Wiki",
+      "origins": [
+        {
+          "origin": "The Infected Fandom Wiki",
+          "origin_base_url": "the-infected.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "The_Infected_Wiki"
+        }
+      ],
+      "destination": "The Infected Wiki",
+      "destination_base_url": "theinfected.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "theinfectedwiki.png",
+      "destination_main_page": "The_Infected_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
       "language": "EN"
     },
     {

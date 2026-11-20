@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-12T01:20:24+00:00",
-  "commit": "3b7297c50e67fa8e998e72ed07dc352b724b9387",
-  "count": 864,
+  "generated": "2026-11-20T06:35:05+00:00",
+  "commit": "3a1befbb3c61cb55e8b6f3510c9829d08e52f722",
+  "count": 865,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -17150,6 +17150,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "isaacrebirthwiki.png",
       "destination_main_page": "Binding_of_Isaac:_Rebirth_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "FR"
+    },
+    {
+      "id": "fr-bungostraydogs",
+      "origins_label": "Bungô Stray Dogs Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Bungô Stray Dogs Fandom Wiki",
+          "origin_base_url": "bungo-stray-dogs.fandom.com/fr",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Wiki_Bungô_Stray_Dogs"
+        }
+      ],
+      "destination": "Bungô Stray Dogs Wiki",
+      "destination_base_url": "bungostraydogs.wiki.gg/fr",
+      "destination_platform": "mediawiki",
+      "destination_icon": "bungostraydogswiki.png",
+      "destination_main_page": "Bungô_Stray_Dogs_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

@@ -972,5 +972,8 @@
     },
     "settingsBreezeWikiCustomHostInvalid": {
         "message": "Entrez un nom de domaine valide, comme bw.example.com"
+    },
+    "bannerClose": {
+        "message": "Fermer la bannière"
     }
 }

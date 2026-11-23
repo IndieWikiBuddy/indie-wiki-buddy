@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-20T06:35:05+00:00",
-  "commit": "3a1befbb3c61cb55e8b6f3510c9829d08e52f722",
-  "count": 865,
+  "generated": "2026-11-23T04:07:23+00:00",
+  "commit": "554b3cfbc71583a43cb3722021728972b81af329",
+  "count": 866,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -13890,6 +13890,26 @@
       "destination_main_page": "Main_Page",
       "destination_search_path": "/wiki/index.php",
       "destination_content_path": "/wiki/",
+      "language": "EN"
+    },
+    {
+      "id": "en-taskmaster",
+      "origins_label": "Taskmaster Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Taskmaster Fandom Wiki",
+          "origin_base_url": "taskmaster.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Taskmaster_Wiki"
+        }
+      ],
+      "destination": "Taskmaster Wiki",
+      "destination_base_url": "taskmaster.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "tmwax.png",
+      "destination_main_page": "Taskmaster.wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/",
       "language": "EN"
     },
     {

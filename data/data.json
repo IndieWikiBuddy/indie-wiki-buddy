@@ -4651,6 +4651,27 @@
       "language": "EN"
     },
     {
+      "id": "en-dungeondefenders",
+      "origins_label": "Dungeon Defenders Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Dungeon Defenders Fandom Wiki",
+          "origin_base_url": "dungeondefenders.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Dungeon_Defenders_Wiki"
+        }
+      ],
+      "destination": "Dungeon Defenders Wiki",
+      "destination_base_url": "dungeondefenders.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "dungeondefenders.png",
+      "destination_main_page": "Dungeon_Defenders_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
       "id": "en-dungeondefenders2",
       "origins_label": "Dungeon Defenders II Fandom Wiki",
       "origins": [

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-24T07:04:50+00:00",
-  "commit": "a936071c1f1164aaba36b5eb6b7530331a380d6d",
-  "count": 868,
+  "generated": "2026-11-24T07:14:17+00:00",
+  "commit": "da9540a76784917f1c8b350854f2dec7fef44cbe",
+  "count": 869,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -7512,6 +7512,27 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-idleobeliskminer",
+      "origins_label": "Idle Obelisk Miner Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Idle Obelisk Miner Fandom Wiki",
+          "origin_base_url": "obeliskminer.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Obelisk_Miner_Wiki"
+        }
+      ],
+      "destination": "Idle Obelisk Miner Wiki",
+      "destination_base_url": "shminer.miraheze.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "idleobeliskminerwiki.png",
+      "destination_main_page": "Obelisk_Miner_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
       "language": "EN"
     },
     {

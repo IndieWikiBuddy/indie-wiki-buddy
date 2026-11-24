@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-24T07:15:46+00:00",
-  "commit": "497f8e426a6ca5ef20078b2e5277d7830e450253",
-  "count": 870,
+  "generated": "2026-11-24T23:41:51+00:00",
+  "commit": "05d65773f068a6c9e5282b685d7c17a6f7f63102",
+  "count": 871,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -9724,6 +9724,27 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-moviestarplanet",
+      "origins_label": "MovieStarPlanet Fandom Wiki",
+      "origins": [
+        {
+          "origin": "MovieStarPlanet Fandom Wiki",
+          "origin_base_url": "moviestarplanet.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "MovieStarPlanet"
+        }
+      ],
+      "destination": "MovieStarPlanet Wiki",
+      "destination_base_url": "moviestarplanet.miraheze.org",
+      "destination_platform": "mediawiki",
+      "destination_icon": "moviestarplanetwiki.png",
+      "destination_main_page": "Main_Page",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "Miraheze",
       "language": "EN"
     },
     {

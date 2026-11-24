@@ -1,4 +1,6 @@
-import {
+export {}; // keep this so that we can use top-level await
+
+const {
   extensionAPI,
   getUserSettings,
   setUserSetting,
@@ -9,7 +11,7 @@ import {
   makeKeyboardButton,
   normalizeBreezewikiHost,
   pickBreezewikiHost,
-} from "./common-functions.js";
+} = await import(browser.runtime.getURL("scripts/common-functions.js"));
 
 const currentURL = new URL(document.location);
 

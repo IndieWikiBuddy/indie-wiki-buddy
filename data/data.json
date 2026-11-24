@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-24T07:14:17+00:00",
-  "commit": "da9540a76784917f1c8b350854f2dec7fef44cbe",
-  "count": 869,
+  "generated": "2026-11-24T07:15:46+00:00",
+  "commit": "497f8e426a6ca5ef20078b2e5277d7830e450253",
+  "count": 870,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -7920,6 +7920,26 @@
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-kaiserreich",
+      "origins_label": "Kaiserreich Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Kaiserreich Fandom Wiki",
+          "origin_base_url": "kaiserreich.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Kaiserreich_Fan_Wiki"
+        }
+      ],
+      "destination": "Kaiserreich Wiki",
+      "destination_base_url": "kaiserreich.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "kaiserreichwiki.png",
+      "destination_main_page": "The_Kaiserreich_Wiki",
+      "destination_search_path": "/w/index.php",
+      "destination_content_path": "/",
       "language": "EN"
     },
     {

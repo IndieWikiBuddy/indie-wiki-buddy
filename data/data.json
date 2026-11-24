@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-23T04:07:23+00:00",
-  "commit": "554b3cfbc71583a43cb3722021728972b81af329",
-  "count": 866,
+  "generated": "2026-11-24T07:03:54+00:00",
+  "commit": "43aad9fbbbbb8391a55da60549847961df11a089",
+  "count": 867,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -5070,6 +5070,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "emberknightswiki.png",
       "destination_main_page": "Ember_Knights_-_Game_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-emberward",
+      "origins_label": "Emberward Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Emberward Fandom Wiki",
+          "origin_base_url": "emberward.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Emberward_Wiki"
+        }
+      ],
+      "destination": "Emberward Wiki",
+      "destination_base_url": "emberward.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "emberwardwiki.png",
+      "destination_main_page": "Emberward_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",

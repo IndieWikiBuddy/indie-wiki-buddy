@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-24T07:03:54+00:00",
-  "commit": "43aad9fbbbbb8391a55da60549847961df11a089",
-  "count": 867,
+  "generated": "2026-11-24T07:04:50+00:00",
+  "commit": "a936071c1f1164aaba36b5eb6b7530331a380d6d",
+  "count": 868,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -7371,6 +7371,26 @@
       "tags": [
         "official"
       ],
+      "language": "EN"
+    },
+    {
+      "id": "en-hypixel",
+      "origins_label": "Hypixel Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Hypixel Fandom Wiki",
+          "origin_base_url": "hypixel.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Hypixel_Wiki"
+        }
+      ],
+      "destination": "Hypixel Wiki",
+      "destination_base_url": "hypixel.minecraft.wiki",
+      "destination_platform": "mediawiki",
+      "destination_icon": "hypixel.png",
+      "destination_main_page": "Hypixel_Wiki",
+      "destination_search_path": "/",
+      "destination_content_path": "/w/",
       "language": "EN"
     },
     {

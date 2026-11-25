@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-11-24T23:44:50+00:00",
-  "commit": "06df764d1c7845c14650611005b7dc166ce791a4",
-  "count": 872,
+  "generated": "2026-11-25T07:42:21+00:00",
+  "commit": "8c32a5a8da487056193a5212d3c53453ffbb9d5e",
+  "count": 873,
   "sites": [
     {
       "id": "ca-detectiuconan",
@@ -9658,6 +9658,27 @@
       "destination_platform": "mediawiki",
       "destination_icon": "monsterpromwiki.png",
       "destination_main_page": "Monster_Prom_Wiki",
+      "destination_search_path": "/index.php",
+      "destination_content_path": "/wiki/",
+      "destination_host": "wiki.gg",
+      "language": "EN"
+    },
+    {
+      "id": "en-monstersanctuary",
+      "origins_label": "Monster Sanctuary Fandom Wiki",
+      "origins": [
+        {
+          "origin": "Monster Sanctuary Fandom Wiki",
+          "origin_base_url": "monster-sanctuary.fandom.com",
+          "origin_content_path": "/wiki/",
+          "origin_main_page": "Monster_Sanctuary_Wiki"
+        }
+      ],
+      "destination": "Monster Sanctuary Wiki",
+      "destination_base_url": "monstersanctuary.wiki.gg",
+      "destination_platform": "mediawiki",
+      "destination_icon": "monstersanctuarywiki.png",
+      "destination_main_page": "Monster_Sanctuary_Wiki",
       "destination_search_path": "/index.php",
       "destination_content_path": "/wiki/",
       "destination_host": "wiki.gg",
